@@ -27,7 +27,7 @@ namespace AquaPOS
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-
+            // This is the function that runs when the user clicks the login button
         }
 
         private void CreateAccountButton_Click(object sender, RoutedEventArgs e)

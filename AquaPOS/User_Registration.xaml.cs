@@ -26,7 +26,7 @@ namespace AquaPOS
 
         private void CreateUserButton_Click(object sender, RoutedEventArgs e)
         {
-
+            // This is where the create user button click event is handled
         }
 
     }

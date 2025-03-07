@@ -1,0 +1,75 @@
+﻿<Window x:Class="AquaPOS.Sales_Processing"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AquaPOS"
+        mc:Ignorable="d"
+            Title="Sales Processing" Height="673" Width="1262" Background="#01132D" WindowStartupLocation="CenterScreen">
+
+
+    <Window.Resources>
+        <!-- Rounded TextBox and PasswordBox Style -->
+        <Style x:Key="RoundedTextBoxStyle" TargetType="Control">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Control">
+                        <Border CornerRadius="6" BorderBrush="#FF0807A0" BorderThickness="2.5" Background="White">
+                            <ScrollViewer Margin="5" x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Rounded Button Style -->
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="15
+                            " Background="{TemplateBinding Background}" Margin="8,0,8,0" Padding="0,2,0,0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Border Background="#003547" Width="320" HorizontalAlignment="Left">
+            <StackPanel>
+                <!-- Background Image -->
+                <Image Source="pack://application:,,,/resources/icons/logo.png" 
+       Width="291" Height="191" 
+       HorizontalAlignment="Center" 
+       Margin="0,54,0,0"/>
+
+                <!-- ProductID Label & TextBox -->
+                <Label Content="Product ID" Foreground="White" FontSize="16" FontWeight="Bold" 
+                   HorizontalAlignment="Center" Margin="0,20,0,0"/>
+                <TextBox x:Name="ProductIDTextBox" Width="170" Height="35" FontSize="14"
+             Style="{StaticResource RoundedTextBoxStyle}" BorderBrush="#FF0807A0" TextChanged="ProductIDTextBox_TextChanged"/>
+
+                <!-- Quantity Label & TextBox -->
+                <Label Content="Quantity" Foreground="White" FontSize="16" FontWeight="Bold" 
+                   HorizontalAlignment="Center" Margin="0,20,0,-2" Height="30"/>
+                <TextBox Name="QuantityTextBox" Width="170" Height="35" FontSize="14"
+             Style="{StaticResource RoundedTextBoxStyle}"
+             HorizontalAlignment="Center" TextChanged="QuantityTextBox_TextChanged" BorderBrush="#FF0807A0"/>
+
+                <!-- Add To Cart Button -->
+                <Button x:Name="AddToCartButton" Content="Add to Cart" Width="130" Height="30" FontSize="14" FontWeight="Bold" 
+            Background="Aquamarine" Foreground="#FF020203" BorderThickness="0"
+            Style="{StaticResource RoundedButtonStyle}"
+            HorizontalAlignment="Center" Margin="0,25,0,0"  Click="AddToCartButton_Click"/>
+
+                <!-- Exit Button -->
+                <Button x:Name="ExitButton" Content="EXIT" Width="60" Height="35" Foreground="White" FontSize="14" 
+                    Background="Transparent" BorderBrush="#FF003547" Click="ExitButton_Click" Margin="0,35,0,0"/>
+            </StackPanel>
+        </Border>
+    </Grid>
+
+</Window>

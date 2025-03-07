@@ -29,6 +29,15 @@ namespace AquaPOS
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
             // This is the function that runs when the user clicks the login button
+
+            string username = UsernameTextBox.Text;
+            string password = PasswordBox.Password;
+
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+            {
+                MessageBox.Show("Please enter both Username and Password.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
         }
 
         private void CreateAccountButton_Click(object sender, RoutedEventArgs e)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace AquaPOS
         public User_Registration()
         {
             InitializeComponent();
+            DatabaseInitializer.InitializeDatabase();
         }
 
         private void CreateUserButton_Click(object sender, RoutedEventArgs e)

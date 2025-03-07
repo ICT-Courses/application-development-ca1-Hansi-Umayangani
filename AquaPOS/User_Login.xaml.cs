@@ -23,6 +23,7 @@ namespace AquaPOS
         public User_Login()
         {
             InitializeComponent();
+            DatabaseInitializer.InitializeDatabase();
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)

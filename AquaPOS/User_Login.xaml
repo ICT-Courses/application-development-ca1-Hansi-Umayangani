@@ -43,14 +43,14 @@
         <!-- Username Label & UsernameTextBox -->
         <Label Content="Username" FontSize="16" FontWeight="Bold" Foreground="White" 
            HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,301,0,0"/>
-        <TextBox x:Name="UsernameTextBox" Width="300" Height="32" FontSize="14"
+        <TextBox x:Name="UsernameTextBox" Width="300" Height="35" FontSize="14"
              Style="{StaticResource RoundedTextBoxStyle}"
-             HorizontalAlignment="Center" VerticalAlignment="Center"/>
+             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="488,332,0,0"/>
 
         <!-- Password Label & PasswordBox -->
         <Label Content="Password" FontSize="16" FontWeight="Bold" Foreground="White" 
            HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,390,0,0"/>
-        <PasswordBox x:Name="PasswordBox" Width="300" Height="32" FontSize="14"
+        <PasswordBox x:Name="PasswordBox" Width="300" Height="35" FontSize="14"
                  Style="{StaticResource RoundedTextBoxStyle}"
                  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,421,0,0"/>
         <TextBox x:Name="PasswordTextBox" Width="300" Height="30" FontSize="14"
@@ -60,19 +60,19 @@
 
         <!-- Show Password Checkbox -->
         <CheckBox x:Name="ShowPasswordCheckbox" Content="Show Password" Foreground="White" FontSize="12"
-              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="688,456,0,0" 
+              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="686,461,0,0" 
               Checked="ShowPasswordCheckbox_Checked" Unchecked="ShowPasswordCheckbox_Unchecked"/>
 
         <!-- Login Button -->
-        <Button x:Name="LoginButton" Content="LOGIN" Width="84" Height="50" FontSize="14" FontWeight="Bold" 
+        <Button x:Name="LoginButton" Content="LOGIN" Width="84" Height="45" FontSize="14" FontWeight="Bold" 
             Background="Aquamarine" Foreground="#FF020203" BorderThickness="0"
             Style="{StaticResource RoundedButtonStyle}"
-            HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,496,0,0" Click="LoginButton_Click"/>
+            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="596,501,0,0" Click="LoginButton_Click"/>
 
         <!-- Create Account Button -->
         <Button x:Name="CreateAccountButton" Content="Create Account" Width="162" Height="47" FontSize="16" FontWeight="Bold" 
             Background="Aqua" Foreground="Black" BorderThickness="0"
             Style="{StaticResource RoundedButtonStyle}"
-            HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,578,0,0" Click="CreateAccountButton_Click" BorderBrush="#FF0F35C8"/>
+            HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,583,0,0" Click="CreateAccountButton_Click" BorderBrush="#FF0F35C8"/>
     </Grid>
 </Window>

@@ -49,25 +49,25 @@
                 <!-- ProductID Label & TextBox -->
                 <Label Content="Product ID" Foreground="White" FontSize="16" FontWeight="Bold" 
                    HorizontalAlignment="Center" Margin="0,20,0,0"/>
-                <TextBox x:Name="ProductIDTextBox" Width="170" Height="32" FontSize="14"
+                <TextBox x:Name="ProductIDTextBox" Width="170" Height="35" FontSize="14"
              Style="{StaticResource RoundedTextBoxStyle}" BorderBrush="#FF0807A0" TextChanged="ProductIDTextBox_TextChanged"/>
 
                 <!-- Quantity Label & TextBox -->
                 <Label Content="Quantity" Foreground="White" FontSize="16" FontWeight="Bold" 
                    HorizontalAlignment="Center" Margin="0,20,0,-2" Height="30"/>
-                <TextBox Name="QuantityTextBox" Width="170" Height="33" FontSize="14"
+                <TextBox Name="QuantityTextBox" Width="170" Height="35" FontSize="14"
              Style="{StaticResource RoundedTextBoxStyle}"
              HorizontalAlignment="Center" TextChanged="QuantityTextBox_TextChanged" BorderBrush="#FF0807A0"/>
 
                 <!-- Add To Cart Button -->
-                <Button x:Name="AddToCartButton" Content="Add to Cart" Width="130" Height="34" FontSize="14" FontWeight="Bold" 
+                <Button x:Name="AddToCartButton" Content="Add to Cart" Width="130" Height="30" FontSize="14" FontWeight="Bold" 
             Background="Aquamarine" Foreground="#FF020203" BorderThickness="0"
             Style="{StaticResource RoundedButtonStyle}"
-            HorizontalAlignment="Center" Margin="0,30,0,0"  Click="AddToCartButton_Click"/>
+            HorizontalAlignment="Center" Margin="0,25,0,0"  Click="AddToCartButton_Click"/>
 
                 <!-- Exit Button -->
                 <Button x:Name="ExitButton" Content="EXIT" Width="60" Height="22" Foreground="White" FontSize="14" 
-                    Background="Transparent" BorderBrush="#FF003547" Click="ExitButton_Click" Margin="0,25,0,0"/>
+                    Background="Transparent" BorderBrush="#FF003547" Click="ExitButton_Click" Margin="0,35,0,0"/>
             </StackPanel>
         </Border>
     </Grid>

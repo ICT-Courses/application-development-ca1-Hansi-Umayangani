@@ -34,7 +34,7 @@
                 <!-- Exit Button -->
                 <Button x:Name="ExitButton" Content="EXIT" Foreground="White" Background="#FF003547" BorderBrush="#FF003547" 
                 FontSize="14" Width="60" Height="35" 
-                Click="ExitButton_Click" Margin="0,30,0,0"/>
+                Click="ExitButton_Click" Margin="0,35,0,0"/>
 
             </StackPanel>
         </Border>

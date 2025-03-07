@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +38,47 @@ namespace AquaPOS
             {
                 MessageBox.Show("Please enter both Username and Password.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
+            }
+
+            string connectionString = DatabaseInitializer.ConnectionString;
+
+            using (SQLiteConnection connection = new SQLiteConnection(connectionString))
+            {
+                connection.Open();
+
+                string query = "SELECT UserRole FROM Users WHERE Username=@Username AND Password=@Password";
+                using (SQLiteCommand command = new SQLiteCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Username", username);
+                    command.Parameters.AddWithValue("@Password", password);
+
+                    object result = command.ExecuteScalar();
+
+                    if (result != null)
+                    {
+                        string userRole = result.ToString();
+
+                        Window nextWindow = null;
+                        if (userRole == "Cashier")
+                        {
+                            nextWindow = new Sales_Processing();
+                        }
+                        else if (userRole == "Admin")
+                        {
+                            nextWindow = new Dashboard();
+                        }
+
+                        if (nextWindow != null)
+                        {
+                            nextWindow.Show();
+                            this.Close(); // Close login window and navigate to next window
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Invalid username or password.", "Login Failed", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
             }
         }
 

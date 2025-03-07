@@ -8,5 +8,6 @@ namespace AquaPOS
 {
     internal class DatabaseInitializer
     {
+        public static string ConnectionString = @"C:\Projects\Appication Development\application-development-ca1-Hansi-Umayangani\AquaPOS\AquaPOS-Database.db";
     }
 }

@@ -91,5 +91,14 @@ namespace AquaPOS
                 }
             }
         }
+
+        private void BackButton_Click(object sender, RoutedEventArgs e)
+        {
+            User_Login loginWindow = new User_Login(); // Create an instance of the login window
+            loginWindow.Show(); 
+            this.Hide(); 
+        }
+
     }
 }
+

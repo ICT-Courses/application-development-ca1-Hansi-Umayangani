@@ -32,7 +32,9 @@ namespace AquaPOS
 
         private void CreateAccountButton_Click(object sender, RoutedEventArgs e)
         {
-
+            User_Registration userRegistrationForm = new User_Registration();
+            userRegistrationForm.Show();
+            this.Close();
         }
 
         private void ShowPasswordCheckbox_Checked(object sender, RoutedEventArgs e)

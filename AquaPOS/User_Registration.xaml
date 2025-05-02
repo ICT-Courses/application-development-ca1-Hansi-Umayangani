@@ -5,7 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AquaPOS"
         mc:Ignorable="d"
-        Title="User Registration" Height="720" Width="1280" ResizeMode="CanResize" WindowStartupLocation="CenterScreen" Background="#01132D">
+        Icon="pack://application:,,,/resources\Images\App_Logo\AquaPOS_Logo_Icon.ico"
+        Title="User Registration" Height="720" Width="1280" ResizeMode="CanResize" WindowStartupLocation="CenterScreen">
+
+    <Window.Background>
+        <ImageBrush ImageSource="pack://application:,,,/resources/Images/Background_Images/Main_Background_Image.png"
+                    Stretch="Fill"/>
+    </Window.Background>
 
     <Window.Resources>
         <!-- Rounded TextBox and PasswordBox Style -->
@@ -13,7 +19,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Control">
-                        <Border CornerRadius="6" BorderBrush="#FF0807A0" BorderThickness="2" Background="White">
+                        <Border CornerRadius="8" BorderBrush="#FF0807A0" BorderThickness="2" Background="White">
                             <ScrollViewer Margin="5" x:Name="PART_ContentHost"/>
                         </Border>
                     </ControlTemplate>
@@ -35,55 +41,69 @@
         </Style>
     </Window.Resources>
 
-    <Grid Height="720">
+    <Grid Height="720" Margin="0,0,0,-16">
+
         <!-- Background Image -->
-        <Image Source="pack://application:,,,/resources/icons/logo.png" 
-               Width="392" Height="232" 
+        <Image Source="pack://application:,,,/resources/Images/App_Logo/AquaPOS_Logo.png" 
+               Width="396" Height="232" 
                HorizontalAlignment="Center" VerticalAlignment="Top" 
                Margin="0,54,0,0"/>
 
         <!-- Username Label & TextBox -->
         <Label Content="Username" FontSize="16" FontWeight="Bold" Foreground="White" 
-               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,301,0,0"/>
-        <TextBox x:Name="UsernameTextBox" Width="300" Height="30" FontSize="14"
+               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,359,0,0" Height="30" Width="86"/>
+        <TextBox x:Name="UsernameTextBox" Width="305" Height="36" FontSize="14"
                  Style="{StaticResource RoundedTextBoxStyle}"
-                 HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,332,0,0" BorderBrush="#FF07153F"/>
+                 HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,389,0,0" BorderBrush="#FF07153F"/>
 
         <!-- Password Label & PasswordBox -->
         <Label Content="Password" FontSize="16" FontWeight="Bold" Foreground="White" 
-               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,372,0,0"/>
-        <PasswordBox x:Name="PasswordBox" Width="300" Height="30" FontSize="14"
+               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,433,0,0" Width="82"/>
+        <PasswordBox x:Name="PasswordBox" Width="305" Height="36" FontSize="14"
                      Style="{StaticResource RoundedTextBoxStyle}"
-                     HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,403,0,0"/>
-        <TextBox x:Name="PasswordTextBox" Width="300" Height="30" FontSize="14"
+                     HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,463,0,0"/>
+        <TextBox x:Name="PasswordTextBox" Width="300" Height="36" FontSize="14"
                  Style="{StaticResource RoundedTextBoxStyle}"
                  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,421,0,0" 
                  Visibility="Collapsed"/>
 
         <!-- Re-enter Password Label & TextBox -->
         <Label Content="Re-enter Password" FontSize="16" FontWeight="Bold" Foreground="White" 
-               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,443,0,0"/>
-        <PasswordBox x:Name="ReenterPasswordBox" Width="300" Height="30" FontSize="14"
+               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,507,0,0" Width="152"/>
+        <PasswordBox x:Name="ReenterPasswordBox" Width="305" Height="36" FontSize="14"
                      Style="{StaticResource RoundedTextBoxStyle}"
-                     HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,474,0,0"/>
+                     HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,537,0,0"/>
 
         <!-- User Role Label & ComboBox -->
         <Label Content="User Role" FontSize="16" FontWeight="Bold" Foreground="White" 
-               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="602,514,0,0"/>
-        <ComboBox x:Name="UserRoleComboBox" Width="200" Height="30" FontSize="14"
-                  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,545,0,0" Background="Black" BorderBrush="#FF5AC4F6">
+               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,285,0,0" Width="82"/>
+        <ComboBox x:Name="UserRoleComboBox" Width="202" Height="32" FontSize="14"
+                  HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,318,0,0" Background="Black" BorderBrush="#FF5AC4F6">
             <ComboBoxItem Content="Cashier"/>
             <ComboBoxItem Content="Admin"/>
         </ComboBox>
 
         <!-- Create User Button -->
-        <Button x:Name="CreateUserButton" Content="Create User" Width="150" Height="45" FontSize="16" FontWeight="Bold" 
-                Background="Aqua" Foreground="Black" BorderThickness="0"
-                Style="{StaticResource RoundedButtonStyle}"
-                HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,607,0,0" Click="CreateUserButton_Click"/>
+        <Button x:Name="CreateUserButton" Content="Create Account" Width="164" Height="44" FontSize="16" FontWeight="Bold" 
+            Background="#FF00CCEE" Foreground="Black" BorderThickness="0"
+            Style="{StaticResource RoundedButtonStyle}"
+            HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,603,0,0" Click="CreateUserButton_Click" BorderBrush="#FF0F35C8"/>
 
-        <Button Content="← Back" Width="58" Click="BackButton_Click" Margin="1166,612,0,68" FontSize="16" HorizontalAlignment="Left" Background="#FF01132D" Foreground="#FF9E9898" BorderBrush="#FF01132D"/>
-
+        <Button Content="←"
+        Width="57" Height="60"
+        Click="BackButton_Click"
+        FontSize="50" FontWeight="Bold"
+        FontFamily="Bernard MT Condensed"
+        Background="Transparent"
+        Foreground="White"
+        BorderBrush="Transparent"
+        Padding="0"
+        HorizontalAlignment="Right"
+        HorizontalContentAlignment="Center"
+        VerticalAlignment="Top"
+        VerticalContentAlignment="Center" Margin="0,24,20,0"/>
 
     </Grid>
+
+
 </Window>

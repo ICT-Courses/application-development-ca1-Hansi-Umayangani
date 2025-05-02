@@ -79,6 +79,11 @@
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
     <Compile Include="DatabaseInitializer.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Sales_Processing.xaml.cs">
       <DependentUpon>Sales_Processing.xaml</DependentUpon>
     </Compile>
@@ -100,11 +105,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="User_Login.xaml.cs">
       <DependentUpon>User_Login.xaml</DependentUpon>
@@ -140,7 +140,15 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="resources\icons\logo.png" />
+    <Resource Include="resources\Images\App_Logo\AquaPOS_Logo.png" />
+    <Resource Include="resources\Images\App_Logo\AquaPOS_Logo_Icon.ico" />
+    <Resource Include="resources\Images\Background_Images\Main_Background_Image.png" />
+    <Resource Include="resources\Images\Button_Icons\Dashboard_Button_Icon.png" />
+    <Resource Include="resources\Images\Button_Icons\Delete_Button_Icon.png" />
+    <Resource Include="resources\Images\Button_Icons\Edit_Button_Icon.png" />
+    <Resource Include="resources\Images\Button_Icons\Inventory_Management_Button_Icon.png" />
+    <Resource Include="resources\Images\Button_Icons\Sales_Reports_Button_Icon.png" />
+    <Resource Include="resources\Images\Button_Icons\Search_Icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

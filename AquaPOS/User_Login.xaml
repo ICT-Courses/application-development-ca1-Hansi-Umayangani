@@ -48,13 +48,13 @@
 
         <!-- Username Label & UsernameTextBox -->
         <Label Content="Username" FontSize="16" FontWeight="Bold" Foreground="White" 
-   HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,299,0,0" Width="86"/>
+               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,299,0,0" Width="86"/>
         <TextBox x:Name="UsernameTextBox" Width="306" Height="36" FontSize="14"
-     Style="{StaticResource RoundedTextBoxStyle}" Margin="0,329,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" 
-     TextChanged="UsernameTextBox_TextChanged"/>
+                 Style="{StaticResource RoundedTextBoxStyle}" Margin="0,329,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" 
+                 TextChanged="UsernameTextBox_TextChanged"/>
 
         <!-- Password Label & PasswordBox -->
-        <Label Content="Password" FontSize="16" FontWeight="Bold" Foreground="White" 
+        <Label Content="Password" FontSize="16" FontWeight="Bold" Foreground="White"
                HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,387,0,0" Width="82"/>
         <PasswordBox x:Name="PasswordBox" Width="306" Height="36" FontSize="14"
                      Style="{StaticResource RoundedTextBoxStyle}"

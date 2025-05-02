@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.SQLite;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AquaPOS;
 
 namespace AquaPOS
 {
@@ -101,6 +103,11 @@ namespace AquaPOS
             PasswordBox.Password = PasswordTextBox.Text;
             PasswordBox.Visibility = Visibility.Visible;
             PasswordTextBox.Visibility = Visibility.Collapsed;
+        }
+
+        private void UsernameTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
 
     }

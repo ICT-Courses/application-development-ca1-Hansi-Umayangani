@@ -40,13 +40,15 @@ namespace AquaPOS
 
         private void SalesReportsButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Sales_Reports sales_Reports = new Sales_Reports();
+            sales_Reports.Show();
+            this.Close();
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            User_Login loginWindow = new User_Login();
-            loginWindow.Show(); // Show the login window
+            User_Login user_Login = new User_Login();
+            user_Login.Show(); // Show the login window
             this.Hide(); // Close the current window
         }
     }

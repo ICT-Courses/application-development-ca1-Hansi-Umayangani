@@ -5,16 +5,43 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AquaPOS"
         mc:Ignorable="d"
-            Title="Sales Processing" Height="673" Width="1262" Background="#01132D" WindowStartupLocation="CenterScreen">
+    Icon="pack://application:,,,/resources/Images/App_Logo/AquaPOS_Logo_Icon.ico" 
+    Title="User Login" Height="720" Width="1280" ResizeMode="CanResize" WindowStartupLocation="CenterScreen">
 
+    <Window.Background>
+        <ImageBrush ImageSource="pack://application:,,,/resources/Images/Background_Images/Main_Background_Image.png"
+            Stretch="Fill"/>
+    </Window.Background>
 
     <Window.Resources>
-        <!-- Rounded TextBox and PasswordBox Style -->
+        <!-- Rounded Button Style -->
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border 
+                x:Name="border"
+                Background="{TemplateBinding Background}" 
+                BorderBrush="{TemplateBinding BorderBrush}" 
+                BorderThickness="{TemplateBinding BorderThickness}" 
+                CornerRadius="20"
+                SnapsToDevicePixels="True">
+                            <ContentPresenter 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    RecognizesAccessKey="True"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Rounded TextBox Style -->
         <Style x:Key="RoundedTextBoxStyle" TargetType="Control">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Control">
-                        <Border CornerRadius="6" BorderBrush="#FF0807A0" BorderThickness="2.5" Background="White">
+                        <Border CornerRadius="8" BorderBrush="#FF0807A0" BorderThickness="2.5" Background="White">
                             <ScrollViewer Margin="5" x:Name="PART_ContentHost"/>
                         </Border>
                     </ControlTemplate>
@@ -22,29 +49,23 @@
             </Setter>
         </Style>
 
-        <!-- Rounded Button Style -->
-        <Style x:Key="RoundedButtonStyle" TargetType="Button">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="15
-                            " Background="{TemplateBinding Background}" Margin="8,0,8,0" Padding="0,2,0,0">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
     </Window.Resources>
 
     <Grid>
-        <Border Background="#003547" Width="320" HorizontalAlignment="Left">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar Panel -->
+        <Border Background="#FF031C36" Width="260" HorizontalAlignment="Left">
             <StackPanel>
-                <!-- Background Image -->
-                <Image Source="pack://application:,,,/resources/icons/logo.png" 
-       Width="291" Height="191" 
-       HorizontalAlignment="Center" 
-       Margin="0,54,0,0"/>
+
+                <!-- Logo -->
+                <Image Source="pack://application:,,,/resources/Images/App_Logo/AquaPOS_Logo.png"
+                   Width="243" Height="176" 
+                   HorizontalAlignment="Center" 
+                   Margin="0,20,0,0"/>
 
                 <!-- ProductID Label & TextBox -->
                 <Label Content="Product ID" Foreground="White" FontSize="16" FontWeight="Bold" 
@@ -66,8 +87,10 @@
             HorizontalAlignment="Center" Margin="0,25,0,0"  Click="AddToCartButton_Click"/>
 
                 <!-- Exit Button -->
-                <Button x:Name="ExitButton" Content="EXIT" Width="60" Height="35" Foreground="White" FontSize="14" 
-                    Background="Transparent" BorderBrush="#FF003547" Click="ExitButton_Click" Margin="0,35,0,0"/>
+                <Button x:Name="ExitButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
+                       FontSize="14" Width="60" Height="35" Click="ExitButton_Click" Margin="0,45,0,0" HorizontalAlignment="Center">
+                    <TextBlock Foreground="White" TextDecorations="Underline" TextAlignment="Center"><Run Text="EXIT"/></TextBlock>
+                </Button>
             </StackPanel>
         </Border>
     </Grid>

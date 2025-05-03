@@ -23,5 +23,25 @@ namespace AquaPOS
         {
             InitializeComponent();
         }
+
+        private void DashboardButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void InventoryManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SalesReportsButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

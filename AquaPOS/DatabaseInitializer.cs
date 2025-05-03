@@ -30,7 +30,23 @@ namespace AquaPOS
                             UserRole TEXT CHECK(UserRole IN ('Admin', 'Cashier')) NOT NULL
                         );";
 
+                    // StockItem table
+                    string createStockTableQuery = @"
+                        CREATE TABLE IF NOT EXISTS StockItems (
+                            ProductID INTEGER PRIMARY KEY AUTOINCREMENT,
+                            Category TEXT NOT NULL,
+                            ProductName TEXT NOT NULL UNIQUE,
+                            UnitPrice REAL NOT NULL,
+                            Quantity INTEGER NOT NULL,
+                            DateUpdated TEXT NOT NULL
+                        );";
+
                     using (var cmd = new SQLiteCommand(createTableQuery, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    using (var cmd = new SQLiteCommand(createStockTableQuery, conn))
                     {
                         cmd.ExecuteNonQuery();
                     }

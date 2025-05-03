@@ -62,40 +62,44 @@
             <StackPanel>
 
                 <!-- Logo -->
-                <Image Source="pack://application:,,,/resources/Images/App_Logo/AquaPOS_Logo.png" 
+                <Image Source="pack://application:,,,/resources/Images/App_Logo/AquaPOS_Logo.png"
                        Width="243" Height="176" 
                        HorizontalAlignment="Center" 
                        Margin="0,20,0,0"/>
 
                 <!-- Dashboard Button -->
-                <Button x:Name="DashboardButton" Foreground="White" Background="Transparent" BorderBrush="Transparent"
+                <Button x:Name="DashboardButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
                         FontSize="14" Width="240" Height="44" Margin="0,45,0,0" 
                         Click="DashboardButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="35" Width="126">
-                        <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Dashboard_Button_Icon.png" Width="35" Height="37" Margin="10,0,10,0" RenderTransformOrigin="-0.035,0.484"/>
+                        <Image Source="pack://application:,,,/resources/Images/Button_Icons/Dashboard_Button_Icon.png" 
+                               Width="35" Height="37" Margin="10,0,10,0" RenderTransformOrigin="-0.035,0.484"/>
                         <TextBlock Text="Dashboard" Foreground="White" Height="20"/>
                     </StackPanel>
                 </Button>
 
                 <!-- Inventory Management Button -->
-                <Button x:Name="InventoryManagementButton" Foreground="White" Background="Transparent" BorderBrush="Transparent"
+                <Button x:Name="InventoryManagementButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
                         FontSize="14" Width="240" Height="44" Margin="0,45,0,0" 
-                        Click="InventoryManagementButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
+                        Click="InventoryManagementButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center">   
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="35" Width="211">
-                        <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Inventory_Management_Button_Icon.png" Width="35" Height="37" Margin="10,0,10,0" RenderTransformOrigin="-0.035,0.484"/>
+                        <Image Source="pack://application:,,,/resources/Images/Button_Icons/Inventory_Management_Button_Icon.png" 
+                               Width="35" Height="37" Margin="10,0,10,0" RenderTransformOrigin="-0.035,0.484"/>
                         <TextBlock Text="Inventory Management" Foreground="White" Height="21" HorizontalAlignment="Center"/>
                     </StackPanel>
                 </Button>
 
                 <!-- Sales Reports Button -->
-                <Button x:Name="SalesReportsButton" Foreground="White" Background="Transparent" BorderBrush="Transparent"
+                <Button x:Name="SalesReportsButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
                         FontSize="14" Width="240" Height="44" Margin="0,45,0,0" 
                         Click="SalesReportsButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Sales_Reports_Button_Icon.png" Width="35" Height="37" Margin="10,0,10,0" RenderTransformOrigin="-0.035,0.484"/>
+                        <Image Source="pack://application:,,,/resources/Images/Button_Icons/Sales_Reports_Button_Icon.png" 
+                               Width="35" Height="37" Margin="10,0,10,0" RenderTransformOrigin="-0.035,0.484"/>
                         <TextBlock Text="Sales Reports" Foreground="White" Height="18"/>
                     </StackPanel>
                 </Button>
+
 
                 <!-- Exit Button -->
                 <Button x:Name="ExitButton" Foreground="White" Background="Transparent" BorderBrush="Transparent"

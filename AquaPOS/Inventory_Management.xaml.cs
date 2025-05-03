@@ -58,8 +58,8 @@ namespace AquaPOS
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)
         {
-            User_Login loginWindow = new User_Login();
-            loginWindow.Show(); // Show the login window
+            User_Login user_Login = new User_Login();
+            user_Login.Show(); // Show the login window
             this.Hide(); // Close the current window
         }
 

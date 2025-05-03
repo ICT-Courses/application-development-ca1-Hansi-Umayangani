@@ -94,9 +94,9 @@ namespace AquaPOS
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            User_Login loginWindow = new User_Login(); // Create an instance of the login window
-            loginWindow.Show(); 
-            this.Hide(); 
+            User_Login user_Login = new User_Login();
+            user_Login.Show(); // Show the login window
+            this.Hide(); // Close the current window
         }
 
     }

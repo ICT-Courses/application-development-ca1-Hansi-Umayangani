@@ -5,36 +5,103 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AquaPOS"
         mc:Ignorable="d"
-        Title="Dashboard" Height="673" Width="1262" Background="#01132D" WindowStartupLocation="CenterScreen">
+        Icon="pack://application:,,,/resources/Images/App_Logo/AquaPOS_Logo_Icon.ico" 
+        Title="User Login" Height="720" Width="1280" ResizeMode="CanResize" WindowStartupLocation="CenterScreen">
+
+    <Window.Background>
+        <ImageBrush ImageSource="pack://application:,,,/resources/Images/Background_Images/Main_Background_Image.png"
+                Stretch="Fill"/>
+    </Window.Background>
+
+    <Window.Resources>
+        <!-- Rounded Button Style -->
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border 
+                    x:Name="border"
+                    Background="{TemplateBinding Background}" 
+                    BorderBrush="{TemplateBinding BorderBrush}" 
+                    BorderThickness="{TemplateBinding BorderThickness}" 
+                    CornerRadius="20"
+                    SnapsToDevicePixels="True">
+                            <ContentPresenter 
+                        HorizontalAlignment="Center" 
+                        VerticalAlignment="Center" 
+                        RecognizesAccessKey="True"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Rounded TextBox Style -->
+        <Style x:Key="RoundedTextBoxStyle" TargetType="Control">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Control">
+                        <Border CornerRadius="8" BorderBrush="#FF0807A0" BorderThickness="2.5" Background="White">
+                            <ScrollViewer Margin="5" x:Name="PART_ContentHost"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Window.Resources>
+
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="260"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
         <!-- Sidebar Panel -->
-        <Border Background="#003547" Width="320" HorizontalAlignment="Left">
+        <Border Background="#FF031C36" Width="260" HorizontalAlignment="Left">
             <StackPanel>
-                <!-- Logo/Image -->
-                <Image Source="pack://application:,,,/resources/icons/logo.png" 
-                       Width="291" Height="191" 
+
+                <!-- Logo -->
+                <Image Source="pack://application:,,,/resources/Images/App_Logo/AquaPOS_Logo.png"
+                       Width="243" Height="176" 
                        HorizontalAlignment="Center" 
-                       Margin="0,54,0,0"/>
+                       Margin="0,20,0,0"/>
 
                 <!-- Dashboard Button -->
-                <Button x:Name="DashboardButton" Content="Dashboard" Foreground="White" Background="Transparent" BorderBrush="White" 
-                        FontSize="14" Width="122" Height="35" Margin="0,26,0,0" 
-                        Click="DashboardButton_Click" HorizontalAlignment="Center"/>
+                <Button x:Name="DashboardButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
+                        FontSize="14" Width="240" Height="44" Margin="0,45,0,0" 
+                        Click="DashboardButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="35" Width="126">
+                        <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Dashboard_Button_Icon.png" Width="35" Height="37" Margin="10,0,10,0" RenderTransformOrigin="-0.035,0.484"/>
+                        <TextBlock Text="Dashboard" Foreground="White" Height="20"/>
+                    </StackPanel>
+                </Button>
 
                 <!-- Inventory Management Button -->
-                <Button x:Name="InventoryManagementButton" Content="Inventory Management" Foreground="White" Background="Transparent" BorderBrush="White" 
-                        FontSize="14" Width="206" Height="35" 
-                        Click="InventoryManagementButton_Click" Margin="0,40,0,0"/>
+                <Button x:Name="InventoryManagementButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
+                        FontSize="14" Width="240" Height="44" Margin="0,45,0,0" 
+                        Click="InventoryManagementButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="35" Width="211">
+                        <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Inventory_Management_Button_Icon.png" Width="35" Height="37" Margin="10,0,10,0" RenderTransformOrigin="-0.035,0.484"/>
+                        <TextBlock Text="Inventory Management" Foreground="White" Height="21" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
 
                 <!-- Sales Reports Button -->
-                <Button x:Name="SalesReportButton" Content="Sales Reports" Foreground="White" Background="Transparent" BorderBrush="White" 
-                FontSize="14" Width="140" Height="35" 
-                Click="SalesReportsButton_Click" Margin="0,40,0,0"/>
+                <Button x:Name="SalesReportsButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
+                        FontSize="14" Width="240" Height="44" Margin="0,45,0,0" 
+                        Click="SalesReportsButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Sales_Reports_Button_Icon.png" Width="35" Height="37" Margin="10,0,10,0" RenderTransformOrigin="-0.035,0.484"/>
+                        <TextBlock Text="Sales Reports" Foreground="White" Height="18"/>
+                    </StackPanel>
+                </Button>
 
                 <!-- Exit Button -->
-                <Button x:Name="ExitButton" Content="EXIT" Foreground="White" Background="#FF003547" BorderBrush="#FF003547" 
-                FontSize="14" Width="60" Height="35" 
-                Click="ExitButton_Click" Margin="0,35,0,0"/>
+                <Button x:Name="ExitButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
+                        FontSize="14" Width="60" Height="35" Click="ExitButton_Click" Margin="0,45,0,0" HorizontalAlignment="Center">
+                    <TextBlock Foreground="White" TextDecorations="Underline" TextAlignment="Center"><Run Text="EXIT"/></TextBlock>
+                </Button>
 
             </StackPanel>
         </Border>

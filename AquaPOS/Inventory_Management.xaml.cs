@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using PdfSharp.Pdf;
+using PdfSharp.Drawing;
+using System.Diagnostics;
+using System.IO;
 
 namespace AquaPOS
 {
@@ -101,11 +97,6 @@ namespace AquaPOS
                     StockDataGrid.Items.Refresh();
                 }
             }
-        }
-
-        private void txtProductID_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            // Optional live lookup or validation
         }
 
         private void RenumberProductIDs()
@@ -227,11 +218,151 @@ namespace AquaPOS
 
         private void PrintStock_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                PdfDocument document = new PdfDocument();
+                document.Info.Title = "Stock Report";
+                PdfPage page = document.AddPage();
+                XGraphics gfx = XGraphics.FromPdfPage(page);
 
+                // Fonts and styles
+                XFont titleFont = new XFont("Verdana", 20, XFontStyleEx.Bold);
+                XFont headerFont = new XFont("Verdana", 12, XFontStyleEx.Bold);
+                XFont regularFont = new XFont("Verdana", 11, XFontStyleEx.Regular);
+
+                // Page dimensions
+                XUnit pageWidth = page.Width;
+                XUnit pageHeight = page.Height;
+
+                // Margins and table settings
+                double leftMargin = 40;
+                int numColumns = 6;
+                double tableWidth = pageWidth.Point - 2 * leftMargin;
+                double columnWidth = tableWidth / numColumns;
+
+                // Starting Y position
+                double yPoint = 40;
+
+                // Draw title (centered)
+                gfx.DrawString(
+                    "Stock Report",
+                    titleFont,
+                    XBrushes.Black,
+                    new XRect(0, yPoint, pageWidth.Point, 30), // XRect width should use the actual point value
+                    XStringFormats.TopCenter
+                );
+
+                yPoint += 40; // Space below title
+
+                // Define headers
+                string[] headers = { "ID", "Category", "Product Name", "Price", "Qty", "Date Updated" };
+
+                // Draw table header
+                for (int i = 0; i < headers.Length; i++)
+                {
+                    gfx.DrawString(
+                        headers[i],
+                        headerFont,
+                        XBrushes.Black,
+                        new XRect(leftMargin + i * columnWidth, yPoint, columnWidth, 20),
+                        XStringFormats.TopCenter
+                    );
+                }
+
+                yPoint += 20;
+
+                // Draw underline below header
+                gfx.DrawLine(
+                    XPens.Black,
+                    new XUnitPt(leftMargin),
+                    new XUnitPt(yPoint),
+                    new XUnitPt(pageWidth.Point - leftMargin),
+                    new XUnitPt(yPoint)
+                );
+
+                yPoint += 20; // Gap before data starts
+
+                int pageNumber = 1;
+
+                foreach (var item in StockItems)
+                {
+                    int qtyVal = 0;
+                    bool isQtyNumber = int.TryParse(item.Quantity.ToString(), out qtyVal);
+                    XBrush brush = (isQtyNumber && qtyVal < 5) ? XBrushes.Red : XBrushes.Black;
+
+                    string priceText = double.TryParse(item.UnitPrice.ToString(), out double priceVal)
+                        ? priceVal.ToString("F2")
+                        : item.UnitPrice.ToString();
+
+                    string quantityText = item.Quantity.ToString();
+
+                    string dateText;
+                    if (DateTime.TryParse(item.DateUpdated?.ToString(), out DateTime dateVal))
+                    {
+                        dateText = dateVal.ToString("yyyy-MM-dd");
+                    }
+                    else
+                    {
+                        dateText = item.DateUpdated?.ToString();
+                    }
+
+                    // Prepare row data
+                    string[] dataItems = {
+                item.ProductID.ToString(),
+                item.Category?.ToString(),
+                item.ProductName?.ToString(),
+                priceText,
+                quantityText,
+                dateText
+            };
+
+                    // Draw each cell
+                    for (int i = 0; i < dataItems.Length; i++)
+                    {
+                        gfx.DrawString(
+                            dataItems[i],
+                            regularFont,
+                            (i == 4) ? brush : XBrushes.Black, // Qty column in red if low stock
+                            new XRect(leftMargin + i * columnWidth, yPoint, columnWidth, 15),
+                            XStringFormats.TopCenter
+                        );
+                    }
+
+                    yPoint += 15;
+
+                    // Line between rows
+                    gfx.DrawLine(
+                        XPens.LightGray,
+                        new XUnitPt(leftMargin),
+                        new XUnitPt(yPoint),
+                        new XUnitPt(pageWidth.Point - leftMargin),
+                        new XUnitPt(yPoint)
+                    );
+                }
+
+                // Footer: page number
+                gfx.DrawString(
+                    $"Page {pageNumber}",
+                    regularFont,
+                    XBrushes.Gray,
+                    new XRect(0, pageHeight.Point - 40, pageWidth.Point, 20),
+                    XStringFormats.TopCenter
+                );
+
+                // Save and open the document
+                string filename = "StockReport.pdf";
+                document.Save(filename);
+                Process.Start(new ProcessStartInfo(filename) { UseShellExecute = true });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error generating PDF: " + ex.Message);
+            }
         }
     }
 
-    public class StockItem
+
+        public class StockItem
     {
         public int ProductID { get; set; } // Auto-generated index
         public string Category { get; set; }

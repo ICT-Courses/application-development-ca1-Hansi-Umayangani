@@ -26,12 +26,16 @@ namespace AquaPOS
 
         private void DashboardButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Dashboard dashboard = new Dashboard();
+            dashboard.Show();
+            this.Close();
         }
 
         private void InventoryManagementButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Inventory_Management inventory_Management = new Inventory_Management();
+            inventory_Management.Show();
+            this.Close();
         }
 
         private void SalesReportsButton_Click(object sender, RoutedEventArgs e)

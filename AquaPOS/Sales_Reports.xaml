@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AquaPOS"
         mc:Ignorable="d"
-            Icon="pack://application:,,,/resources/Images/App_Logo/AquaPOS_Logo_Icon_New.ico" 
-    Title="User Login" Height="720" Width="1280" ResizeMode="CanResize" WindowStartupLocation="CenterScreen">
+        Icon="pack://application:,,,/resources/Images/App_Logo/AquaPOS_Logo_Icon_New.ico" 
+        Title="Sales Reports" Height="720" Width="1280" ResizeMode="CanResize" WindowStartupLocation="CenterScreen">
 
     <Window.Background>
         <ImageBrush ImageSource="pack://application:,,,/resources/Images/Background_Images/Main_Background_Image.png"

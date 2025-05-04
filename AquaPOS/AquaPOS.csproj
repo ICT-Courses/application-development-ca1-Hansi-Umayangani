@@ -225,6 +225,9 @@
     <Resource Include="resources\Images\Button_Icons\Sales_Reports_Button_Icon.png" />
     <Resource Include="resources\Images\Button_Icons\Search_Icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\Images\App_Logo\AquaPOS_Logo_Icon_New.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

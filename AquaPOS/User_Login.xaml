@@ -5,8 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AquaPOS"
         mc:Ignorable="d"
-        Title="User Login" Height="720" Width="1280" ResizeMode="CanResize" WindowStartupLocation="CenterScreen" Background="#01132D">
+        Icon="pack://application:,,,/resources/Images/App_Logo/AquaPOS_Logo_Icon_New.ico"
+        Title="User Login" Height="720" Width="1280" ResizeMode="CanResize" WindowStartupLocation="CenterScreen">
 
+    <Window.Background>
+        <ImageBrush ImageSource="pack://application:,,,/resources/Images/Background_Images/Main_Background_Image.png"
+         Stretch="Fill"/>
+    </Window.Background>
+    
     <Window.Resources>
         <!-- Rounded TextBox and PasswordBox Style -->
         <Style x:Key="RoundedTextBoxStyle" TargetType="Control">
@@ -37,42 +43,42 @@
 
     <Grid Height="720">
         <!-- Background Image -->
-        <Image Source="pack://application:,,,/resources/icons/logo.png" Height="232" 
-           HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,54,0,0" Stretch="Fill" Width="392"/>
+        <Image Source="pack://application:,,,/resources/Images/App_Logo/AquaPOS_Logo.png" 
+               Height="232" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,40,0,0" Stretch="Fill" Width="398"/>
 
         <!-- Username Label & UsernameTextBox -->
         <Label Content="Username" FontSize="16" FontWeight="Bold" Foreground="White" 
-           HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,301,0,0"/>
-        <TextBox x:Name="UsernameTextBox" Width="300" Height="35" FontSize="14"
-             Style="{StaticResource RoundedTextBoxStyle}"
-             HorizontalAlignment="Left" VerticalAlignment="Top" Margin="488,332,0,0"/>
+               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,299,0,0" Width="86"/>
+        <TextBox x:Name="UsernameTextBox" Width="306" Height="36" FontSize="14"
+                 Style="{StaticResource RoundedTextBoxStyle}" Margin="0,329,0,0" HorizontalAlignment="Center" VerticalAlignment="Top" 
+                 TextChanged="UsernameTextBox_TextChanged"/>
 
         <!-- Password Label & PasswordBox -->
-        <Label Content="Password" FontSize="16" FontWeight="Bold" Foreground="White" 
-           HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,390,0,0"/>
-        <PasswordBox x:Name="PasswordBox" Width="300" Height="35" FontSize="14"
+        <Label Content="Password" FontSize="16" FontWeight="Bold" Foreground="White"
+               HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,387,0,0" Width="82"/>
+        <PasswordBox x:Name="PasswordBox" Width="306" Height="36" FontSize="14"
+                     Style="{StaticResource RoundedTextBoxStyle}"
+                     HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,416,0,0"/>
+        <TextBox x:Name="PasswordTextBox" Width="306" Height="36" FontSize="14"
                  Style="{StaticResource RoundedTextBoxStyle}"
-                 HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,421,0,0"/>
-        <TextBox x:Name="PasswordTextBox" Width="300" Height="30" FontSize="14"
-             Style="{StaticResource RoundedTextBoxStyle}"
-             HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,421,0,0" 
-             Visibility="Collapsed"/>
+                 HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,416,0,0" 
+                 Visibility="Collapsed"/>
 
         <!-- Show Password Checkbox -->
         <CheckBox x:Name="ShowPasswordCheckbox" Content="Show Password" Foreground="White" FontSize="12"
-              HorizontalAlignment="Left" VerticalAlignment="Top" Margin="686,461,0,0" 
-              Checked="ShowPasswordCheckbox_Checked" Unchecked="ShowPasswordCheckbox_Unchecked"/>
+                  HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,457,488,0" 
+                  Checked="ShowPasswordCheckbox_Checked" Unchecked="ShowPasswordCheckbox_Unchecked" Width="104"/>
 
         <!-- Login Button -->
-        <Button x:Name="LoginButton" Content="LOGIN" Width="84" Height="45" FontSize="14" FontWeight="Bold" 
-            Background="Aquamarine" Foreground="#FF020203" BorderThickness="0"
-            Style="{StaticResource RoundedButtonStyle}"
-            HorizontalAlignment="Left" VerticalAlignment="Top" Margin="596,501,0,0" Click="LoginButton_Click"/>
+        <Button x:Name="LoginButton" Content="LOGIN" Width="86" Height="45" FontSize="14" FontWeight="Bold" 
+                Background="Aquamarine" Foreground="#FF020203" BorderThickness="0"
+                Style="{StaticResource RoundedButtonStyle}"
+                HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,495,0,0" Click="LoginButton_Click"/>
 
         <!-- Create Account Button -->
-        <Button x:Name="CreateAccountButton" Content="Create Account" Width="162" Height="47" FontSize="16" FontWeight="Bold" 
-            Background="Aqua" Foreground="Black" BorderThickness="0"
-            Style="{StaticResource RoundedButtonStyle}"
-            HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,583,0,0" Click="CreateAccountButton_Click" BorderBrush="#FF0F35C8"/>
+        <Button x:Name="CreateAccountButton" Content="Create Account" Width="157" Height="45" FontSize="16" FontWeight="Bold" 
+                Background="#FF00CCEE" Foreground="Black" BorderThickness="0"
+                Style="{StaticResource RoundedButtonStyle}"
+                HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,584,0,0" Click="CreateAccountButton_Click" BorderBrush="#FF0F35C8"/>
     </Grid>
 </Window>

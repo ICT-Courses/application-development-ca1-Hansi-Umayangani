@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace AquaPOS
 {
     /// <summary>
-    /// Interaction logic for Dashboard.xaml
+    /// Interaction logic for Sales_Reports.xaml
     /// </summary>
-    public partial class Dashboard : Window
+    public partial class Sales_Reports : Window
     {
-        public Dashboard()
+        public Sales_Reports()
         {
             InitializeComponent();
         }

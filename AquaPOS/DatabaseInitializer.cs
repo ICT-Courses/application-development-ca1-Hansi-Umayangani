@@ -2,26 +2,28 @@
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AquaPOS
 {
     internal class DatabaseInitializer
     {
-        static string dbpath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "Databases", "AquaPOS-Database.db");
-        public static string ConnectionString = $"Data Source={dbpath};Version=3;";
-
+        static string dbpath = Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "Databases", "AquaPOS-Database.db");
+        public static string ConnectionString { get; } = $"Data Source={dbpath};Version=3;";
 
         public static void InitializeDatabase()
         {
             try
             {
+                if (!File.Exists(dbpath))
+                {
+                    SQLiteConnection.CreateFile(dbpath);
+                }
+
                 using (var conn = new SQLiteConnection(ConnectionString))
                 {
                     conn.Open(); // Open Connection
 
+                    //Create User Table
                     string createTableQuery = @"
                         CREATE TABLE IF NOT EXISTS Users (
                             ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,7 +32,7 @@ namespace AquaPOS
                             UserRole TEXT CHECK(UserRole IN ('Admin', 'Cashier')) NOT NULL
                         );";
 
-                    // StockItem table
+                    //Create StockItems Table
                     string createStockTableQuery = @"
                         CREATE TABLE IF NOT EXISTS StockItems (
                             ProductID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -41,12 +43,29 @@ namespace AquaPOS
                             DateUpdated TEXT NOT NULL
                         );";
 
+                    // Create Sales table
+                    string createSalesTableQuery = @"
+                        CREATE TABLE IF NOT EXISTS Sales (
+                            SaleID INTEGER PRIMARY KEY AUTOINCREMENT,
+                            ProductID INTEGER NOT NULL,
+                            Quantity INTEGER NOT NULL,
+                            TotalPrice REAL NOT NULL,
+                            SaleDate TEXT NOT NULL,
+                            FOREIGN KEY(ProductID) REFERENCES StockItems(ProductID)
+                        );";
+
+
                     using (var cmd = new SQLiteCommand(createTableQuery, conn))
                     {
                         cmd.ExecuteNonQuery();
                     }
 
                     using (var cmd = new SQLiteCommand(createStockTableQuery, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    using (var cmd = new SQLiteCommand(createSalesTableQuery, conn))
                     {
                         cmd.ExecuteNonQuery();
                     }
@@ -58,5 +77,202 @@ namespace AquaPOS
             }
         }
 
+        // STOCK METHODS --------------------------------------
+
+        public static List<StockItem> GetStockItems()
+        {
+            List<StockItem> stockItems = new List<StockItem>();
+
+            try
+            {
+                using (var conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM StockItems;";
+                    using (var cmd = new SQLiteCommand(query, conn))
+                    {
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                stockItems.Add(new StockItem
+                                {
+                                    ProductID = reader.GetInt32(0),
+                                    Category = reader.GetString(1),
+                                    ProductName = reader.GetString(2),
+                                    UnitPrice = reader.GetDouble(3),
+                                    Quantity = reader.GetInt32(4),
+                                    DateUpdated = reader.GetString(5)
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return stockItems;
+        }
+
+        public static StockItem GetStockItemByProductName(string productName)
+        {
+            StockItem item = null;
+
+            try
+            {
+                using (var conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT * FROM StockItems WHERE ProductName = @ProductName;";
+                    using (var cmd = new SQLiteCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ProductName", productName);
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                item = new StockItem
+                                {
+                                    ProductID = reader.GetInt32(0),
+                                    Category = reader.GetString(1),
+                                    ProductName = reader.GetString(2),
+                                    UnitPrice = reader.GetDouble(3),
+                                    Quantity = reader.GetInt32(4),
+                                    DateUpdated = reader.GetString(5)
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+            return item;
+        }
+
+        public static void AddStockItem(StockItem item)
+        {
+            try
+            {
+                using (var conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+                    string query = "INSERT INTO StockItems (Category, ProductName, UnitPrice, Quantity, DateUpdated) VALUES (@Category, @ProductName, @UnitPrice, @Quantity, @DateUpdated)";
+                    using (var cmd = new SQLiteCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Category", item.Category);
+                        cmd.Parameters.AddWithValue("@ProductName", item.ProductName);
+                        cmd.Parameters.AddWithValue("@UnitPrice", item.UnitPrice);
+                        cmd.Parameters.AddWithValue("@Quantity", item.Quantity);
+                        cmd.Parameters.AddWithValue("@DateUpdated", item.DateUpdated);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        public static void UpdateStockItem(StockItem item)
+        {
+            try
+            {
+                using (var conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+                    string query = "UPDATE StockItems SET Category = @Category, ProductName = @ProductName, UnitPrice = @UnitPrice, Quantity = @Quantity, DateUpdated = @DateUpdated WHERE ProductID = @ProductID";
+                    using (var cmd = new SQLiteCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Category", item.Category);
+                        cmd.Parameters.AddWithValue("@ProductName", item.ProductName);
+                        cmd.Parameters.AddWithValue("@UnitPrice", item.UnitPrice);
+                        cmd.Parameters.AddWithValue("@Quantity", item.Quantity);
+                        cmd.Parameters.AddWithValue("@DateUpdated", item.DateUpdated);
+                        cmd.Parameters.AddWithValue("@ProductID", item.ProductID);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        public static void DeleteStockItem(int productID)
+        {
+            try
+            {
+                using (var conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+                    string query = "DELETE FROM StockItems WHERE ProductID = @ProductID";
+                    using (var cmd = new SQLiteCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ProductID", productID);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+        }
+
+        // SALES METHODS --------------------------------------
+
+        public static void RecordSale(Sale sale)
+        {
+            try
+            {
+                using (var conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+
+                    using (var transaction = conn.BeginTransaction())
+                    {
+                        // Insert the sale record
+                        string insertQuery = "INSERT INTO Sales (ProductID, Quantity, TotalPrice, SaleDate) VALUES (@ProductID, @Quantity, @TotalPrice, @SaleDate)";
+                        using (var insertCmd = new SQLiteCommand(insertQuery, conn))
+                        {
+                            insertCmd.Parameters.AddWithValue("@ProductID", sale.ProductID);
+                            insertCmd.Parameters.AddWithValue("@Quantity", sale.Quantity);
+                            insertCmd.Parameters.AddWithValue("@TotalPrice", sale.TotalPrice);
+                            insertCmd.Parameters.AddWithValue("@SaleDate", sale.SaleDate);
+                            insertCmd.ExecuteNonQuery();
+                        }
+
+                        // Update the StockItems quantity (decrease by the quantity sold)
+                        string updateStockQuery = "UPDATE StockItems SET Quantity = Quantity - @Quantity WHERE ProductID = @ProductID";
+                        using (var updateCmd = new SQLiteCommand(updateStockQuery, conn))
+                        {
+                            updateCmd.Parameters.AddWithValue("@Quantity", sale.Quantity);
+                            updateCmd.Parameters.AddWithValue("@ProductID", sale.ProductID);
+                            updateCmd.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error recording sale: {ex.Message}");
+            }
+        }
+
     }
+
+    
+
 }
+

@@ -45,5 +45,45 @@ namespace AquaPOS
             user_Login.Show(); // Show the login window
             this.Hide(); // Close the current window
         }
+
+        private void SearchProduct_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void txtSearchProduct_GotFocus(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void txtSearchProduct_LostFocus(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void txtSearchProduct_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            
+        }
+
+        private void txtProductNameResult_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void txtCategoryResult_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void txtUnitPriceResult_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void txtAvailableQtyResult_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }

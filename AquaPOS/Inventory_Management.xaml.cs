@@ -2,18 +2,14 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Media;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using System.Diagnostics;
-using System.IO;
+using System.Data.SQLite;
 
 namespace AquaPOS
 {
-    /// <summary>
-    /// Interaction logic for Inventory_Management.xaml
-    /// </summary>
     public partial class Inventory_Management : Window
     {
         public ObservableCollection<StockItem> StockItems { get; set; }
@@ -28,8 +24,38 @@ namespace AquaPOS
             };
 
             StockDataGrid.ItemsSource = StockItems;
+            LoadStockItemsFromDatabase();
 
         }
+
+        private void LoadStockItemsFromDatabase()
+        {
+            StockItems.Clear();
+            using (var conn = new SQLiteConnection(DatabaseInitializer.ConnectionString))
+            {
+                conn.Open();
+                string query = "SELECT * FROM StockItems;";
+                using (var cmd = new SQLiteCommand(query, conn))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            StockItems.Add(new StockItem
+                            {
+                                ProductID = reader.GetInt32(reader.GetOrdinal("ProductID")),
+                                Category = reader["Category"].ToString(),
+                                ProductName = reader["ProductName"].ToString(),
+                                UnitPrice = Convert.ToDouble(reader["UnitPrice"]),
+                                Quantity = Convert.ToInt32(reader["Quantity"]),
+                                DateUpdated = reader["DateUpdated"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
 
         private void DashboardButton_Click(object sender, RoutedEventArgs e)
         {
@@ -188,6 +214,8 @@ namespace AquaPOS
                     existingItem.UnitPrice = double.TryParse(txtUnitPrice.Text, out var price) ? price : 0;
                     existingItem.Quantity = int.TryParse(txtQuantity.Text, out var qty) ? qty : 0;
                     existingItem.DateUpdated = dpDateUpdated.Text;
+
+                    DatabaseInitializer.UpdateStockItem(existingItem);
                     StockDataGrid.Items.Refresh();
                 }
                 else
@@ -195,7 +223,7 @@ namespace AquaPOS
                     // Add new item
                     int nextProductID = StockItems.Count + 1;
 
-                    StockItems.Add(new StockItem
+                    var newItem = new StockItem
                     {
                         ProductID = nextProductID,
                         Category = txtCategory.Text,
@@ -203,8 +231,10 @@ namespace AquaPOS
                         UnitPrice = double.TryParse(txtUnitPrice.Text, out var price) ? price : 0,
                         Quantity = int.TryParse(txtQuantity.Text, out var qty) ? qty : 0,
                         DateUpdated = DateTime.Now.ToString("yyyy-MM-dd")
-                    });
+                    };
 
+                    DatabaseInitializer.AddStockItem(newItem);
+                    StockItems.Add(newItem);
                     StockDataGrid.Items.Refresh();
                 }
 
@@ -255,7 +285,7 @@ namespace AquaPOS
                 yPoint += 40; // Space below title
 
                 // Define headers
-                string[] headers = { "ID", "Category", "Product Name", "Price", "Qty", "Date Updated" };
+                string[] headers = { "ID", "Category", "Product Name", "Price (Rs.)", "Qty", "Date Updated" };
 
                 // Draw table header
                 for (int i = 0; i < headers.Length; i++)

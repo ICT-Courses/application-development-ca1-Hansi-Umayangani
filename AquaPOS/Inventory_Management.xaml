@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:AquaPOS"
         mc:Ignorable="d"
         Icon="pack://application:,,,/resources/Images/App_Logo/AquaPOS_Logo_Icon_New.ico"
-        Title="User Login" Height="720" Width="1280" ResizeMode="CanResize" WindowStartupLocation="CenterScreen">
+        Title="Inventory_Management" Height="720" Width="1280" ResizeMode="CanResize" WindowStartupLocation="CenterScreen">
 
     <Window.Background>
         <ImageBrush ImageSource="pack://application:,,,/resources/Images/Background_Images/Main_Background_Image.png"
@@ -183,9 +183,9 @@
                                             ElementStyle="{StaticResource CenterTextStyle}"/>
                         <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" Width="160" 
                                             ElementStyle="{StaticResource CenterTextStyle}"/>
-                        <DataGridTextColumn Header="Unit Price" Binding="{Binding UnitPrice}" Width="100" 
+                        <DataGridTextColumn Header="Unit Price (Rs.)" Binding="{Binding UnitPrice}" Width="120" 
                                             ElementStyle="{StaticResource CenterTextStyle}"/>
-                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="100" 
+                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="80" 
                                             ElementStyle="{StaticResource CenterTextStyle}"/>
                         <DataGridTextColumn Header="Last Updated On" Binding="{Binding DateUpdated}" Width="140"
                                             ElementStyle="{StaticResource CenterTextStyle}"/>

@@ -308,23 +308,23 @@ namespace AquaPOS
 
                     // Prepare row data
                     string[] dataItems = {
-                item.ProductID.ToString(),
-                item.Category?.ToString(),
-                item.ProductName?.ToString(),
-                priceText,
-                quantityText,
-                dateText
-            };
+                        item.ProductID.ToString(),
+                        item.Category?.ToString(),
+                        item.ProductName?.ToString(),
+                        priceText,
+                        quantityText,
+                        dateText
+                    };
 
                     // Draw each cell
                     for (int i = 0; i < dataItems.Length; i++)
                     {
-                        gfx.DrawString(
-                            dataItems[i],
-                            regularFont,
-                            (i == 4) ? brush : XBrushes.Black, // Qty column in red if low stock
-                            new XRect(leftMargin + i * columnWidth, yPoint, columnWidth, 15),
-                            XStringFormats.TopCenter
+                    gfx.DrawString(
+                        dataItems[i],
+                        regularFont,
+                        (i == 4) ? brush : XBrushes.Black, // Qty column in red if low stock
+                        new XRect(leftMargin + i * columnWidth, yPoint, columnWidth, 15),
+                        XStringFormats.TopCenter
                         );
                     }
 
@@ -337,23 +337,24 @@ namespace AquaPOS
                         new XUnitPt(yPoint),
                         new XUnitPt(pageWidth.Point - leftMargin),
                         new XUnitPt(yPoint)
-                    );
+                        );
                 }
 
-                // Footer: page number
-                gfx.DrawString(
-                    $"Page {pageNumber}",
-                    regularFont,
-                    XBrushes.Gray,
-                    new XRect(0, pageHeight.Point - 40, pageWidth.Point, 20),
-                    XStringFormats.TopCenter
-                );
+                    // Footer: page number
+                    gfx.DrawString(
+                        $"Page {pageNumber}",
+                        regularFont,
+                        XBrushes.Gray,
+                        new XRect(0, pageHeight.Point - 40, pageWidth.Point, 20),
+                        XStringFormats.TopCenter
+                        );
 
-                // Save and open the document
-                string filename = "StockReport.pdf";
-                document.Save(filename);
-                Process.Start(new ProcessStartInfo(filename) { UseShellExecute = true });
-            }
+                    // Save and open the document
+                    string filename = "StockReport.pdf";
+                    document.Save(filename);
+                    Process.Start(new ProcessStartInfo(filename) { UseShellExecute = true });
+                    }
+
             catch (Exception ex)
             {
                 MessageBox.Show("Error generating PDF: " + ex.Message);

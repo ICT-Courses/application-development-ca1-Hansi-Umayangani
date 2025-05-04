@@ -19,17 +19,16 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border 
-                x:Name="border"
-                Background="{TemplateBinding Background}" 
-                BorderBrush="{TemplateBinding BorderBrush}" 
-                BorderThickness="{TemplateBinding BorderThickness}" 
-                CornerRadius="20"
-                SnapsToDevicePixels="True">
+                        <Border x:Name="border"
+                                Background="{TemplateBinding Background}" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}" 
+                                CornerRadius="20"
+                                SnapsToDevicePixels="True">
                             <ContentPresenter 
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center" 
-                    RecognizesAccessKey="True"/>
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center" 
+                                RecognizesAccessKey="True"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
@@ -67,32 +66,66 @@
                    HorizontalAlignment="Center" 
                    Margin="0,20,0,0"/>
 
-                <!-- ProductID Label & TextBox -->
-                <Label Content="Product ID" Foreground="White" FontSize="16" FontWeight="Bold" 
-                   HorizontalAlignment="Center" Margin="0,20,0,0"/>
-                <TextBox x:Name="ProductIDTextBox" Width="170" Height="35" FontSize="14"
-             Style="{StaticResource RoundedTextBoxStyle}" BorderBrush="#FF0807A0" TextChanged="ProductIDTextBox_TextChanged"/>
+                <!-- New Stock Search Panel of Side Bar -->
+                <Border Background="#FFCAD8E5" BorderBrush="#FF0807A0" BorderThickness="2.5" Width="220" CornerRadius="10" HorizontalAlignment="Left" Margin="20,20,20,0" Height="468">
+                    <WrapPanel Margin="5,5,5,5">
 
-                <!-- Quantity Label & TextBox -->
-                <Label Content="Quantity" Foreground="White" FontSize="16" FontWeight="Bold" 
-                   HorizontalAlignment="Center" Margin="0,20,0,-2" Height="30"/>
-                <TextBox Name="QuantityTextBox" Width="170" Height="35" FontSize="14"
-             Style="{StaticResource RoundedTextBoxStyle}"
-             HorizontalAlignment="Center" TextChanged="QuantityTextBox_TextChanged" BorderBrush="#FF0807A0"/>
+                        <!-- Search Title -->
+                        <TextBlock Text="PRODUCT DETAILS" FontSize="16" FontWeight="Bold" Foreground="Black" Margin="20,20,20,20" TextAlignment="Left"/>
 
-                <!-- Add To Cart Button -->
-                <Button x:Name="AddToCartButton" Content="Add to Cart" Width="130" Height="30" FontSize="14" FontWeight="Bold" 
-            Background="Aquamarine" Foreground="#FF020203" BorderThickness="0"
-            Style="{StaticResource RoundedButtonStyle}"
-            HorizontalAlignment="Center" Margin="0,25,0,0"  Click="AddToCartButton_Click"/>
+                        <StackPanel Orientation="Horizontal" Margin="16,0,0,25">
+                            <TextBox x:Name="txtSearchProduct" 
+                                Text="Search Product Details"
+                                Width="142" Height="32"
+                                BorderBrush="#FF0807A0" BorderThickness="2.5"
+                                HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                Foreground="Gray"
+                                GotFocus="txtSearchProduct_GotFocus"
+                                LostFocus="txtSearchProduct_LostFocus" 
+                                TextChanged="txtSearchProduct_TextChanged"/>
 
-                <!-- Exit Button -->
-                <Button x:Name="ExitButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
-                       FontSize="14" Width="60" Height="35" Click="ExitButton_Click" Margin="0,45,0,0" HorizontalAlignment="Center">
-                    <TextBlock Foreground="White" TextDecorations="Underline" TextAlignment="Center"><Run Text="EXIT"/></TextBlock>
-                </Button>
+                            <Button Width="32" Height="32" Margin="2,0,0,0" BorderBrush="#FF0807A0" BorderThickness="2.5" Click="SearchProduct_Click">
+                                <Image Source="/Resources/Images/Button_Icons/Search_Icon.png" Stretch="Uniform" Height="20" Width="20" />
+                            </Button>
+                        </StackPanel>
+
+                        <!-- Result Fields -->
+                        <StackPanel Width="200" Height="300" Margin="5,15,5,5">
+
+                            <!-- Product Name -->
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock Text="Product Name" FontSize="14" Foreground="Black" Height="24" Width="180"/>
+                                <TextBox x:Name="txtProductNameResult" Width="180" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
+                                        Style="{StaticResource RoundedTextBoxStyle}" TextChanged="txtProductNameResult_TextChanged"/>
+                            </StackPanel>
+
+                            <!-- Category -->
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock Text="Category" FontSize="14" Foreground="Black" Height="24" Width="180"/>
+                                <TextBox x:Name="txtCategoryResult" Width="180" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
+                                         Style="{StaticResource RoundedTextBoxStyle}" TextChanged="txtCategoryResult_TextChanged"/>
+                            </StackPanel>
+
+                            <!-- Unit Price -->
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock Text="Unit Price" FontSize="14" Foreground="Black" Height="22" Width="180"/>
+                                <TextBox x:Name="txtUnitPriceResult" Width="180" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
+                                         Style="{StaticResource RoundedTextBoxStyle}" TextChanged="txtUnitPriceResult_TextChanged"/>
+                            </StackPanel>
+
+                            <!-- Available Quantity -->
+                            <StackPanel Margin="0,0,0,20">
+                                <TextBlock Text="Available Quantity" FontSize="14" Foreground="Black" Height="22" Width="180"/>
+                                <TextBox x:Name="txtAvailableQtyResult" Width="180" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
+                                         Style="{StaticResource RoundedTextBoxStyle}" TextChanged="txtAvailableQtyResult_TextChanged"/>
+                            </StackPanel>
+
+                        </StackPanel>
+                    </WrapPanel>
+                </Border>
+
             </StackPanel>
         </Border>
-    </Grid>
 
+    </Grid>
 </Window>

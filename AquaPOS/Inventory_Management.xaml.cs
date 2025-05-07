@@ -256,9 +256,9 @@ namespace AquaPOS
                 XGraphics gfx = XGraphics.FromPdfPage(page);
 
                 // Fonts and styles
-                XFont titleFont = new XFont("Verdana", 20, XFontStyleEx.Bold);
-                XFont headerFont = new XFont("Verdana", 12, XFontStyleEx.Bold);
-                XFont regularFont = new XFont("Verdana", 11, XFontStyleEx.Regular);
+                XFont titleFont = new XFont("Times New Roman", 16, XFontStyleEx.Bold);
+                XFont headerFont = new XFont("Times New Roman", 12, XFontStyleEx.Bold);
+                XFont regularFont = new XFont("Times New Roman", 10, XFontStyleEx.Regular);
 
                 // Page dimensions
                 XUnit pageWidth = page.Width;
@@ -285,7 +285,7 @@ namespace AquaPOS
                 yPoint += 40; // Space below title
 
                 // Define headers
-                string[] headers = { "ID", "Category", "Product Name", "Price (Rs.)", "Qty", "Date Updated" };
+                string[] headers = { "ID", "Category", "Product Name", "Price (Rs.)", "Qantity", "Date Updated" };
 
                 // Draw table header
                 for (int i = 0; i < headers.Length; i++)

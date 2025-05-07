@@ -54,6 +54,17 @@ namespace AquaPOS
                             FOREIGN KEY(ProductID) REFERENCES StockItems(ProductID)
                         );";
 
+                    // Create Products table
+                    string createProductsTableQuery = @"
+                        CREATE TABLE IF NOT EXISTS Products (
+                            ProductID INTEGER PRIMARY KEY AUTOINCREMENT,
+                            ProductName TEXT NOT NULL,
+                            UnitPrice REAL NOT NULL,
+                            Quantity INTEGER NOT NULL,
+                            Category TEXT
+                        );";
+
+
 
                     using (var cmd = new SQLiteCommand(createTableQuery, conn))
                     {
@@ -66,6 +77,11 @@ namespace AquaPOS
                     }
 
                     using (var cmd = new SQLiteCommand(createSalesTableQuery, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    using (var cmd = new SQLiteCommand(createProductsTableQuery, conn))
                     {
                         cmd.ExecuteNonQuery();
                     }

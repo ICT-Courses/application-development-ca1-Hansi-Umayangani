@@ -81,7 +81,7 @@
                 <!-- Inventory Management Button -->
                 <Button x:Name="InventoryManagementButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
                         FontSize="14" Width="240" Height="44" Margin="0,45,0,0" 
-                        Click="InventoryManagementButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center">   
+                        Click="InventoryManagementButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="35" Width="211">
                         <Image Source="pack://application:,,,/resources/Images/Button_Icons/Inventory_Management_Button_Icon.png" 
                                Width="35" Height="37" Margin="10,0,10,0" RenderTransformOrigin="-0.035,0.484"/>
@@ -145,7 +145,7 @@
                           CanUserAddRows="False" 
                           IsReadOnly="True" 
                           ItemsSource="{Binding Stocks}" 
-                          VerticalScrollBarVisibility="Visible">
+                          VerticalScrollBarVisibility="Visible" Margin="5">
 
                     <DataGrid.Resources>
                         <Style TargetType="{x:Type DataGridCell}">
@@ -227,26 +227,30 @@
             <StackPanel Grid.Column="1" Margin="0,20,0,20" Orientation="Vertical" HorizontalAlignment="Left" Width="191">
 
                 <!-- Search Product -->
-                <StackPanel Margin="10">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox x:Name="txtSearchProduct" 
-                                 Text="Search Product..." 
-                                 Width="124" Height="32" 
-                                 BorderBrush="#FF0807A0" BorderThickness="2.5" 
-                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                                 Foreground="Gray" 
-                                 GotFocus="txtSearchProduct_GotFocus" 
-                                 LostFocus="txtSearchProduct_LostFocus" TextChanged="txtSearchProduct_TextChanged"/>
-                        <Button Width="40" Height="32" Margin="5,0,0,0" BorderBrush="#FF0807A0" BorderThickness="2.5" Click="SearchProduct_Click">
+                <StackPanel Margin="10" Height="32">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                        <ComboBox x:Name="cmbSearchProduct"
+                                  Width="138" Height="32"
+                                  IsEditable="True"
+                                  StaysOpenOnEdit="True"
+                                  BorderBrush="#FF73AEFF" BorderThickness="2.5"
+                                  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                  Loaded="CmbSearchProduct_Loaded"
+                                  IsTextSearchEnabled="False"
+                                  PreviewTextInput="CmbSearchProduct_PreviewTextInput"
+                                  SelectionChanged="CmbSearchProduct_SelectionChanged"
+                                  Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"/>
+                        <Button Width="35" Height="34" Margin="2,0,0,0" BorderBrush="#FF0807A0" BorderThickness="1.5" Click="SearchProduct_Click">
                             <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Search_Icon.png" Stretch="Uniform" Height="20" Width="20" />
                         </Button>
                     </StackPanel>
+
                 </StackPanel>
 
                 <TextBlock Text="UPDATE INVENTORY" Foreground="#FFC8BEBE" FontSize="16" Margin="0,30,0,0" Width="168" Height="25" FontWeight="Bold"/>
 
                 <WrapPanel Margin="0,5,0,0"  Height="520">
-                    
+
                     <!-- Category -->
                     <StackPanel Margin="10">
                         <TextBlock Text="Category" FontSize="14" Foreground="#FFA2A2C8" Height="24"/>
@@ -278,7 +282,7 @@
                     <!-- Date Updated -->
                     <StackPanel Margin="10">
                         <TextBlock Text="Last Updated On" FontSize="14" Foreground="#FFA2A2C8" Height="24"/>
-                        <DatePicker x:Name="dpDateUpdated" Width="168" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"/>
+                        <DatePicker x:Name="dpDateUpdated" Width="168" Height="26" BorderBrush="#FF0807A0" BorderThickness="1.5"/>
                     </StackPanel>
 
 
@@ -293,10 +297,10 @@
                         <Button Content="PRINT" Style="{StaticResource RoundedButtonStyle}" Width="120" Height="36" 
                                 FontSize="14" Foreground="Black" Background="#FF9DFF59" BorderBrush="#FF15A90E" BorderThickness="2.5" Margin="10" Click="PrintStock_Click"/>
                     </WrapPanel>
-                    
+
                 </WrapPanel>
             </StackPanel>
-            
+
         </Grid>
     </Grid>
 </Window>

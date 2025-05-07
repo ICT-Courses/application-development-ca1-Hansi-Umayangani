@@ -7,6 +7,9 @@ using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using System.Diagnostics;
 using System.Data.SQLite;
+using System.Windows.Input;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AquaPOS
 {
@@ -25,7 +28,8 @@ namespace AquaPOS
 
             StockDataGrid.ItemsSource = StockItems;
             LoadStockItemsFromDatabase();
-
+            LoadStockItems();
+            PopulateProductComboBox();
         }
 
         private void LoadStockItemsFromDatabase()
@@ -53,6 +57,32 @@ namespace AquaPOS
                         }
                     }
                 }
+            }
+        }
+
+        private void PopulateProductComboBox()
+        {
+            var productNames = StockItems.Select(item => item.ProductName).ToList();
+            cmbSearchProduct.ItemsSource = productNames;
+        }
+
+
+        private void LoadStockItems()
+        {
+            using (SQLiteConnection conn = new SQLiteConnection(DatabaseInitializer.ConnectionString))
+            {
+                conn.Open();
+                string query = "SELECT ProductName FROM Products";
+                SQLiteCommand cmd = new SQLiteCommand(query, conn);
+                SQLiteDataReader reader = cmd.ExecuteReader();
+
+                List<string> products = new List<string>();
+                while (reader.Read())
+                {
+                    products.Add(reader["ProductName"].ToString());
+                }
+
+                cmbSearchProduct.ItemsSource = products;
             }
         }
 
@@ -99,23 +129,22 @@ namespace AquaPOS
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
-            var selectedItem = (sender as Button).DataContext as StockItem;
-            if (selectedItem != null)
+            if (sender is Button button && button.DataContext is StockItem itemToEdit)
             {
-                txtCategory.Text = selectedItem.Category;
-                txtProductName.Text = selectedItem.ProductName;
-                txtUnitPrice.Text = selectedItem.UnitPrice.ToString();
-                txtQuantity.Text = selectedItem.Quantity.ToString();
-                dpDateUpdated.Text = selectedItem.DateUpdated;
+                txtCategory.Text = itemToEdit.Category;
+                txtProductName.Text = itemToEdit.ProductName;
+                txtUnitPrice.Text = itemToEdit.UnitPrice.ToString();
+                txtQuantity.Text = itemToEdit.Quantity.ToString();
+                dpDateUpdated.Text = itemToEdit.DateUpdated;
             }
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             var selectedItem = (sender as Button).DataContext as StockItem;
-            if (selectedItem != null)
+            if (sender is Button button && button.DataContext is StockItem itemToDelete)
             {
-                var result = MessageBox.Show($"Are you sure you want to delete product '{selectedItem.ProductName}'?", "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                var result = MessageBox.Show($"Are you sure you want to delete product '{itemToDelete.ProductName}'?", "Confirm Deletion", MessageBoxButton.YesNo, MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
                 {
                     StockItems.Remove(selectedItem);
@@ -133,29 +162,6 @@ namespace AquaPOS
             }
         }
 
-        private void txtSearchProduct_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (txtSearchProduct.Text == "Enter product name...")
-            {
-                txtSearchProduct.Text = "";
-                txtSearchProduct.Foreground = Brushes.Black;
-            }
-        }
-
-        private void txtSearchProduct_LostFocus(object sender, RoutedEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtSearchProduct.Text))
-            {
-                txtSearchProduct.Text = "Enter product name...";
-                txtSearchProduct.Foreground = Brushes.Gray;
-            }
-        }
-
-        private void txtSearchProduct_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
         private StockItem FindItemByProductName(string productName)
         {
             foreach (var item in StockItems)
@@ -168,16 +174,16 @@ namespace AquaPOS
 
         private void SearchProduct_Click(object sender, RoutedEventArgs e)
         {
-            string searchName = txtSearchProduct.Text.Trim();
-            if (!string.IsNullOrEmpty(searchName) && searchName != "Enter product name...")
+            if (cmbSearchProduct.SelectedItem != null)
             {
-                var product = FindItemByProductName(searchName);
+                string selectedProductName = cmbSearchProduct.Text;
+                var product = FindItemByProductName(selectedProductName);
 
                 if (product != null)
                 {
                     txtCategory.Text = product.Category;
                     txtProductName.Text = product.ProductName;
-                    txtUnitPrice.Text = product.UnitPrice.ToString();
+                    txtUnitPrice.Text = product.UnitPrice.ToString("F2");
                     txtQuantity.Text = product.Quantity.ToString();
                     dpDateUpdated.Text = product.DateUpdated;
                 }
@@ -188,9 +194,25 @@ namespace AquaPOS
             }
             else
             {
-                MessageBox.Show("Please enter a product name to search.");
+                MessageBox.Show("Please select or enter a product name to search.");
             }
         }
+
+        private void CmbSearchProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Optional: Handle preview text input in combo box
+        }
+
+        private void CmbSearchProduct_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            // Optional: Handle preview text input in combo box
+        }
+
+        private void CmbSearchProduct_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Optional: Handle when the combo box is loaded
+        }
+
 
         private void ClearFields()
         {
@@ -316,8 +338,7 @@ namespace AquaPOS
 
                 foreach (var item in StockItems)
                 {
-                    int qtyVal = 0;
-                    bool isQtyNumber = int.TryParse(item.Quantity.ToString(), out qtyVal);
+                    bool isQtyNumber = int.TryParse(item.Quantity.ToString(), out int qtyVal);
                     XBrush brush = (isQtyNumber && qtyVal < 5) ? XBrushes.Red : XBrushes.Black;
 
                     string priceText = double.TryParse(item.UnitPrice.ToString(), out double priceVal)

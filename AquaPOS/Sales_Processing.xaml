@@ -40,7 +40,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Control">
-                        <Border CornerRadius="8" BorderBrush="#FF0807A0" BorderThickness="2.5" Background="White">
+                        <Border CornerRadius="8" BorderBrush="#FF73AEFF" BorderThickness="1.5" Background="White">
                             <ScrollViewer Margin="5" x:Name="PART_ContentHost"/>
                         </Border>
                     </ControlTemplate>
@@ -66,27 +66,27 @@
                    Width="244" Height="176"/>
 
                 <!-- Search  Product Details Panel of Side Bar -->
-                <Border Background="#FFCAD8E5" BorderBrush="#FF0807A0" BorderThickness="2.5" Width="220" CornerRadius="10" HorizontalAlignment="Left" Margin="20,0,0,0" Height="440">
+                <Border Background="#FFCAD8E5" BorderBrush="#FF0807A0" BorderThickness="2.5" Width="220" CornerRadius="20" HorizontalAlignment="Left" Margin="20,0,0,0" Height="440">
                     <StackPanel>
                         <WrapPanel Margin="5,5,5,5">
 
                             <!-- Search Title -->
-                            <TextBlock Text="PRODUCT DETAILS" FontSize="16" FontWeight="Bold" Foreground="Black" Margin="20,20,20,20" TextAlignment="Left"/>
+                            <TextBlock Text="PRODUCT DETAILS" FontSize="16" FontWeight="Bold" Foreground="#FF1D1B1B" Margin="20,20,20,20" TextAlignment="Left"/>
 
                             <StackPanel Orientation="Horizontal" Margin="16,0,0,10">
-                                <Button Width="32" Height="32" Margin="2,0,0,0" BorderBrush="#FF0807A0" BorderThickness="2.5" Click="SearchProductDetails_Click">
-                                    <Image Source="/Resources/Images/Button_Icons/Search_Icon.png" Stretch="Uniform" Height="20" Width="20" />
-                                </Button>
                                 <ComboBox x:Name="cmbSearchProductDetails"
-                                          Width="146" Height="32"
+                                          Width="138" Height="32"
                                           IsEditable="True"
                                           StaysOpenOnEdit="True"
                                           BorderBrush="#FF0807A0" BorderThickness="2.5"
                                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                          Loaded="CmbSearchProductDetails_Loaded"
+                                          Loaded="CmbSearchProduct_Loaded"
                                           IsTextSearchEnabled="False"
-                                          PreviewTextInput="CmbSearchProductDetails_PreviewTextInput"
+                                          PreviewTextInput="CmbSearchProduct_PreviewTextInput"
                                           SelectionChanged="CmbSearchProductDetails_SelectionChanged"/>
+                                <Button Width="32" Height="32" Margin="2,0,0,0" BorderBrush="#FF73AEFF" BorderThickness="1.5" Click="SearchProduct_Click">
+                                    <Image Source="/Resources/Images/Button_Icons/Search_Icon.png" Stretch="Uniform" Height="20" Width="20" />
+                                </Button>
                             </StackPanel>
 
 
@@ -95,29 +95,29 @@
 
                                 <!-- Product Name -->
                                 <StackPanel Margin="0,0,0,20">
-                                    <TextBlock Text="Product Name" FontSize="14" Foreground="Black" Height="24" Width="180"/>
-                                    <TextBox x:Name="txtProductNameResult" Width="180" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
+                                    <TextBlock Text="Product Name" FontSize="14" Foreground="Black" Height="24" Width="168"/>
+                                    <TextBox x:Name="txtProductNameResult" Width="180" Height="32"
                                         Style="{StaticResource RoundedTextBoxStyle}" TextChanged="TxtProductNameResult_TextChanged"/>
                                 </StackPanel>
 
                                 <!-- Category -->
                                 <StackPanel Margin="0,0,0,20">
-                                    <TextBlock Text="Category" FontSize="14" Foreground="Black" Height="24" Width="180"/>
-                                    <TextBox x:Name="txtCategoryResult" Width="180" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
+                                    <TextBlock Text="Category" FontSize="14" Foreground="Black" Height="24" Width="168"/>
+                                    <TextBox x:Name="txtCategoryResult" Width="180" Height="32"
                                          Style="{StaticResource RoundedTextBoxStyle}" TextChanged="TxtCategoryResult_TextChanged"/>
                                 </StackPanel>
 
                                 <!-- Unit Price -->
                                 <StackPanel Margin="0,0,0,20">
-                                    <TextBlock Text="Unit Price" FontSize="14" Foreground="Black" Height="22" Width="180"/>
-                                    <TextBox x:Name="txtUnitPriceResult" Width="180" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
+                                    <TextBlock Text="Unit Price" FontSize="14" Foreground="Black" Height="22" Width="168"/>
+                                    <TextBox x:Name="txtUnitPriceResult" Width="180" Height="32"
                                          Style="{StaticResource RoundedTextBoxStyle}" TextChanged="TxtUnitPriceResult_TextChanged"/>
                                 </StackPanel>
 
                                 <!-- Available Quantity -->
                                 <StackPanel Margin="0,0,0,20">
-                                    <TextBlock Text="Available Quantity" FontSize="14" Foreground="Black" Height="22" Width="180"/>
-                                    <TextBox x:Name="txtAvailableQtyResult" Width="180" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
+                                    <TextBlock Text="Available Quantity" FontSize="14" Foreground="Black" Height="22" Width="168"/>
+                                    <TextBox x:Name="txtAvailableQtyResult" Width="180" Height="32"
                                          Style="{StaticResource RoundedTextBoxStyle}" TextChanged="TxtAvailableQtyResult_TextChanged"/>
                                 </StackPanel>
                             </StackPanel>
@@ -136,7 +136,7 @@
                     BorderThickness="2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Margin="0,0,0,0" Click="ExitButton_Click">
+                    Margin="0,10,0,0" Click="ExitButton_Click">
                     <TextBlock Text="EXIT" 
                        Foreground="White"
                        TextDecorations="Underline"
@@ -159,30 +159,30 @@
 
             <StackPanel Margin="0,3,0,0">
 
-                <TextBlock Text="BILLING" FontSize="16" FontWeight="Bold" Foreground="Black" Margin="2,10,0,0" TextAlignment="Left"/>
+                <TextBlock Text="BILLING" FontSize="16" FontWeight="Bold" Foreground="#FF1D1B1B" Margin="2,10,0,0" TextAlignment="Left"/>
 
                 <!-- Bill Date Label & DatePicker -->
                 <Label Content="Bill Date" Foreground="Black" FontSize="16" FontWeight="Bold" 
-                       HorizontalAlignment="Center" Margin="0,30,0,0"/>
-                <DatePicker x:Name="BillDatePicker" Width="170" Height="32" FontSize="14" 
-                            BorderBrush="#FF0807A0" HorizontalAlignment="Center"/>
+                       HorizontalAlignment="Center" Margin="0,30,0,0" FontFamily="Segoe UI Variable Display Semibold"/>
+                <DatePicker x:Name="BillDatePicker" Width="170" Height="28" FontSize="14" 
+                            BorderBrush="#FF73AEFF" BorderThickness="1" HorizontalAlignment="Center"/>
 
                 <!-- Product Name Label & TextBox -->
                 <!-- Replace Product Name Label & TextBox with Search ComboBox -->
-                <Label Content="Product Name" Foreground="Black" FontSize="16" FontWeight="Bold"
-                        HorizontalAlignment="Center" Margin="0,20,0,0"/>
+                <Label Content="Product Name" Foreground="Black" FontSize="16"
+                        HorizontalAlignment="Center" Margin="0,20,0,0" FontFamily="Segoe UI Variable Small Semibold" FontWeight="Bold"/>
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                     <ComboBox x:Name="cmbSearchProduct"
                               Width="138" Height="32"
                               IsEditable="True"
                               StaysOpenOnEdit="True"
-                              BorderBrush="#FF0807A0" BorderThickness="2.5"
+                              BorderBrush="#FF73AEFF" BorderThickness="2.5"
                               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                               Loaded="CmbSearchProduct_Loaded"
                               IsTextSearchEnabled="False"
                               PreviewTextInput="CmbSearchProduct_PreviewTextInput"
-                              SelectionChanged="CmbSearchProductDetails_SelectionChanged"/>
-                    <Button Width="32" Height="32" Margin="2,0,0,0" BorderBrush="#FF0807A0" BorderThickness="2.5" Click="SearchProduct_Click">
+                              SelectionChanged="CmbSearchProductDetails_SelectionChanged" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"/>
+                    <Button Width="32" Height="32" Margin="2,0,0,0" BorderBrush="#FF73AEFF" BorderThickness="1.5" Click="SearchProduct_Click">
                         <Image Source="/Resources/Images/Button_Icons/Search_Icon.png" Stretch="Uniform" Height="20" Width="20" />
                     </Button>
                 </StackPanel>
@@ -190,20 +190,20 @@
 
                 <!-- Quantity Label & TextBox -->
                 <Label Content="Quantity" Foreground="Black" FontSize="16" FontWeight="Bold" 
-                       HorizontalAlignment="Center" Margin="0,0,0,0"/>
-                <TextBox x:Name="QuantityTextBox" Width="170" Height="33" FontSize="14"
+                       HorizontalAlignment="Center" Margin="0,10,0,0" FontFamily="Segoe UI Variable Text Semibold"/>
+                <TextBox x:Name="QuantityTextBox" Width="170" Height="32" FontSize="14"
                          Style="{StaticResource RoundedTextBoxStyle}"
-                         HorizontalAlignment="Center" BorderBrush="#FF0807A0"/>
+                         HorizontalAlignment="Center" BorderBrush="#FF0807A0" BorderThickness="1"/>
 
                 <!-- Add to Bill Button -->
                 <Button x:Name="AddToBillButton" Content="Add to Bill" Width="130" Height="34" FontSize="14" FontWeight="Bold" 
-                        Foreground="Black" Background="#FF8BF1ED" BorderBrush="#FF3F43CE" BorderThickness="1"
+                        Foreground="Black" Background="#FF8BF1ED" BorderBrush="#FF377EDF" BorderThickness="1.5"
                         Style="{StaticResource RoundedButtonStyle}"
                         HorizontalAlignment="Center" Margin="0,30,0,0" Click="AddToBillButton_Click"/>
 
                 <!-- Total Amount Display -->
                 <StackPanel Margin="0,60,0,0" HorizontalAlignment="Center">
-                    <Label Content="Total Amount (Rs.) :" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <Label Content="Total Amount (Rs.) :" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" FontFamily="Segoe UI Variable Text"/>
                     <TextBlock x:Name="TotalAmountTextBlock" Text="0.00" FontSize="16" FontWeight="Bold" 
                Foreground="#FF0807A0" HorizontalAlignment="Center"/>
                 </StackPanel>
@@ -212,7 +212,7 @@
                 <Button x:Name="PrintBillButton" Content="Print Bill" Width="130" Height="34" FontSize="14" FontWeight="Bold" 
                         Foreground="Black" Background="#FF9DFF59" BorderBrush="#FF15A90E" BorderThickness="1"
                         Style="{StaticResource RoundedButtonStyle}"
-                        HorizontalAlignment="Center" Margin="0,20,0,0" Click="PrintBillButton_Click"/>
+                        HorizontalAlignment="Center" Margin="0,25,0,0" Click="PrintBillButton_Click"/>
             </StackPanel>
         </Border>
 
@@ -303,7 +303,7 @@
                                                 BorderBrush="Transparent"
                                                 Cursor="Hand"
                                                 Padding="0,0,10,0">
-                                                <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Delete_Button_Icon.png"
+                                            <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Delete_Button_Icon.png"
                                                        Width="20" Height="20"
                                                        Stretch="Uniform"/>
                                         </Button>

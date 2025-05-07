@@ -16,7 +16,6 @@ namespace AquaPOS
     {
         private readonly string connectionString = "Data Source=C:\\Projects\\Appication Development\\application-development-ca1-Hansi-Umayangani\\AquaPOS\\Databases\\AquaPOS-Database.db";
         private readonly List<Product> productList = new List<Product>();
-        private readonly List<BillingItem> billingItem = new List<BillingItem>();
         private readonly ObservableCollection<BillingItem> billItems = new ObservableCollection<BillingItem>();
 
         public Sales_Processing()
@@ -404,14 +403,7 @@ namespace AquaPOS
         private void SearchProduct_Click(object sender, RoutedEventArgs e)
         {
 
-        }
-
-        private void SearchProductDetails_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-       
+        }  
     }
 
     public class Product

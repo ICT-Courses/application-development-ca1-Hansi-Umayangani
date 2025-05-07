@@ -14,11 +14,10 @@ namespace AquaPOS
 {
     public partial class Sales_Processing : Window
     {
-        private string connectionString = "Data Source=C:\\Projects\\Appication Development\\application-development-ca1-Hansi-Umayangani\\AquaPOS\\Databases\\AquaPOS-Database.db";
-        private List<Product> productList = new List<Product>();
-        private List<BillingItem> billingItems = new List<BillingItem>();
-
-        private ObservableCollection<BillingItem> billItems = new ObservableCollection<BillingItem>();
+        private readonly string connectionString = "Data Source=C:\\Projects\\Appication Development\\application-development-ca1-Hansi-Umayangani\\AquaPOS\\Databases\\AquaPOS-Database.db";
+        private readonly List<Product> productList = new List<Product>();
+        private readonly List<BillingItem> billingItem = new List<BillingItem>();
+        private readonly ObservableCollection<BillingItem> billItems = new ObservableCollection<BillingItem>();
 
         public Sales_Processing()
         {
@@ -30,7 +29,7 @@ namespace AquaPOS
 
         }
 
-        private void cmbSearchProduct_SelectionChanged(object sender, RoutedEventArgs e)
+        private void CmbSearchProduct_SelectionChanged(object sender, RoutedEventArgs e)
         {
             // Handle the search functionality when the search button is clicked
             if (cmbSearchProduct.SelectedItem != null)
@@ -56,12 +55,12 @@ namespace AquaPOS
             }
         }
 
-        private void cmbSearchProduct_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void CmbSearchProduct_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             // Optional: Handle preview text input in combo box
         }
 
-        private void cmbSearchProduct_Loaded(object sender, RoutedEventArgs e)
+        private void CmbSearchProduct_Loaded(object sender, RoutedEventArgs e)
         {
             // Optional: Handle when the combo box is loaded
         }
@@ -105,7 +104,7 @@ namespace AquaPOS
         }
 
 
-        private void cmbSearchProductDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CmbSearchProductDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (cmbSearchProductDetails.SelectedItem != null)
             {
@@ -129,12 +128,12 @@ namespace AquaPOS
             }
         }
 
-        private void cmbSearchProductDetails_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void CmbSearchProductDetails_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             // Optional: Handle preview text input in combo box
         }
 
-        private void cmbSearchProductDetails_Loaded(object sender, RoutedEventArgs e)
+        private void CmbSearchProductDetails_Loaded(object sender, RoutedEventArgs e)
         {
             // Optional: Handle when the combo box is loaded
         }
@@ -177,22 +176,22 @@ namespace AquaPOS
             }
         }
 
-        private void txtProductNameResult_TextChanged(object sender, TextChangedEventArgs e)
+        private void TxtProductNameResult_TextChanged(object sender, TextChangedEventArgs e)
         {
             // Optional: React to changes in ProductName textbox
         }
 
-        private void txtCategoryResult_TextChanged(object sender, TextChangedEventArgs e)
+        private void TxtCategoryResult_TextChanged(object sender, TextChangedEventArgs e)
         {
             // Optional: React to changes in Category textbox
         }
 
-        private void txtUnitPriceResult_TextChanged(object sender, TextChangedEventArgs e)
+        private void TxtUnitPriceResult_TextChanged(object sender, TextChangedEventArgs e)
         {
             // Optional: React to changes in UnitPrice textbox
         }
 
-        private void txtAvailableQtyResult_TextChanged(object sender, TextChangedEventArgs e)
+        private void TxtAvailableQtyResult_TextChanged(object sender, TextChangedEventArgs e)
         {
             // Optional: React to changes in AvailableQty textbox
         }
@@ -290,33 +289,33 @@ namespace AquaPOS
                     double yPoint = 40;
 
                     // Add Bill Header
-                    gfx.DrawString("Sales Bill", headerFont, XBrushes.Black, new XRect(0, yPoint, page.Width, page.Height), XStringFormats.TopCenter);
+                    gfx.DrawString("Sales Bill", headerFont, XBrushes.Black, new XRect(0, yPoint, page.Width.Point, page.Height.Point), XStringFormats.TopCenter);
                     yPoint += 40;
 
                     // Add table headers
-                    gfx.DrawString("Product Name", subHeaderFont, XBrushes.Black, new XRect(40, yPoint, 150, page.Height), XStringFormats.TopLeft);
-                    gfx.DrawString("Unit Price (Rs.)", subHeaderFont, XBrushes.Black, new XRect(200, yPoint, 80, page.Height), XStringFormats.TopLeft);
-                    gfx.DrawString("Quantity", subHeaderFont, XBrushes.Black, new XRect(290, yPoint, 80, page.Height), XStringFormats.TopLeft);
-                    gfx.DrawString("Total Price (Rs.)", subHeaderFont, XBrushes.Black, new XRect(380, yPoint, 100, page.Height), XStringFormats.TopLeft);
+                    gfx.DrawString("Product Name", subHeaderFont, XBrushes.Black, new XRect(40, yPoint, 150, page.Height.Point), XStringFormats.TopLeft);
+                    gfx.DrawString("Unit Price (Rs.)", subHeaderFont, XBrushes.Black, new XRect(200, yPoint, 80, page.Height.Point), XStringFormats.TopLeft);
+                    gfx.DrawString("Quantity", subHeaderFont, XBrushes.Black, new XRect(290, yPoint, 80, page.Height.Point), XStringFormats.TopLeft);
+                    gfx.DrawString("Total Price (Rs.)", subHeaderFont, XBrushes.Black, new XRect(380, yPoint, 100, page.Height.Point), XStringFormats.TopLeft);
 
                     yPoint += 25;
 
                     // Draw a line under the header
-                    gfx.DrawLine(XPens.Black, 40, yPoint, page.Width - 40, yPoint);
+                    gfx.DrawLine(XPens.Black, 40, yPoint, page.Width.Point - 40, yPoint);
                     yPoint += 10;
 
                     // Add bill items
                     foreach (var item in billItems)
                     {
-                        gfx.DrawString(item.ProductName, bodyFont, XBrushes.Black, new XRect(40, yPoint, 150, page.Height), XStringFormats.TopLeft);
-                        gfx.DrawString(item.UnitPrice.ToString("F2"), bodyFont, XBrushes.Black, new XRect(200, yPoint, 80, page.Height), XStringFormats.TopLeft);
-                        gfx.DrawString(item.Quantity.ToString(), bodyFont, XBrushes.Black, new XRect(290, yPoint, 80, page.Height), XStringFormats.TopLeft);
-                        gfx.DrawString(item.TotalPrice.ToString("F2"), bodyFont, XBrushes.Black, new XRect(380, yPoint, 100, page.Height), XStringFormats.TopLeft);
+                        gfx.DrawString(item.ProductName, bodyFont, XBrushes.Black, new XRect(40, yPoint, 150, page.Height.Point), XStringFormats.TopLeft);
+                        gfx.DrawString(item.UnitPrice.ToString("F2"), bodyFont, XBrushes.Black, new XRect(200, yPoint, 80, page.Height.Point), XStringFormats.TopLeft);
+                        gfx.DrawString(item.Quantity.ToString(), bodyFont, XBrushes.Black, new XRect(290, yPoint, 80, page.Height.Point), XStringFormats.TopLeft);
+                        gfx.DrawString(item.TotalPrice.ToString("F2"), bodyFont, XBrushes.Black, new XRect(380, yPoint, 100, page.Height.Point), XStringFormats.TopLeft);
 
                         yPoint += 20;
 
                         // Check if the page is full
-                        if (yPoint > page.Height - 50)
+                        if (yPoint > page.Height.Point - 50)
                         {
                             page = document.AddPage();
                             gfx = XGraphics.FromPdfPage(page);
@@ -326,17 +325,18 @@ namespace AquaPOS
 
                     // Draw total amount
                     yPoint += 20;
-                    gfx.DrawLine(XPens.Black, 40, yPoint, page.Width - 40, yPoint);
+                    gfx.DrawLine(XPens.Black, 40, yPoint, page.Width.Point - 40, yPoint);
                     yPoint += 10;
                     double totalAmount = 0;
                     foreach (var item in billItems)
                     {
                         totalAmount += item.TotalPrice;
                     }
-                    gfx.DrawString($"Total Amount: {totalAmount.ToString("F2")}", subHeaderFont, XBrushes.Black, new XRect(40, yPoint, page.Width - 80, page.Height), XStringFormats.TopLeft);
+                    gfx.DrawString($"Total Amount: {totalAmount:F2}", subHeaderFont, XBrushes.Black, new XRect(40, yPoint, page.Width.Point - 80, page.Height.Point), XStringFormats.TopLeft);
+
 
                     // Save PDF
-                    string filename = $"Bill_{DateTime.Now.ToString("yyyyMMdd_HHmmss")}.pdf";
+                    string filename = $"Bill_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
                     document.Save(filename);
                     billItems.Clear();
                     QuantityTextBox.Clear();

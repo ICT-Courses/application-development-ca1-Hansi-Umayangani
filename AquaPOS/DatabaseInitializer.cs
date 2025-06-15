@@ -43,17 +43,27 @@ namespace AquaPOS
                             DateUpdated DATETIME NOT NULL
                         );";
 
-                    // Create Sales table
+                    // Create Sales table: record each bill with overall info
                     string createSalesTableQuery = @"
                         CREATE TABLE IF NOT EXISTS Sales (
-                            SaleID INTEGER PRIMARY KEY AUTOINCREMENT,
+                            ID INTEGER PRIMARY KEY AUTOINCREMENT
+                            SaleID INTEGER NOT NULL,
                             ProductID INTEGER NOT NULL,
+                            ProductName TEXT NOT NULL,
                             Quantity INTEGER NOT NULL,
                             TotalPrice REAL NOT NULL,
                             SaleDate DATETIME NOT NULL,
+                            FOREIGN KEY (SaleID) REFERENCES SalesDetails(SaleID),
                             FOREIGN KEY(ProductID) REFERENCES StockItems(ProductID)
                         );";
 
+                    // Create Sales Details table
+                    string createSalesDetailsTable = @"
+                        CREATE TABLE IF NOT EXISTS SalesDetails (
+                            SaleID INTEGER PRIMARY KEY AUTOINCREMENT,
+                            TotalAmount REAL NOT NULL,
+                            SaleDate TEXT NOT NULL
+                        );";
 
                     using (var cmd = new SQLiteCommand(createTableQuery, conn))
                     {
@@ -66,6 +76,11 @@ namespace AquaPOS
                     }
 
                     using (var cmd = new SQLiteCommand(createSalesTableQuery, conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    using (var cmd = new SQLiteCommand(createSalesDetailsTable, conn))
                     {
                         cmd.ExecuteNonQuery();
                     }
@@ -231,7 +246,7 @@ namespace AquaPOS
 
         // SALES METHODS --------------------------------------
 
-        public static void RecordSale(Sale sale)
+        public static void RecordSale(List<Sale> saleItems, double totalAmount, string saleDate)
         {
             try
             {
@@ -241,26 +256,43 @@ namespace AquaPOS
 
                     using (var transaction = conn.BeginTransaction())
                     {
-                        // Insert the sale record
-                        string insertQuery = "INSERT INTO Sales (ProductID, Quantity, TotalPrice, SaleDate) VALUES (@ProductID, @Quantity, @TotalPrice, @SaleDate)";
-                        using (var insertCmd = new SQLiteCommand(insertQuery, conn))
+                        // Insert into SalesDetails table (main bill)
+                        long saleID;
+                        string insertSaleDetails = "INSERT INTO SalesDetails (TotalAmount, SaleDate) VALUES (@TotalAmount, @SaleDate);";
+                        using (var cmd = new SQLiteCommand(insertSaleDetails, conn))
                         {
-                            insertCmd.Parameters.AddWithValue("@ProductID", sale.ProductID);
-                            insertCmd.Parameters.AddWithValue("@Quantity", sale.Quantity);
-                            insertCmd.Parameters.AddWithValue("@TotalPrice", sale.TotalPrice);
-                            insertCmd.Parameters.AddWithValue("@SaleDate", sale.SaleDate);
-                            insertCmd.ExecuteNonQuery();
+                            cmd.Parameters.AddWithValue("@TotalAmount", totalAmount);
+                            cmd.Parameters.AddWithValue("@SaleDate", saleDate);
+                            cmd.ExecuteNonQuery();
+
+                            // Get the newly created SaleID
+                            saleID = conn.LastInsertRowId;
                         }
 
-                        // Update the StockItems quantity (decrease by the quantity sold)
-                        string updateStockQuery = "UPDATE StockItems SET Quantity = Quantity - @Quantity WHERE ProductID = @ProductID";
-                        using (var updateCmd = new SQLiteCommand(updateStockQuery, conn))
+                        // Insert each item into Sales table
+                        foreach (var item in saleItems)
                         {
-                            updateCmd.Parameters.AddWithValue("@Quantity", sale.Quantity);
-                            updateCmd.Parameters.AddWithValue("@ProductID", sale.ProductID);
-                            updateCmd.ExecuteNonQuery();
-                        }
+                            string insertSale = "INSERT INTO Sales (SaleID, ProductID, ProductName, Quantity, TotalPrice) VALUES (@SaleID, @ProductID, @ProductName, @Quantity, @TotalPrice);";
+                            using (var cmd = new SQLiteCommand(insertSale, conn))
+                            {
+                                cmd.Parameters.AddWithValue("@SaleID", saleID);
+                                cmd.Parameters.AddWithValue("@ProductID", item.ProductID);
+                                cmd.Parameters.AddWithValue("@ProductName", item.ProductName);
+                                cmd.Parameters.AddWithValue("@Quantity", item.Quantity);
+                                cmd.Parameters.AddWithValue("@TotalPrice", item.TotalPrice);
+                                cmd.ExecuteNonQuery();
+                            }
 
+                            // Update stock for each item
+                            string updateStock = "UPDATE StockItems SET Quantity = Quantity - @Quantity WHERE ProductID = @ProductID;";
+                            using (var cmd = new SQLiteCommand(updateStock, conn))
+                            {
+                                cmd.Parameters.AddWithValue("@Quantity", item.Quantity);
+                                cmd.Parameters.AddWithValue("@ProductID", item.ProductID);
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+                        
                         transaction.Commit();
                     }
                 }

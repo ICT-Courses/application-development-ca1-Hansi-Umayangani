@@ -255,22 +255,36 @@ namespace AquaPOS
                     return;
                 }
 
+                if (billItems.Count == 0)
+                {
+                    MessageBox.Show("No items to print in the bill.");
+                    return;
+                }
+
                 try
                 {
+                    List<Sale> cartItems = new List<Sale>();
+                    var saleDateTime = DateTime.Now.ToString("yyyy-MM-dd  HH:mm");
+
                     foreach (var item in billItems)
                     {
+
                         var sale = new Sale
                         {
                             ProductID = item.ProductID,
+                            ProductName = item.ProductName,
                             Quantity = item.Quantity,
                             TotalPrice = item.TotalPrice,
-                            SaleDate = DateTime.Now.ToString("yyyy-MM-dd  HH:mm")
+                            SaleDate = saleDateTime
                         };
 
-                        DatabaseInitializer.RecordSale(sale);
+                        cartItems.Add(sale);
                         LoadProductsFromDatabase();
                         LoadProductNamesFromDatabase();
                     }
+
+                    DatabaseInitializer.RecordSale(cartItems, Convert.ToDouble(TotalAmountTextBlock.Text), saleDateTime);
+
 
                     // Create new PDF document
                     PdfDocument document = new PdfDocument();
@@ -428,11 +442,11 @@ namespace AquaPOS
         }
     }
 
-    // Sale class to represent a sale record
     public class Sale
     {
         public int SaleID { get; set; }
         public int ProductID { get; set; }
+        public string ProductName { get; set; }
         public int Quantity { get; set; }
         public double TotalPrice { get; set; }
         public string SaleDate { get; set; }

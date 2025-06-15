@@ -176,7 +176,7 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Bill No." Binding="{Binding SaleID}" Width="60"
                 ElementStyle="{StaticResource CenterTextStyle}"/>
-                        <DataGridTextColumn Header="Category" Binding="{Binding Quantity}" Width="120"
+                        <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="120"
                 ElementStyle="{StaticResource CenterTextStyle}"/>
                         <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" Width="140"
                 ElementStyle="{StaticResource CenterTextStyle}"/>
@@ -184,7 +184,7 @@
                 ElementStyle="{StaticResource CenterTextStyle}"/>
                         <DataGridTextColumn Header="Unit Price (Rs.)" Binding="{Binding UnitPrice}" Width="120"
                 ElementStyle="{StaticResource CenterTextStyle}"/>
-                        <DataGridTextColumn Header="Total Price (Rs.)" Binding="{Binding Total}" Width="120"
+                        <DataGridTextColumn Header="Total Price (Rs.)" Binding="{Binding TotalPrice}" Width="120"
                 ElementStyle="{StaticResource CenterTextStyle}"/>
                         <DataGridTextColumn Header="Bill Date" Binding="{Binding SaleDate}" Width="100"
                 ElementStyle="{StaticResource CenterTextStyle}"/>
@@ -232,6 +232,7 @@
                     HorizontalAlignment="Center" Margin="0,20,0,0" Click="PrintBillButton_Click" FontFamily="Segoe UI Semibold"/>
                 </StackPanel>
             </StackPanel>
+            
         </Grid>
         
     </Grid>

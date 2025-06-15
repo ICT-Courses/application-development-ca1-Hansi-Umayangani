@@ -46,13 +46,12 @@ namespace AquaPOS
                     // Create Sales table: record each bill with overall info
                     string createSalesTableQuery = @"
                         CREATE TABLE IF NOT EXISTS Sales (
-                            ID INTEGER PRIMARY KEY AUTOINCREMENT
+                            ID INTEGER PRIMARY KEY AUTOINCREMENT,
                             SaleID INTEGER NOT NULL,
                             ProductID INTEGER NOT NULL,
                             ProductName TEXT NOT NULL,
                             Quantity INTEGER NOT NULL,
                             TotalPrice REAL NOT NULL,
-                            SaleDate DATETIME NOT NULL,
                             FOREIGN KEY (SaleID) REFERENCES SalesDetails(SaleID),
                             FOREIGN KEY(ProductID) REFERENCES StockItems(ProductID)
                         );";

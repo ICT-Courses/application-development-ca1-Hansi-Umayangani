@@ -248,161 +248,153 @@ namespace AquaPOS
 
         private void PrintBillButton_Click(object sender, RoutedEventArgs e)
         {
+            if (billItems.Count == 0)
             {
-                if (billItems.Count == 0)
-                {
-                    MessageBox.Show("No items to print in the bill.");
-                    return;
-                }
-
-                if (billItems.Count == 0)
-                {
-                    MessageBox.Show("No items to print in the bill.");
-                    return;
-                }
-
-                try
-                {
-                    List<Sale> cartItems = new List<Sale>();
-                    var saleDateTime = DateTime.Now.ToString("yyyy-MM-dd  HH:mm");
-
-                    foreach (var item in billItems)
-                    {
-
-                        var sale = new Sale
-                        {
-                            ProductID = item.ProductID,
-                            ProductName = item.ProductName,
-                            Quantity = item.Quantity,
-                            TotalPrice = item.TotalPrice,
-                            SaleDate = saleDateTime
-                        };
-
-                        cartItems.Add(sale);
-                        LoadProductsFromDatabase();
-                        LoadProductNamesFromDatabase();
-                    }
-
-                    DatabaseInitializer.RecordSale(cartItems, Convert.ToDouble(TotalAmountTextBlock.Text), saleDateTime);
-
-
-                    // Create new PDF document
-                    PdfDocument document = new PdfDocument();
-                    document.Info.Title = "Sales Bill";
-
-                    // Add a page
-                    PdfPage page = document.AddPage();
-
-                    // Create graphics object for drawing
-                    XGraphics gfx = XGraphics.FromPdfPage(page);
-                    XFont headerFont = new XFont("Times New Roman", 16, XFontStyleEx.Bold);
-                    XFont subHeaderFont = new XFont("Times New Roman", 12, XFontStyleEx.Bold);
-                    XFont bodyFont = new XFont("Times New Roman", 10, XFontStyleEx.Regular);
-
-                    double yPoint = 40;
-
-                    // Add Bill Header
-                    gfx.DrawString("Sales Bill", headerFont, XBrushes.Black, new XRect(0, yPoint, page.Width.Point, page.Height.Point), XStringFormats.TopCenter);
-                    yPoint += 40;
-
-                    // Add Bill Date
-                    XFont boldFont = new XFont("Times New Roman", 12, XFontStyleEx.Bold);
-                    XFont regularFont = new XFont("Times New Roman", 12, XFontStyleEx.Regular);
-
-                    string labelText = "Bill Date:";
-                    string dateText = DateTime.Now.ToString("yyyy-MM-dd   HH:mm");
-
-                    var labelSize = gfx.MeasureString(labelText, boldFont);
-                    var dateSize = gfx.MeasureString(dateText, regularFont);
-
-                    double dateX = page.Width.Point - 40 - dateSize.Width;
-                    double labelX = dateX - 5 - labelSize.Width;  // 5 px gap between label and date
-
-                    gfx.DrawString(labelText, boldFont, XBrushes.Black, new XPoint(labelX, yPoint), XStringFormats.TopLeft);
-                    gfx.DrawString(dateText, regularFont, XBrushes.Black, new XPoint(dateX, yPoint), XStringFormats.TopLeft);
-
-                    yPoint += 40;
-
-                    // Add table headers
-                    gfx.DrawString("Product Name", subHeaderFont, XBrushes.Black, new XRect(40, yPoint, 160, page.Height.Point), XStringFormats.TopCenter);
-                    gfx.DrawString("Unit Price (Rs.)", subHeaderFont, XBrushes.Black, new XRect(200, yPoint, 140, page.Height.Point), XStringFormats.TopCenter);
-                    gfx.DrawString("Quantity", subHeaderFont, XBrushes.Black, new XRect(340, yPoint, 90, page.Height.Point), XStringFormats.TopCenter);
-                    gfx.DrawString("Total Price (Rs.)", subHeaderFont, XBrushes.Black, new XRect(430, yPoint, 120, page.Height.Point), XStringFormats.TopCenter);
-
-                    yPoint += 25;
-
-                    // Draw a line under the header
-                    gfx.DrawLine(XPens.Black, 40, yPoint, page.Width.Point - 40, yPoint);
-                    yPoint += 10;
-
-                    // Add bill items
-                    foreach (var item in billItems)
-                    {
-                        gfx.DrawString(item.ProductName, bodyFont, XBrushes.Black, new XRect(40, yPoint, 160, page.Height.Point), XStringFormats.TopCenter);
-                        gfx.DrawString(item.UnitPrice.ToString("F2"), bodyFont, XBrushes.Black, new XRect(200, yPoint, 140, page.Height.Point), XStringFormats.TopCenter);
-                        gfx.DrawString(item.Quantity.ToString(), bodyFont, XBrushes.Black, new XRect(340, yPoint, 90, page.Height.Point), XStringFormats.TopCenter);
-                        gfx.DrawString(item.TotalPrice.ToString("F2"), bodyFont, XBrushes.Black, new XRect(430, yPoint, 120, page.Height.Point), XStringFormats.TopCenter);
-
-                        yPoint += 20;
-
-                        // Check if we need to add a new page if space runs out
-                        if (yPoint > page.Height.Point - 50)
-                        {
-                            page = document.AddPage();
-                            gfx = XGraphics.FromPdfPage(page);
-                            yPoint = 40;
-                        }
-                    }
-
-                    // Draw a line above the total
-                    yPoint += 20;
-                    gfx.DrawLine(XPens.Black, 40, yPoint, page.Width.Point - 40, yPoint);
-                    yPoint += 10;
-
-                    //Calculate Total Amount
-                    double totalAmount = 0;
-                    foreach (var item in billItems)
-                    {
-                        totalAmount += item.TotalPrice;
-                    }
-
-                    // Prepare total amount text
-                    string totalAmountText = "Total Amount (Rs.):";
-                    string amountText = $"{totalAmount:F2}";
-                    var textSize = gfx.MeasureString(totalAmountText, subHeaderFont);
-                    var amountSize = gfx.MeasureString(amountText, subHeaderFont);
-
-                    double amountX = page.Width.Point - 40 - amountSize.Width;
-                    double textX = amountX - 10 - labelSize.Width; // 10 px gap between label and amount
-
-                    gfx.DrawString(totalAmountText, subHeaderFont, XBrushes.Black, new XPoint(labelX, yPoint), XStringFormats.TopLeft);
-                    gfx.DrawString(amountText, subHeaderFont, XBrushes.Black, new XPoint(amountX, yPoint), XStringFormats.TopLeft);
-
-                    // Draw double underline under the amount
-                    double underlineY1 = yPoint + amountSize.Height + 2; // first line slightly below text
-                    double underlineY2 = underlineY1 + 2;               // second line slightly below the first
-                    gfx.DrawLine(XPens.Black, amountX, underlineY1, amountX + amountSize.Width, underlineY1);
-                    gfx.DrawLine(XPens.Black, amountX, underlineY2, amountX + amountSize.Width, underlineY2);
-
-                    // Save PDF
-                    string filename = $"SalesBill_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
-                    document.Save(filename);
-                    billItems.Clear();
-                    QuantityTextBox.Clear();
-                    totalAmount = 0;
-                    TotalAmountTextBlock.Text = totalAmount.ToString("F2");
-
-
-                    // Optionally open the PDF
-                    Process.Start(new ProcessStartInfo(filename) { UseShellExecute = true });
-
-                    MessageBox.Show("Bill has been printed successfully!");
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error while printing the bill: " + ex.Message);
-                }
+                MessageBox.Show("No items to print in the bill.");
+                return;
             }
+
+            try
+            {
+                List<Sale> cartItems = new List<Sale>();
+                var saleDateTime = DateTime.Now.ToString("yyyy-MM-dd  HH:mm");
+
+                foreach (var item in billItems)
+                {
+
+                    var sale = new Sale
+                    {
+                        ProductID = item.ProductID,
+                        ProductName = item.ProductName,
+                        Quantity = item.Quantity,
+                        TotalPrice = item.TotalPrice,
+                        SaleDate = saleDateTime
+                    };
+
+                    cartItems.Add(sale);
+                    LoadProductsFromDatabase();
+                    LoadProductNamesFromDatabase();
+                }
+
+                DatabaseInitializer.RecordSale(cartItems, Convert.ToDouble(TotalAmountTextBlock.Text), saleDateTime);
+
+
+                // Create new PDF document
+                PdfDocument document = new PdfDocument();
+                document.Info.Title = "Sales Bill";
+
+                // Add a page
+                PdfPage page = document.AddPage();
+
+                // Create graphics object for drawing
+                XGraphics gfx = XGraphics.FromPdfPage(page);
+                XFont headerFont = new XFont("Times New Roman", 16, XFontStyleEx.Bold);
+                XFont subHeaderFont = new XFont("Times New Roman", 12, XFontStyleEx.Bold);
+                XFont bodyFont = new XFont("Times New Roman", 10, XFontStyleEx.Regular);
+
+                double yPoint = 40;
+
+                // Add Bill Header
+                gfx.DrawString("Sales Bill", headerFont, XBrushes.Black, new XRect(0, yPoint, page.Width.Point, page.Height.Point), XStringFormats.TopCenter);
+                yPoint += 40;
+
+                // Add Bill Date
+                XFont boldFont = new XFont("Times New Roman", 12, XFontStyleEx.Bold);
+                XFont regularFont = new XFont("Times New Roman", 12, XFontStyleEx.Regular);
+
+                string labelText = "Bill Date:";
+                string dateText = DateTime.Now.ToString("yyyy-MM-dd   HH:mm");
+
+                var labelSize = gfx.MeasureString(labelText, boldFont);
+                var dateSize = gfx.MeasureString(dateText, regularFont);
+
+                double dateX = page.Width.Point - 40 - dateSize.Width;
+                double labelX = dateX - 5 - labelSize.Width;  // 5 px gap between label and date
+
+                gfx.DrawString(labelText, boldFont, XBrushes.Black, new XPoint(labelX, yPoint), XStringFormats.TopLeft);
+                gfx.DrawString(dateText, regularFont, XBrushes.Black, new XPoint(dateX, yPoint), XStringFormats.TopLeft);
+
+                yPoint += 40;
+
+                // Add table headers
+                gfx.DrawString("Product Name", subHeaderFont, XBrushes.Black, new XRect(40, yPoint, 160, page.Height.Point), XStringFormats.TopCenter);
+                gfx.DrawString("Unit Price (Rs.)", subHeaderFont, XBrushes.Black, new XRect(200, yPoint, 140, page.Height.Point), XStringFormats.TopCenter);
+                gfx.DrawString("Quantity", subHeaderFont, XBrushes.Black, new XRect(340, yPoint, 90, page.Height.Point), XStringFormats.TopCenter);
+                gfx.DrawString("Total Price (Rs.)", subHeaderFont, XBrushes.Black, new XRect(430, yPoint, 120, page.Height.Point), XStringFormats.TopCenter);
+
+                yPoint += 25;
+
+                // Draw a line under the header
+                gfx.DrawLine(XPens.Black, 40, yPoint, page.Width.Point - 40, yPoint);
+                yPoint += 10;
+
+                // Add bill items
+                foreach (var item in billItems)
+                {
+                    gfx.DrawString(item.ProductName, bodyFont, XBrushes.Black, new XRect(40, yPoint, 160, page.Height.Point), XStringFormats.TopCenter);
+                    gfx.DrawString(item.UnitPrice.ToString("F2"), bodyFont, XBrushes.Black, new XRect(200, yPoint, 140, page.Height.Point), XStringFormats.TopCenter);
+                    gfx.DrawString(item.Quantity.ToString(), bodyFont, XBrushes.Black, new XRect(340, yPoint, 90, page.Height.Point), XStringFormats.TopCenter);
+                    gfx.DrawString(item.TotalPrice.ToString("F2"), bodyFont, XBrushes.Black, new XRect(430, yPoint, 120, page.Height.Point), XStringFormats.TopCenter);
+
+                    yPoint += 20;
+
+                    // Check if we need to add a new page if space runs out
+                    if (yPoint > page.Height.Point - 50)
+                    {
+                        page = document.AddPage();
+                        gfx = XGraphics.FromPdfPage(page);
+                        yPoint = 40;
+                    }
+                }
+
+                // Draw a line above the total
+                yPoint += 20;
+                gfx.DrawLine(XPens.Black, 40, yPoint, page.Width.Point - 40, yPoint);
+                yPoint += 10;
+
+                //Calculate Total Amount
+                double totalAmount = 0;
+                foreach (var item in billItems)
+                {
+                    totalAmount += item.TotalPrice;
+                }
+
+                // Prepare total amount text
+                string totalAmountText = "Total Amount (Rs.):";
+                string amountText = $"{totalAmount:F2}";
+                var textSize = gfx.MeasureString(totalAmountText, subHeaderFont);
+                var amountSize = gfx.MeasureString(amountText, subHeaderFont);
+
+                double amountX = page.Width.Point - 40 - amountSize.Width;
+                double textX = amountX - 10 - labelSize.Width; // 10 px gap between label and amount
+
+                gfx.DrawString(totalAmountText, subHeaderFont, XBrushes.Black, new XPoint(labelX, yPoint), XStringFormats.TopLeft);
+                gfx.DrawString(amountText, subHeaderFont, XBrushes.Black, new XPoint(amountX, yPoint), XStringFormats.TopLeft);
+
+                // Draw double underline under the amount
+                double underlineY1 = yPoint + amountSize.Height + 2; // first line slightly below text
+                double underlineY2 = underlineY1 + 2;               // second line slightly below the first
+                gfx.DrawLine(XPens.Black, amountX, underlineY1, amountX + amountSize.Width, underlineY1);
+                gfx.DrawLine(XPens.Black, amountX, underlineY2, amountX + amountSize.Width, underlineY2);
+
+                // Save PDF
+                string filename = $"SalesBill_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+                document.Save(filename);
+                billItems.Clear();
+                QuantityTextBox.Clear();
+                totalAmount = 0;
+                TotalAmountTextBlock.Text = totalAmount.ToString("F2");
+
+
+                // Optionally open the PDF
+                Process.Start(new ProcessStartInfo(filename) { UseShellExecute = true });
+
+                MessageBox.Show("Bill has been printed successfully!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error while printing the bill: " + ex.Message);
+            }  
         }
 
         private void ExitButton_Click(object sender, RoutedEventArgs e)

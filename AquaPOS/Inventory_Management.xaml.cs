@@ -72,7 +72,7 @@ namespace AquaPOS
             using (SQLiteConnection conn = new SQLiteConnection(DatabaseInitializer.ConnectionString))
             {
                 conn.Open();
-                string query = "SELECT ProductName FROM Products";
+                string query = "SELECT ProductName FROM StockItems";
                 SQLiteCommand cmd = new SQLiteCommand(query, conn);
                 SQLiteDataReader reader = cmd.ExecuteReader();
 
@@ -82,7 +82,7 @@ namespace AquaPOS
                     products.Add(reader["ProductName"].ToString());
                 }
 
-                cmbSearchProduct.ItemsSource = products;
+                cmbSearchProduct.ItemsSource = StockItems;
             }
         }
 

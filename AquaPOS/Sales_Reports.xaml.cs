@@ -51,5 +51,20 @@ namespace AquaPOS
             user_Login.Show(); // Show the login window
             this.Hide(); // Close the current window
         }
+
+        private void FilterButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void PrintBillButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void SalesReportsDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }

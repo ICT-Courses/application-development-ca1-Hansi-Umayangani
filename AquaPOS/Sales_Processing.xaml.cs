@@ -331,7 +331,7 @@ namespace AquaPOS
 
                         yPoint += 20;
 
-                        // Check if the page is full
+                        // Check if we need to add a new page if space runs out
                         if (yPoint > page.Height.Point - 50)
                         {
                             page = document.AddPage();
@@ -340,7 +340,7 @@ namespace AquaPOS
                         }
                     }
 
-                    // Draw total amount
+                    // Draw a line above the total
                     yPoint += 20;
                     gfx.DrawLine(XPens.Black, 40, yPoint, page.Width.Point - 40, yPoint);
                     yPoint += 10;
@@ -362,18 +362,16 @@ namespace AquaPOS
                     double textX = amountX - 10 - labelSize.Width; // 10 px gap between label and amount
 
                     gfx.DrawString(totalAmountText, subHeaderFont, XBrushes.Black, new XPoint(labelX, yPoint), XStringFormats.TopLeft);
-
                     gfx.DrawString(amountText, subHeaderFont, XBrushes.Black, new XPoint(amountX, yPoint), XStringFormats.TopLeft);
 
                     // Draw double underline under the amount
                     double underlineY1 = yPoint + amountSize.Height + 2; // first line slightly below text
                     double underlineY2 = underlineY1 + 2;               // second line slightly below the first
-
                     gfx.DrawLine(XPens.Black, amountX, underlineY1, amountX + amountSize.Width, underlineY1);
                     gfx.DrawLine(XPens.Black, amountX, underlineY2, amountX + amountSize.Width, underlineY2);
 
                     // Save PDF
-                    string filename = $"Bill_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
+                    string filename = $"SalesBill_{DateTime.Now:yyyyMMdd_HHmmss}.pdf";
                     document.Save(filename);
                     billItems.Clear();
                     QuantityTextBox.Clear();

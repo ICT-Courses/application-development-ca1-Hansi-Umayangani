@@ -40,7 +40,7 @@ namespace AquaPOS
                             ProductName TEXT NOT NULL UNIQUE,
                             UnitPrice REAL NOT NULL,
                             Quantity INTEGER NOT NULL,
-                            DateUpdated TEXT NOT NULL
+                            DateUpdated DATETIME NOT NULL
                         );";
 
                     // Create Sales table
@@ -50,20 +50,9 @@ namespace AquaPOS
                             ProductID INTEGER NOT NULL,
                             Quantity INTEGER NOT NULL,
                             TotalPrice REAL NOT NULL,
-                            SaleDate TEXT NOT NULL,
+                            SaleDate DATETIME NOT NULL,
                             FOREIGN KEY(ProductID) REFERENCES StockItems(ProductID)
                         );";
-
-                    // Create Products table
-                    string createProductsTableQuery = @"
-                        CREATE TABLE IF NOT EXISTS Products (
-                            ProductID INTEGER PRIMARY KEY AUTOINCREMENT,
-                            ProductName TEXT NOT NULL,
-                            UnitPrice REAL NOT NULL,
-                            Quantity INTEGER NOT NULL,
-                            Category TEXT
-                        );";
-
 
 
                     using (var cmd = new SQLiteCommand(createTableQuery, conn))
@@ -81,10 +70,6 @@ namespace AquaPOS
                         cmd.ExecuteNonQuery();
                     }
 
-                    using (var cmd = new SQLiteCommand(createProductsTableQuery, conn))
-                    {
-                        cmd.ExecuteNonQuery();
-                    }
                 }
             }
             catch (Exception ex)
@@ -285,10 +270,6 @@ namespace AquaPOS
                 Console.WriteLine($"Error recording sale: {ex.Message}");
             }
         }
-
     }
-
-    
-
 }
 

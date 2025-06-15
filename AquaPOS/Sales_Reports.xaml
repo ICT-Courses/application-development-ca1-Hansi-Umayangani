@@ -108,5 +108,131 @@
 
             </StackPanel>
         </Border>
+
+        <!-- Sales Report Main Content Panel -->
+        <Grid Grid.Column="1" Margin="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" MinWidth="814.8"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Sales Reports DataGrid -->
+            <Border Grid.Column="0"
+            BorderBrush="#FFB0B0B0" 
+            BorderThickness="1" 
+            CornerRadius="10" 
+            Padding="2" 
+            Background="White" 
+            Margin="20,20,20,20">
+                <DataGrid x:Name="SalesReportsDataGrid" 
+            AutoGenerateColumns="False" 
+            GridLinesVisibility="All"
+            HeadersVisibility="Column"
+            RowHeight="24"
+            Background="White"
+            AlternatingRowBackground="#FFEFEFEF"
+            FontSize="12"
+            FontFamily="Segoe UI"
+            BorderBrush="#FFD7E3FA"
+            BorderThickness="1"
+            HorizontalGridLinesBrush="Transparent"
+            VerticalGridLinesBrush="Transparent" 
+            Margin="5,5,5,5"
+            Grid.Row="2" 
+            Grid.Column="0"
+            CanUserAddRows="False"
+            IsReadOnly="True"
+            ItemsSource="{Binding Stocks}"
+            VerticalScrollBarVisibility="Visible" 
+            SelectionChanged="SalesReportsDataGrid_SelectionChanged">
+
+                    <DataGrid.Resources>
+                        <Style TargetType="{x:Type DataGridCell}">
+                            <Setter Property="BorderBrush" Value="#FFD3D3D3"/>
+                            <Setter Property="Foreground" Value="Black"/>
+                            <Setter Property="BorderThickness" Value="0,0,1,1"/>
+                            <Setter Property="Padding" Value="5,0,5,0"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        </Style>
+
+                        <Style TargetType="{x:Type DataGridColumnHeader}">
+                            <Setter Property="Background" Value="#FF093564"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            <Setter Property="Height" Value="30"/>
+                            <Setter Property="BorderBrush" Value="#FFD3D3D3"/>
+                            <Setter Property="BorderThickness" Value="0,0,2,1"/>
+                        </Style>
+
+                        <Style x:Key="CenterTextStyle" TargetType="{x:Type TextBlock}">
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                        </Style>
+                    </DataGrid.Resources>
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Bill No." Binding="{Binding SaleID}" Width="60"
+                ElementStyle="{StaticResource CenterTextStyle}"/>
+                        <DataGridTextColumn Header="Category" Binding="{Binding Quantity}" Width="120"
+                ElementStyle="{StaticResource CenterTextStyle}"/>
+                        <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" Width="140"
+                ElementStyle="{StaticResource CenterTextStyle}"/>
+                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="80"
+                ElementStyle="{StaticResource CenterTextStyle}"/>
+                        <DataGridTextColumn Header="Unit Price (Rs.)" Binding="{Binding UnitPrice}" Width="120"
+                ElementStyle="{StaticResource CenterTextStyle}"/>
+                        <DataGridTextColumn Header="Total Price (Rs.)" Binding="{Binding Total}" Width="120"
+                ElementStyle="{StaticResource CenterTextStyle}"/>
+                        <DataGridTextColumn Header="Bill Date" Binding="{Binding SaleDate}" Width="100"
+                ElementStyle="{StaticResource CenterTextStyle}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
+
+            <!-- Sales Filtering Section -->
+            <StackPanel Margin="810,20,0,20" Orientation="Vertical" HorizontalAlignment="Left" Width="195" Grid.ColumnSpan="2">
+
+                <!-- Title -->
+                <TextBlock Text="FILTER SALES" FontSize="16" FontWeight="Bold" Foreground="#FFC8BEBE" Margin="10,20,0,10" Width="180"/>
+
+                <!-- Date Range Filter -->
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Left" Margin="10,10,10,10" Width="175" Height="506">
+                    <StackPanel Margin="0,10,0,0" Height="227">
+                        <StackPanel Orientation="Vertical" Margin="0,10,0,25" Width="168">
+                            <TextBlock Text="From:" FontSize="14" Foreground="#FFA2A2C8" Height="24" Width="168"/>
+                            <DatePicker x:Name="FromDatePicker" Width="168" BorderBrush="#FF0807A0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Vertical" Margin="0,0,0,20" Width="168">
+                            <TextBlock Text="To:" FontSize="14" Foreground="#FFA2A2C8" Height="24" Width="168"/>
+                            <DatePicker x:Name="ToDatePicker" Width="168" BorderBrush="#FF0807A0"/>
+                        </StackPanel>
+
+                        <!-- Filter Button-->
+                        <StackPanel Margin="0,20,0,0" Height="36">
+                            <Button Content="FILTER" Style="{StaticResource RoundedButtonStyle}" Width="120" Height="36"
+                        FontSize="14" FontStyle="Normal" Foreground="Black" Background="#FF47CCCC" 
+                        BorderBrush="#FF3F43CE" BorderThickness="1.5" Margin="0" Click="FilterButton_Click" FontFamily="Segoe UI Semibold"/>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- Total Summary -->
+                    <StackPanel Margin="0,60,0,0" HorizontalAlignment="Center">
+                        <Label Content="Total Sales (Rs.) :" FontSize="18" FontWeight="Bold" Foreground="#FFC8BEBE" HorizontalAlignment="Center"/>
+                        <TextBlock x:Name="TotalAmountTextBlock" Text="0.00" FontSize="24" FontWeight="Bold" Margin="10"
+                           Foreground="White" HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+                    <!-- Print Report Button -->
+                    <Button x:Name="PrintReportButton" Content="PRINT" FontStyle="Normal" Width="120" Height="36" FontSize="14" 
+                    Foreground="Black" Background="#FF9DFF59" BorderBrush="#FF15A90E" BorderThickness="1.5"
+                    Style="{StaticResource RoundedButtonStyle}"
+                    HorizontalAlignment="Center" Margin="0,20,0,0" Click="PrintBillButton_Click" FontFamily="Segoe UI Semibold"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+        
     </Grid>
 </Window>

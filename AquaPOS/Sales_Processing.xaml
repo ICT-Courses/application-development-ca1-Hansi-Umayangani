@@ -162,14 +162,14 @@
                 <TextBlock Text="BILLING" FontSize="16" FontWeight="Bold" Foreground="#FF1D1B1B" Margin="2,10,0,0" TextAlignment="Left"/>
 
                 <!-- Bill Date Label & DatePicker -->
-                <Label Content="Bill Date" Foreground="Black" FontSize="16" FontWeight="Bold" 
+                <Label Content="Bill Date" Foreground="Black" FontSize="16" FontWeight="Normal" 
                        HorizontalAlignment="Center" Margin="0,30,0,0" FontFamily="Segoe UI Variable Display Semibold"/>
                 <DatePicker x:Name="BillDatePicker" Width="170" Height="28" FontSize="14" 
                             BorderBrush="#FF73AEFF" BorderThickness="1" HorizontalAlignment="Center"/>
 
                 <!-- Product Name Label & Search ComboBox -->
                 <Label Content="Product Name" Foreground="Black" FontSize="16"
-                        HorizontalAlignment="Center" Margin="0,20,0,0" FontFamily="Segoe UI Variable Small Semibold" FontWeight="Bold"/>
+                        HorizontalAlignment="Center" Margin="0,20,0,0" FontFamily="Segoe UI Variable Small Semibold" FontWeight="Normal"/>
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                     <ComboBox x:Name="cmbSearchProduct"
                               Width="138" Height="32"
@@ -188,14 +188,14 @@
 
 
                 <!-- Quantity Label & TextBox -->
-                <Label Content="Quantity" Foreground="Black" FontSize="16" FontWeight="Bold" 
+                <Label Content="Quantity" Foreground="Black" FontSize="16" FontWeight="Normal" 
                        HorizontalAlignment="Center" Margin="0,10,0,0" FontFamily="Segoe UI Variable Text Semibold"/>
                 <TextBox x:Name="QuantityTextBox" Width="170" Height="32" FontSize="14"
                          Style="{StaticResource RoundedTextBoxStyle}"
                          HorizontalAlignment="Center" BorderBrush="#FF0807A0" BorderThickness="1"/>
 
                 <!-- Add to Bill Button -->
-                <Button x:Name="AddToBillButton" Content="Add to Bill" Width="130" Height="34" FontSize="14" FontWeight="Bold" 
+                <Button x:Name="AddToBillButton" Content="ADD TO BILL" Width="130" Height="34" FontSize="14" FontFamily="Segoe UI Semibold" 
                         Foreground="Black" Background="#FF8BF1ED" BorderBrush="#FF377EDF" BorderThickness="1.5"
                         Style="{StaticResource RoundedButtonStyle}"
                         HorizontalAlignment="Center" Margin="0,30,0,0" Click="AddToBillButton_Click"/>
@@ -208,7 +208,7 @@
                 </StackPanel>
 
                 <!-- Print Bill Button -->
-                <Button x:Name="PrintBillButton" Content="Print Bill" Width="130" Height="34" FontSize="14" FontWeight="Bold" 
+                <Button x:Name="PrintBillButton" Content="PRINT BILL" Width="130" Height="34" FontSize="14" FontFamily="Segoe UI Semibold"
                         Foreground="Black" Background="#FF9DFF59" BorderBrush="#FF15A90E" BorderThickness="1"
                         Style="{StaticResource RoundedButtonStyle}"
                         HorizontalAlignment="Center" Margin="0,25,0,0" Click="PrintBillButton_Click"/>

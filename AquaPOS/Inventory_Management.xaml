@@ -290,12 +290,12 @@
                     <WrapPanel Orientation="Horizontal" Margin="25,20,25,20">
                         <!-- Update Stock Button -->
                         <Button Content="UPDATE" Style="{StaticResource RoundedButtonStyle}" Width="120" Height="36" 
-                                FontSize="14" Foreground="Black" Background="#FF47CCCC" BorderBrush="#FF3F43CE" BorderThickness="2.5" 
+                                FontSize="14" Foreground="Black" FontFamily="Segoe UI Semibold" Background="#FF47CCCC" BorderBrush="#FF3F43CE" BorderThickness="1.5" 
                                 Margin="10" Click="UpdateStock_Click"/>
 
                         <!-- Print Stock Button -->
                         <Button Content="PRINT" Style="{StaticResource RoundedButtonStyle}" Width="120" Height="36" 
-                                FontSize="14" Foreground="Black" Background="#FF9DFF59" BorderBrush="#FF15A90E" BorderThickness="2.5" Margin="10" Click="PrintStock_Click"/>
+                                FontSize="14" FontFamily="Segoe UI Semibold" Foreground="Black" Background="#FF9DFF59" BorderBrush="#FF15A90E" BorderThickness="1.5" Margin="10" Click="PrintStock_Click"/>
                     </WrapPanel>
 
                 </WrapPanel>

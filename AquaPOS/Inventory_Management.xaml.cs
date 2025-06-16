@@ -287,129 +287,119 @@ namespace AquaPOS
                 XFont headerFont = new XFont("Times New Roman", 12, XFontStyleEx.Bold);
                 XFont regularFont = new XFont("Times New Roman", 10, XFontStyleEx.Regular);
 
-                // Page dimensions
-                XUnit pageWidth = page.Width;
-                XUnit pageHeight = page.Height;
+                // Margins and metrics
+                XUnit leftMargin = XUnit.FromPoint(40);
+                XUnit y = XUnit.FromPoint(40);
+                double pageWidthPt = page.Width.Point;
+                double usableWidth = pageWidthPt - 2 * leftMargin.Point;
+                int columns = 7;
+                double colWidthPt = usableWidth / columns;
 
-                // Margins and table settings
-                double leftMargin = 40;
-                int numColumns = 6;
-                double tableWidth = pageWidth.Point - 2 * leftMargin;
-                double columnWidth = tableWidth / numColumns;
+                // Draw report title
+                gfx.DrawString("Stock Report", titleFont, XBrushes.Black,
+                    new XRect(0, y.Point, page.Width.Point, XUnit.FromPoint(20).Point), XStringFormats.TopCenter);
 
-                // Starting Y position
-                double yPoint = 40;
+                y += XUnit.FromPoint(40);
 
-                // Draw title (centered)
-                gfx.DrawString(
-                    "Stock Report",
-                    titleFont,
-                    XBrushes.Black,
-                    new XRect(0, yPoint, pageWidth.Point, 30), // XRect width should use the actual point value
-                    XStringFormats.TopCenter
-                );
+                // Table headers
+                string[] headers = { "ID", "Category", "Product Name", "Quantity", "Unit Price (Rs.)", "Last Update On" };
+                double[] columnWidths = {
+                    40,  // ID
+                    80,  // Category
+                    120, // Product Name
+                    100,  // Quantity
+                    100,  // Unit Price
+                    100   // Last Update On
+                };
+                columns = headers.Length;
 
-                yPoint += 40; // Space below title
+                double xPos = leftMargin.Point;
 
-                // Define headers
-                string[] headers = { "ID", "Category", "Product Name", "Price (Rs.)", "Qantity", "Date Updated" };
-
-                // Draw table header
-                for (int i = 0; i < headers.Length; i++)
+                for (int i = 0; i < columns; i++)
                 {
-                    gfx.DrawString(
-                        headers[i],
-                        headerFont,
-                        XBrushes.Black,
-                        new XRect(leftMargin + i * columnWidth, yPoint, columnWidth, 20),
-                        XStringFormats.TopCenter
-                    );
+                    gfx.DrawString(headers[i], headerFont, XBrushes.Black,
+                        new XRect(xPos, y.Point, columnWidths[i], 20),
+                        XStringFormats.TopCenter);
+
+                    xPos += columnWidths[i];
                 }
+                y += XUnit.FromPoint(20);
 
-                yPoint += 20;
+                double tableStartX = leftMargin.Point;
+                double tableWidth = columnWidths.Sum();
 
-                // Draw underline below header
-                gfx.DrawLine(
-                    XPens.Black,
-                    new XUnitPt(leftMargin),
-                    new XUnitPt(yPoint),
-                    new XUnitPt(pageWidth.Point - leftMargin),
-                    new XUnitPt(yPoint)
-                );
+                // Underline
+                gfx.DrawLine(XPens.Black, tableStartX, y.Point, tableStartX + tableWidth, y.Point);
+                y += XUnit.FromPoint(10);
 
-                yPoint += 20; // Gap before data starts
+                int rowCount = StockItems.Count;
+                int currentRowIndex = 0;
 
-                int pageNumber = 1;
-
+                // Table rows
                 foreach (var item in StockItems)
                 {
-                    bool isQtyNumber = int.TryParse(item.Quantity.ToString(), out int qtyVal);
-                    XBrush brush = (isQtyNumber && qtyVal < 5) ? XBrushes.Red : XBrushes.Black;
-
-                    string priceText = double.TryParse(item.UnitPrice.ToString(), out double priceVal)
-                        ? priceVal.ToString("F2")
-                        : item.UnitPrice.ToString();
-
-                    string quantityText = item.Quantity.ToString();
-
-                    string dateText;
-                    if (DateTime.TryParse(item.DateUpdated?.ToString(), out DateTime dateVal))
-                    {
-                        dateText = dateVal.ToString("yyyy-MM-dd");
-                    }
-                    else
-                    {
-                        dateText = item.DateUpdated?.ToString();
-                    }
-
-                    // Prepare row data
-                    string[] dataItems = {
-                        item.ProductID.ToString(),
-                        item.Category?.ToString(),
-                        item.ProductName?.ToString(),
-                        priceText,
-                        quantityText,
-                        dateText
+                    string[] row = {
+                    item.ProductID.ToString(),
+                    item.Category ?? "",
+                    item.ProductName ?? "",
+                    item.Quantity.ToString(),
+                    $"Rs. {item.UnitPrice:F2}",
+                    item.DateUpdated
                     };
 
-                    // Draw each cell
-                    for (int i = 0; i < dataItems.Length; i++)
+                    double rowX = leftMargin.Point;
+
+                    for (int i = 0; i < columns; i++)
                     {
-                    gfx.DrawString(
-                        dataItems[i],
-                        regularFont,
-                        (i == 4) ? brush : XBrushes.Black, // Qty column in red if low stock
-                        new XRect(leftMargin + i * columnWidth, yPoint, columnWidth, 15),
-                        XStringFormats.TopCenter
+                        gfx.DrawString(
+                            row[i],
+                            regularFont,
+                            XBrushes.Black,
+                            new XRect(rowX, y.Point, columnWidths[i], 20),
+                            XStringFormats.TopCenter);
+
+                        rowX += columnWidths[i];
+                    }
+
+                    y += XUnit.FromPoint(15); 
+
+                    // Draw horizontal line UNDER the row — only if NOT the last row
+                    if (currentRowIndex < rowCount - 1)
+                    {
+                        gfx.DrawLine(
+                            XPens.LightGray,
+                            new XPoint(tableStartX, y.Point),
+                            new XPoint(tableStartX + tableWidth, y.Point)
                         );
                     }
 
-                    yPoint += 15;
+                    currentRowIndex++;
 
-                    // Line between rows
-                    gfx.DrawLine(
-                        XPens.LightGray,
-                        new XUnitPt(leftMargin),
-                        new XUnitPt(yPoint),
-                        new XUnitPt(pageWidth.Point - leftMargin),
-                        new XUnitPt(yPoint)
-                        );
+                    // Page break check
+                    if (y.Point > page.Height.Point - 60)
+                    {
+                        page = document.AddPage();
+                        gfx = XGraphics.FromPdfPage(page);
+                        y = XUnit.FromPoint(40);
+
+                        // Re-draw table header on new page
+                        double headerX = leftMargin.Point;
+                        for (int i = 0; i < columns; i++)
+                        {
+                            gfx.DrawString(headers[i], headerFont, XBrushes.Black,
+                                new XRect(headerX, y.Point, columnWidths[i], 20),
+                                XStringFormats.TopCenter);
+                            headerX += columnWidths[i];
+                        }
+                        y += XUnit.FromPoint(30);
+                    }
                 }
 
-                    // Footer: page number
-                    gfx.DrawString(
-                        $"Page {pageNumber}",
-                        regularFont,
-                        XBrushes.Gray,
-                        new XRect(0, pageHeight.Point - 40, pageWidth.Point, 20),
-                        XStringFormats.TopCenter
-                        );
-
-                    // Save and open the document
-                    string filename = "StockReport.pdf";
-                    document.Save(filename);
-                    Process.Start(new ProcessStartInfo(filename) { UseShellExecute = true });
-                    }
+                // Save and open the document
+                string filename = "StockReport.pdf";
+                document.Save(filename);
+                Process.Start(new ProcessStartInfo(filename) { UseShellExecute = true });
+            }
 
             catch (Exception ex)
             {
@@ -421,7 +411,7 @@ namespace AquaPOS
 
         public class StockItem
     {
-        public int ProductID { get; set; } // Auto-generated index
+        public int ProductID { get; set; }
         public string Category { get; set; }
         public string ProductName { get; set; }
         public double UnitPrice { get; set; }

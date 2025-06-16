@@ -110,7 +110,7 @@ namespace AquaPOS
 
         }
 
-        private void PrintBillButton_Click(object sender, RoutedEventArgs e)
+        private void PrintReportButton_Click(object sender, RoutedEventArgs e)
         {
             try
             {

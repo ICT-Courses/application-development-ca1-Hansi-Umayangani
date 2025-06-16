@@ -234,7 +234,12 @@ namespace AquaPOS
                     // Update existing item
                     existingItem.Category = txtCategory.Text;
                     existingItem.UnitPrice = double.TryParse(txtUnitPrice.Text, out var price) ? price : 0;
-                    existingItem.Quantity = int.TryParse(txtQuantity.Text, out var qty) ? qty : 0;
+
+                    if (int.TryParse(txtQuantity.Text, out var qty))
+                    {
+                        existingItem.Quantity += qty;
+                    }
+
                     existingItem.DateUpdated = dpDateUpdated.Text;
 
                     DatabaseInitializer.UpdateStockItem(existingItem);

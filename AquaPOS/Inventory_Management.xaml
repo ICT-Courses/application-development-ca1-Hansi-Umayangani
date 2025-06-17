@@ -282,7 +282,9 @@
                     <!-- Date Updated -->
                     <StackPanel Margin="10">
                         <TextBlock Text="Last Updated On" FontSize="14" Foreground="#FFA2A2C8" Height="24"/>
-                        <DatePicker x:Name="dpDateUpdated" Width="168" Height="26" BorderBrush="#FF0807A0" BorderThickness="1.5"/>
+                        <DatePicker x:Name="dpDateUpdated" SelectedDateFormat="Short"
+                            Text="{Binding DateUpdated, StringFormat='yyyy-MM-dd'}"
+                            Width="168" Height="26" BorderBrush="#FF0807A0" BorderThickness="1.5"/>
                     </StackPanel>
 
 

@@ -210,7 +210,7 @@ namespace AquaPOS
                         existingItem.Quantity += qty;
                     }
 
-                    existingItem.DateUpdated = dpDateUpdated.Text;
+                    existingItem.DateUpdated = dpDateUpdated.SelectedDate?.ToString("yyyy-MM-dd") ?? DateTime.Now.ToString("yyyy-MM-dd");
 
                     DatabaseInitializer.UpdateStockItem(existingItem);
                     StockDataGrid.Items.Refresh();

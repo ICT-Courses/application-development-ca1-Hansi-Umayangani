@@ -81,10 +81,10 @@
                                           BorderBrush="#FF0807A0" BorderThickness="2.5"
                                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                           Loaded="CmbSearchProduct_Loaded"
-                                          IsTextSearchEnabled="False"
+                                          IsTextSearchEnabled="True"
                                           PreviewTextInput="CmbSearchProduct_PreviewTextInput"
                                           SelectionChanged="CmbSearchProductDetails_SelectionChanged"/>
-                                <Button Width="32" Height="32" Margin="2,0,0,0" BorderBrush="#FF73AEFF" BorderThickness="1.5" Click="SearchProduct_Click">
+                                <Button Width="32" Height="32" Margin="2,0,0,0" BorderBrush="#FF73AEFF" BorderThickness="1.5" Click="SearchProductDetails_Click">
                                     <Image Source="/Resources/Images/Button_Icons/Search_Icon.png" Stretch="Uniform" Height="20" Width="20" />
                                 </Button>
                             </StackPanel>
@@ -178,7 +178,7 @@
                               BorderBrush="#FF73AEFF" BorderThickness="2.5"
                               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                               Loaded="CmbSearchProduct_Loaded"
-                              IsTextSearchEnabled="False"
+                              IsTextSearchEnabled="True"
                               PreviewTextInput="CmbSearchProduct_PreviewTextInput"
                               SelectionChanged="CmbSearchProductDetails_SelectionChanged" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"/>
                     <Button Width="32" Height="32" Margin="2,0,0,0" BorderBrush="#FF73AEFF" BorderThickness="1.5" Click="SearchProduct_Click">

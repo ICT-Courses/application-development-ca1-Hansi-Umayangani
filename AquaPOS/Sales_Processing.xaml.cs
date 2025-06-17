@@ -28,40 +28,42 @@ namespace AquaPOS
 
         }
 
-        private void CmbSearchProduct_SelectionChanged(object sender, RoutedEventArgs e)
+        private void LoadProductsFromDatabase()
         {
-            // Handle the search functionality when the search button is clicked
-            if (cmbSearchProduct.SelectedItem != null)
-            {
-                string selectedProductName = cmbSearchProduct.SelectedItem.ToString();
-                var selectedProduct = productList.Find(p => p.ProductName == selectedProductName);
+            productList.Clear();
+            cmbSearchProductDetails.Items.Clear();
 
-                if (selectedProduct != null)
+            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
+            {
+                try
                 {
-                    // Update text boxes with selected product details
-                    txtProductNameResult.Text = selectedProduct.ProductName;
-                    txtCategoryResult.Text = selectedProduct.Category;
-                    txtUnitPriceResult.Text = selectedProduct.UnitPrice.ToString("F2");
-                    txtAvailableQtyResult.Text = selectedProduct.AvailableQty.ToString();
+                    conn.Open();
+                    string query = "SELECT ProductID, ProductName, Category, UnitPrice, Quantity FROM StockItems";
+                    using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
+                    {
+                        using (SQLiteDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                var product = new Product
+                                {
+                                    ProductID = int.Parse(reader["ProductID"].ToString()),
+                                    ProductName = reader["ProductName"].ToString(),
+                                    Category = reader["Category"].ToString(),
+                                    UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
+                                    AvailableQty = int.Parse(reader["Quantity"].ToString())
+                                };
+                                productList.Add(product);
+                                cmbSearchProductDetails.Items.Add(product.ProductName);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error loading products: " + ex.Message);
                 }
             }
-            else
-            {
-                txtProductNameResult.Clear();
-                txtCategoryResult.Clear();
-                txtUnitPriceResult.Clear();
-                txtAvailableQtyResult.Clear();
-            }
-        }
-
-        private void CmbSearchProduct_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            // Optional: Handle preview text input in combo box
-        }
-
-        private void CmbSearchProduct_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Optional: Handle when the combo box is loaded
         }
 
         private void LoadProductNamesFromDatabase()
@@ -102,6 +104,66 @@ namespace AquaPOS
             }
         }
 
+        private void CmbSearchProduct_SelectionChanged(object sender, RoutedEventArgs e)
+        {
+            if (cmbSearchProduct.SelectedItem != null)
+            {
+                string selectedProductName = cmbSearchProduct.SelectedItem.ToString();
+                var selectedProduct = productList.Find(p => p.ProductName == selectedProductName);
+
+                if (selectedProduct != null)
+                {
+                    txtProductNameResult.Text = selectedProduct.ProductName;
+                    txtCategoryResult.Text = selectedProduct.Category;
+                    txtUnitPriceResult.Text = selectedProduct.UnitPrice.ToString("F2");
+                    txtAvailableQtyResult.Text = selectedProduct.AvailableQty.ToString();
+                }
+            }
+            else
+            {
+                txtProductNameResult.Clear();
+                txtCategoryResult.Clear();
+                txtUnitPriceResult.Clear();
+                txtAvailableQtyResult.Clear();
+            }
+        }
+
+        private void SearchProduct_Click(object sender, RoutedEventArgs e)
+        {
+            string enteredProductName = cmbSearchProduct.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(enteredProductName))
+            {
+                MessageBox.Show("Please enter a product name.", "Input Required", MessageBoxButton.OK, MessageBoxImage.Information);
+                ClearProductResultFields();
+                return;
+            }
+
+            var selectedProduct = productList.Find(p => p.ProductName.Equals(enteredProductName, StringComparison.OrdinalIgnoreCase));
+
+            if (selectedProduct != null)
+            {
+                txtProductNameResult.Text = selectedProduct.ProductName;
+                txtCategoryResult.Text = selectedProduct.Category;
+                txtUnitPriceResult.Text = selectedProduct.UnitPrice.ToString("F2");
+                txtAvailableQtyResult.Text = selectedProduct.AvailableQty.ToString();
+            }
+            else
+            {
+                MessageBox.Show("Product not found.", "Search Result", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ClearProductResultFields();
+            }
+        }
+
+        private void CmbSearchProduct_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            
+        }
+
+        private void CmbSearchProduct_Loaded(object sender, RoutedEventArgs e)
+        {
+            
+        }
 
         private void CmbSearchProductDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -127,72 +189,74 @@ namespace AquaPOS
             }
         }
 
+        private void SearchProductDetails_Click(object sender, RoutedEventArgs e)
+        {
+            string enteredProductName = cmbSearchProductDetails.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(enteredProductName))
+            {
+                MessageBox.Show("Please enter a product name.", "Input Required", MessageBoxButton.OK, MessageBoxImage.Information);
+                ClearProductResultFields();
+                return;
+            }
+
+            var selectedProduct = productList.Find(p => p.ProductName.Equals(enteredProductName, StringComparison.OrdinalIgnoreCase));
+
+            if (selectedProduct != null)
+            {
+                txtProductNameResult.Text = selectedProduct.ProductName;
+                txtCategoryResult.Text = selectedProduct.Category;
+                txtUnitPriceResult.Text = selectedProduct.UnitPrice.ToString("F2");
+                txtAvailableQtyResult.Text = selectedProduct.AvailableQty.ToString();
+            }
+            else
+            {
+                MessageBox.Show("Product not found.", "Search Result", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ClearProductResultFields();
+            }
+        }
+
+        private void ClearProductResultFields()
+        {
+            txtProductNameResult.Clear();
+            txtCategoryResult.Clear();
+            txtUnitPriceResult.Clear();
+            txtAvailableQtyResult.Clear();
+        }
+
         private void CmbSearchProductDetails_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            // Optional: Handle preview text input in combo box
+            
         }
 
         private void CmbSearchProductDetails_Loaded(object sender, RoutedEventArgs e)
         {
-            // Optional: Handle when the combo box is loaded
-        }
-
-        private void LoadProductsFromDatabase()
-        {
-            productList.Clear();
-            cmbSearchProductDetails.Items.Clear();
-
-            using (SQLiteConnection conn = new SQLiteConnection(connectionString))
-            {
-                try
-                {
-                    conn.Open();
-                    string query = "SELECT ProductID, ProductName, Category, UnitPrice, Quantity FROM StockItems";
-                    using (SQLiteCommand cmd = new SQLiteCommand(query, conn))
-                    {
-                        using (SQLiteDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                var product = new Product
-                                {
-                                    ProductID = int.Parse(reader["ProductID"].ToString()),
-                                    ProductName = reader["ProductName"].ToString(),
-                                    Category = reader["Category"].ToString(),
-                                    UnitPrice = double.Parse(reader["UnitPrice"].ToString()),
-                                    AvailableQty = int.Parse(reader["Quantity"].ToString())
-                                };
-                                productList.Add(product);
-                                cmbSearchProductDetails.Items.Add(product.ProductName);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Error loading products: " + ex.Message);
-                }
-            }
+            
         }
 
         private void TxtProductNameResult_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Optional: React to changes in ProductName textbox
+            
         }
 
         private void TxtCategoryResult_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Optional: React to changes in Category textbox
+            
         }
 
         private void TxtUnitPriceResult_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Optional: React to changes in UnitPrice textbox
+            
         }
 
         private void TxtAvailableQtyResult_TextChanged(object sender, TextChangedEventArgs e)
         {
-            // Optional: React to changes in AvailableQty textbox
+            
+        }
+
+        private void StockDataGrid_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
+        {
+
         }
 
         private void AddToBillButton_Click(object sender, RoutedEventArgs e)
@@ -206,7 +270,7 @@ namespace AquaPOS
                 {
                     var billItem = new BillingItem
                     {
-                        ProductID = selectedProduct.ProductID, // You will need to load ProductID from DB too
+                        ProductID = selectedProduct.ProductID, 
                         ProductName = selectedProduct.ProductName,
                         UnitPrice = selectedProduct.UnitPrice,
                         Quantity = qty
@@ -218,7 +282,7 @@ namespace AquaPOS
             }
             else
             {
-                MessageBox.Show("Please select a product and enter a valid quantity.");
+                MessageBox.Show("Please enter a valid quantity.");
             }
         }
 
@@ -239,11 +303,6 @@ namespace AquaPOS
                 billItems.Remove(item);
                 UpdateTotalAmount();
             }
-        }
-
-        private void StockDataGrid_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
-        {
-            // TODO: Handle selection change in the stock data grid
         }
 
         private void PrintBillButton_Click(object sender, RoutedEventArgs e)
@@ -372,8 +431,8 @@ namespace AquaPOS
                 gfx.DrawString(amountText, subHeaderFont, XBrushes.Black, new XPoint(amountX, yPoint), XStringFormats.TopLeft);
 
                 // Draw double underline under the amount
-                double underlineY1 = yPoint + amountSize.Height + 2; // first line slightly below text
-                double underlineY2 = underlineY1 + 2;               // second line slightly below the first
+                double underlineY1 = yPoint + amountSize.Height + 2; 
+                double underlineY2 = underlineY1 + 2;               
                 gfx.DrawLine(XPens.Black, amountX, underlineY1, amountX + amountSize.Width, underlineY1);
                 gfx.DrawLine(XPens.Black, amountX, underlineY2, amountX + amountSize.Width, underlineY2);
 
@@ -403,11 +462,6 @@ namespace AquaPOS
             user_Login.Show();
             this.Hide();
         }
-
-        private void SearchProduct_Click(object sender, RoutedEventArgs e)
-        {
-
-        }  
     }
 
     public class Product

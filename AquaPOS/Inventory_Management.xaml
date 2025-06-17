@@ -16,38 +16,185 @@
     <Window.Resources>
         <!-- Rounded Button Style -->
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border 
-                        x:Name="border"
-                        Background="{TemplateBinding Background}" 
-                        BorderBrush="{TemplateBinding BorderBrush}" 
-                        BorderThickness="{TemplateBinding BorderThickness}" 
-                        CornerRadius="20"
-                        SnapsToDevicePixels="True">
-                            <ContentPresenter 
-                            HorizontalAlignment="Center" 
-                            VerticalAlignment="Center" 
-                            RecognizesAccessKey="True"/>
+                            x:Name="border"
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="20"
+                            SnapsToDevicePixels="True">
+                                <ContentPresenter 
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center" 
+                                RecognizesAccessKey="True"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover: Scale up -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                                     To="1.05" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                                     To="1.05" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                                     To="1" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                                     To="1" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+
+                            <!-- Click: Quick bounce effect -->
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                                 To="0.95" Duration="0:0:0.05" AutoReverse="True"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                                 To="0.95" Duration="0:0:0.05" AutoReverse="True"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <!-- Rounded TextBox Style -->
+        <!-- Rounded Text Box Style -->
         <Style x:Key="RoundedTextBoxStyle" TargetType="Control">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Control">
-                        <Border CornerRadius="8" BorderBrush="#FF0807A0" BorderThickness="2.5" Background="White">
+                        <Border CornerRadius="8" 
+        BorderBrush="#FF0807A0" 
+        BorderThickness="2.5" 
+        Background="White">
                             <ScrollViewer Margin="5" x:Name="PART_ContentHost"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+
+            <Style.Triggers>
+                <!-- Alive animation on focus -->
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                         To="1.03" Duration="0:0:0.08"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                         To="1.03" Duration="0:0:0.08"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                         To="1" Duration="0:0:0.08"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                         To="1" Duration="0:0:0.08"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
         </Style>
+
+        <!-- Merged Icon Alive Button Style -->
+        <Style x:Key="MergedIconAliveButtonStyle" TargetType="Button">
+            <!-- From IconButtonStyle -->
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Focusable" Value="False"/>
+
+            <!-- From AliveIconButtonStyle -->
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid>
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover: Scale up -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                                     To="1.2" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                                     To="1.2" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                                     To="1" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                                     To="1" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+
+                            <!-- Click: Quick bounce effect -->
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                                 To="0.9" Duration="0:0:0.05" AutoReverse="True"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                                 To="0.9" Duration="0:0:0.05" AutoReverse="True"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
 
         <local:LowStockToBrushConverter x:Key="LowStockBrush"/>
 
@@ -177,7 +324,7 @@
                     </DataGrid.Resources>
 
                     <!-- ... Keep your existing DataGrid.Resources and Columns here ... -->
-                    <!-- ✅ 2. Columns -->
+                    
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Binding="{Binding ProductID}" Width="40" 
                                             ElementStyle="{StaticResource CenterTextStyle}"/>
@@ -214,25 +361,28 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <!-- Edit Button -->
-                                        <Button Click="EditButton_Click" 
+                                        <Button Style="{StaticResource MergedIconAliveButtonStyle}"
+                                                Click="EditButton_Click"
+                                                ToolTip="Edit"
                                                 Background="Transparent" 
                                                 BorderBrush="Transparent" 
                                                 Cursor="Hand" 
                                                 Padding="0" 
                                                 Margin="0,0,10,0">
                                             <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Edit_Button_Icon.png" 
-                                                   Width="20" Height="20" Stretch="Uniform"/>
+                                                   Width="20" Height="14" Stretch="Uniform"/>
                                         </Button>
 
                                         <!-- Delete Button -->
-                                        <Button Click="DeleteButton_Click" 
+                                        <Button Style="{StaticResource MergedIconAliveButtonStyle}"
+                                                Click="DeleteButton_Click" 
                                                 ToolTip="Delete" 
                                                 Background="Transparent" 
                                                 BorderBrush="Transparent" 
                                                 Cursor="Hand" 
-                                                Padding="0,0,10,0">
+                                                Padding="5,0,10,0">
                                             <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Delete_Button_Icon.png" 
-                                                   Width="20" Height="20" Stretch="Uniform"/>
+                                                   Width="15" Height="15" Stretch="Uniform"/>
                                         </Button>
                                     </StackPanel>
                                 </DataTemplate>
@@ -307,7 +457,7 @@
                     </StackPanel>
 
 
-                    <!--Row 4: Update and Print Buttons -->
+                    <!-- Update and Print Buttons -->
                     <WrapPanel Orientation="Horizontal" Margin="25,20,25,20">
                         <!-- Update Stock Button -->
                         <Button Content="UPDATE" Style="{StaticResource RoundedButtonStyle}" Width="120" Height="36" 

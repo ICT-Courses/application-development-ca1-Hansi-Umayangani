@@ -49,6 +49,8 @@
             </Setter>
         </Style>
 
+        <local:LowStockToBrushConverter x:Key="LowStockBrush"/>
+
     </Window.Resources>
 
     <Grid>
@@ -179,14 +181,31 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Binding="{Binding ProductID}" Width="40" 
                                             ElementStyle="{StaticResource CenterTextStyle}"/>
+                        
                         <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="100" 
                                             ElementStyle="{StaticResource CenterTextStyle}"/>
-                        <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" Width="160" 
+
+                        <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" Width="160">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource CenterTextStyle}">
+                                    <Setter Property="Foreground" 
+                                        Value="{Binding Quantity, Converter={StaticResource LowStockBrush}}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="Unit Price (Rs.)" Binding="{Binding UnitPrice}" Width="100" 
                                             ElementStyle="{StaticResource CenterTextStyle}"/>
-                        <DataGridTextColumn Header="Unit Price (Rs.)" Binding="{Binding UnitPrice}" Width="120" 
-                                            ElementStyle="{StaticResource CenterTextStyle}"/>
-                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="80" 
-                                            ElementStyle="{StaticResource CenterTextStyle}"/>
+
+                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="100">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource CenterTextStyle}">
+                                    <Setter Property="Foreground" 
+                                        Value="{Binding Quantity, Converter={StaticResource LowStockBrush}}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
                         <DataGridTextColumn Header="Last Updated On" Binding="{Binding DateUpdated}" Width="140"
                                             ElementStyle="{StaticResource CenterTextStyle}"/>
 

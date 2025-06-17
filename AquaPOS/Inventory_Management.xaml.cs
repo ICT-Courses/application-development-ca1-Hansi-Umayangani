@@ -353,22 +353,29 @@ namespace AquaPOS
 
                     for (int i = 0; i < columns; i++)
                     {
+                        // Set brush color to red if Quantity < 5 and column is Product Name or Quantity
+                        bool isLowStock = item.Quantity < 5;
+                        bool isProductNameOrQuantity = (i == 2 || i == 3); // Product Name = index 2, Quantity = index 3
+
+                        XBrush brush = (isLowStock && isProductNameOrQuantity) ? XBrushes.Red : XBrushes.Black;
+
                         gfx.DrawString(
                             row[i],
                             regularFont,
-                            XBrushes.Black,
+                            brush,
                             new XRect(rowX, y.Point, columnWidths[i], 20),
                             XStringFormats.TopCenter);
 
                         rowX += columnWidths[i];
                     }
 
-                    y += XUnit.FromPoint(15); 
+                    y += XUnit.FromPoint(15); // Move down after text
 
                     // Draw horizontal line UNDER the row — only if NOT the last row
                     if (currentRowIndex < rowCount - 1)
                     {
-                        gfx.DrawLine(XPens.LightGray,
+                        gfx.DrawLine(
+                            XPens.LightGray,
                             new XPoint(tableStartX, y.Point),
                             new XPoint(tableStartX + tableWidth, y.Point)
                         );
@@ -441,15 +448,9 @@ namespace AquaPOS
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is int quantity)
+            if (value is int quantity && quantity < 5)
             {
-                // Customize these thresholds and colors as needed
-                if (quantity <= 5)
-                    return Brushes.Red;
-                else if (quantity <= 10)
-                    return Brushes.Orange;
-                else
-                    return Brushes.Black;
+                return Brushes.Red;
             }
             return Brushes.Black;
         }

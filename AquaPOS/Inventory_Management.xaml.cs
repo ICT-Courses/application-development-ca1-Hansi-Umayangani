@@ -9,6 +9,9 @@ using System.Data.SQLite;
 using System.Windows.Input;
 using System.Collections.Generic;
 using System.Linq;
+using System.Globalization;
+using System.Windows.Data;
+using System.Windows.Media;
 
 namespace AquaPOS
 {
@@ -28,6 +31,14 @@ namespace AquaPOS
             StockDataGrid.ItemsSource = StockItems;
             LoadStockItemsFromDatabase();
             LoadStockItems();
+
+            // Sort StockItems from Oldest to Newest by DateUpdated
+            StockItems = new ObservableCollection<StockItem>(
+                StockItems.OrderBy(item => DateTime.TryParse(item.DateUpdated, out var date) ? date : DateTime.MaxValue)
+            );
+
+            StockDataGrid.ItemsSource = StockItems; 
+
             PopulateProductComboBox();
         }
 
@@ -235,12 +246,29 @@ namespace AquaPOS
                     StockDataGrid.Items.Refresh();
                 }
 
+                SortStockItemsByDate();
                 ClearFields();
             }
             else
             {
                 MessageBox.Show("Product Name is required.");
             }
+        }
+
+        private void SortStockItemsByDate()
+        {
+            var sortedItems = StockItems
+                .OrderByDescending(item => DateTime.Parse(item.DateUpdated))
+                .ToList();
+
+            StockItems.Clear();
+
+            foreach (var item in sortedItems)
+            {
+                StockItems.Add(item);
+            }
+
+            StockDataGrid.Items.Refresh();
         }
 
         private void PrintStock_Click(object sender, RoutedEventArgs e)
@@ -305,7 +333,11 @@ namespace AquaPOS
                 int rowCount = StockItems.Count;
                 int currentRowIndex = 0;
 
-                // Table rows
+                // // Table rows (sorted by DateUpdated descending)
+                var sortedStockItems = StockItems
+                    .OrderBy(item => DateTime.TryParse(item.DateUpdated, out var date) ? date : DateTime.MaxValue)
+                    .ToList();
+
                 foreach (var item in StockItems)
                 {
                     string[] row = {
@@ -336,8 +368,7 @@ namespace AquaPOS
                     // Draw horizontal line UNDER the row — only if NOT the last row
                     if (currentRowIndex < rowCount - 1)
                     {
-                        gfx.DrawLine(
-                            XPens.LightGray,
+                        gfx.DrawLine(XPens.LightGray,
                             new XPoint(tableStartX, y.Point),
                             new XPoint(tableStartX + tableWidth, y.Point)
                         );
@@ -406,6 +437,28 @@ namespace AquaPOS
         }
     }
 
+    public class LowStockToBrushConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is int quantity)
+            {
+                // Customize these thresholds and colors as needed
+                if (quantity <= 5)
+                    return Brushes.Red;
+                else if (quantity <= 10)
+                    return Brushes.Orange;
+                else
+                    return Brushes.Black;
+            }
+            return Brushes.Black;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     public class StockItem
     {

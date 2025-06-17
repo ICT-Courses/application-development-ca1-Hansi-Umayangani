@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using PdfSharp.Pdf;
 using PdfSharp.Drawing;
 using System.Diagnostics;
@@ -60,13 +59,6 @@ namespace AquaPOS
             }
         }
 
-        private void PopulateProductComboBox()
-        {
-            var productNames = StockItems.Select(item => item.ProductName).ToList();
-            cmbSearchProduct.ItemsSource = productNames;
-        }
-
-
         private void LoadStockItems()
         {
             using (SQLiteConnection conn = new SQLiteConnection(DatabaseInitializer.ConnectionString))
@@ -86,33 +78,72 @@ namespace AquaPOS
             }
         }
 
-
-        private void DashboardButton_Click(object sender, RoutedEventArgs e)
+        private void PopulateProductComboBox()
         {
-            Dashboard dashboard = new Dashboard();
-            dashboard.Show();
-            this.Close();
+            var productNames = StockItems.Select(item => item.ProductName).ToList();
+            cmbSearchProduct.ItemsSource = productNames;
         }
 
-        private void InventoryManagementButton_Click(object sender, RoutedEventArgs e)
+        private void CmbSearchProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Inventory_Management inventory_Management = new Inventory_Management();
-            inventory_Management.Show();
-            this.Close();
+            // Optional: Handle preview text input in combo box
         }
 
-        private void SalesReportsButton_Click(object sender, RoutedEventArgs e)
+        private void CmbSearchProduct_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            Sales_Reports sales_Reports = new Sales_Reports();
-            sales_Reports.Show();
-            this.Close();
+            // Optional: Handle preview text input in combo box
         }
 
-        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        private void CmbSearchProduct_Loaded(object sender, RoutedEventArgs e)
         {
-            User_Login user_Login = new User_Login();
-            user_Login.Show(); // Show the login window
-            this.Hide(); // Close the current window
+            // Optional: Handle when the combo box is loaded
+        }
+
+        private StockItem FindItemByProductName(string productName)
+        {
+            foreach (var item in StockItems)
+            {
+                if (item.ProductName.Equals(productName, StringComparison.OrdinalIgnoreCase))
+                    return item;
+            }
+            return null;
+        }
+
+        private void SearchProduct_Click(object sender, RoutedEventArgs e)
+        {
+            string enteredProductName = cmbSearchProduct.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(enteredProductName))
+            {
+                MessageBox.Show("Please enter a product name to search.", "Input Required", MessageBoxButton.OK, MessageBoxImage.Information);
+                ClearFields();
+                return;
+            }
+
+            var product = FindItemByProductName(enteredProductName);
+
+            if (product != null)
+            {
+                txtCategory.Text = product.Category;
+                txtProductName.Text = product.ProductName;
+                txtUnitPrice.Text = product.UnitPrice.ToString("F2");
+                txtQuantity.Text = product.Quantity.ToString();
+                dpDateUpdated.Text = product.DateUpdated;
+            }
+            else
+            {
+                MessageBox.Show("Product not found.", "Search Result", MessageBoxButton.OK, MessageBoxImage.Warning);
+                ClearFields();
+            }
+        }
+
+        private void ClearFields()
+        {
+            txtCategory.Clear();
+            txtProductName.Clear();
+            txtUnitPrice.Clear();
+            txtQuantity.Clear();
+            dpDateUpdated.SelectedDate = null;
         }
 
         private void StockDataGrid_SelectionChanged_1(object sender, SelectionChangedEventArgs e)
@@ -160,67 +191,6 @@ namespace AquaPOS
             {
                 StockItems[i].ProductID = i + 1;
             }
-        }
-
-        private StockItem FindItemByProductName(string productName)
-        {
-            foreach (var item in StockItems)
-            {
-                if (item.ProductName.Equals(productName, StringComparison.OrdinalIgnoreCase))
-                    return item;
-            }
-            return null;
-        }
-
-        private void SearchProduct_Click(object sender, RoutedEventArgs e)
-        {
-            if (cmbSearchProduct.SelectedItem != null)
-            {
-                string selectedProductName = cmbSearchProduct.Text;
-                var product = FindItemByProductName(selectedProductName);
-
-                if (product != null)
-                {
-                    txtCategory.Text = product.Category;
-                    txtProductName.Text = product.ProductName;
-                    txtUnitPrice.Text = product.UnitPrice.ToString("F2");
-                    txtQuantity.Text = product.Quantity.ToString();
-                    dpDateUpdated.Text = product.DateUpdated;
-                }
-                else
-                {
-                    MessageBox.Show("Product not found.");
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please select or enter a product name to search.");
-            }
-        }
-
-        private void CmbSearchProduct_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // Optional: Handle preview text input in combo box
-        }
-
-        private void CmbSearchProduct_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            // Optional: Handle preview text input in combo box
-        }
-
-        private void CmbSearchProduct_Loaded(object sender, RoutedEventArgs e)
-        {
-            // Optional: Handle when the combo box is loaded
-        }
-
-
-        private void ClearFields()
-        {
-            txtCategory.Clear();
-            txtProductName.Clear();
-            txtUnitPrice.Clear();
-            txtQuantity.Clear();
-            dpDateUpdated.SelectedDate = null;
         }
 
         private void UpdateStock_Click(object sender, RoutedEventArgs e)
@@ -406,10 +376,38 @@ namespace AquaPOS
                 MessageBox.Show("Error generating PDF: " + ex.Message);
             }
         }
+
+        private void DashboardButton_Click(object sender, RoutedEventArgs e)
+        {
+            Dashboard dashboard = new Dashboard();
+            dashboard.Show();
+            this.Close();
+        }
+
+        private void InventoryManagementButton_Click(object sender, RoutedEventArgs e)
+        {
+            Inventory_Management inventory_Management = new Inventory_Management();
+            inventory_Management.Show();
+            this.Close();
+        }
+
+        private void SalesReportsButton_Click(object sender, RoutedEventArgs e)
+        {
+            Sales_Reports sales_Reports = new Sales_Reports();
+            sales_Reports.Show();
+            this.Close();
+        }
+
+        private void ExitButton_Click(object sender, RoutedEventArgs e)
+        {
+            User_Login user_Login = new User_Login();
+            user_Login.Show(); // Show the login window
+            this.Hide(); // Close the current window
+        }
     }
 
 
-        public class StockItem
+    public class StockItem
     {
         public int ProductID { get; set; }
         public string Category { get; set; }

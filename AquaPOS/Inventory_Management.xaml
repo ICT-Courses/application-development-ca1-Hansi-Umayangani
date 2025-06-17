@@ -236,7 +236,7 @@
                                   BorderBrush="#FF73AEFF" BorderThickness="2.5"
                                   HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                   Loaded="CmbSearchProduct_Loaded"
-                                  IsTextSearchEnabled="False"
+                                  IsTextSearchEnabled="True"
                                   PreviewTextInput="CmbSearchProduct_PreviewTextInput"
                                   SelectionChanged="CmbSearchProduct_SelectionChanged"
                                   Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"/>

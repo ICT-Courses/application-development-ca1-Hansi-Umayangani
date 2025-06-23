@@ -149,6 +149,9 @@
     <Compile Include="Inventory_Management.xaml.cs">
       <DependentUpon>Inventory_Management.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LowStockWindow.xaml.cs">
+      <DependentUpon>LowStockWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -168,6 +171,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Inventory_Management.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="LowStockWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

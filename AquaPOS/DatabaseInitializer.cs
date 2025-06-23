@@ -422,6 +422,42 @@ namespace AquaPOS
             return todaysRevenue;
         }
 
+        public static List<StockItem> GetLowStockItems(int threshold = 5)
+        {
+            var lowStockItems = new List<StockItem>();
+
+            try
+            {
+                using (var conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT Category, ProductName, Quantity FROM StockItems WHERE Quantity <= @Threshold;";
+                    using (var cmd = new SQLiteCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Threshold", threshold);
+                        using (var reader = cmd.ExecuteReader())
+
+                        {
+                            while (reader.Read())
+                            {
+                                lowStockItems.Add(new StockItem
+                                {
+                                    Category = reader.GetString(0),
+                                    ProductName = reader.GetString(1),
+                                    Quantity = reader.GetInt32(2)
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving low stock items: {ex.Message}");
+            }
+
+            return lowStockItems;
+        }
     }
 }
 

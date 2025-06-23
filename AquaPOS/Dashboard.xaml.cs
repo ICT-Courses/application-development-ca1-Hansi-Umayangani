@@ -51,12 +51,15 @@ namespace AquaPOS
 
         private void LoadLowStockItemCount()
         {
-        
+            var lowStockItems = DatabaseInitializer.GetLowStockItems();
+            int count = lowStockItems.Count;
+            LowStockCountText.Text = $"{count} Item{(count != 1 ? "s" : "")}";
         }
 
         private void LowStockSummaryCard_Click(object sender, MouseButtonEventArgs e)
         {
-         
+            LowStockWindow lowStockWindow = new LowStockWindow();
+            lowStockWindow.ShowDialog();
         }
 
         private void DashboardButton_Click(object sender, RoutedEventArgs e)

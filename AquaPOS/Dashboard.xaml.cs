@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using LiveCharts;
+using LiveCharts.Wpf;
 using LvcWpf = LiveCharts.Wpf;
 
 namespace AquaPOS
@@ -31,6 +32,7 @@ namespace AquaPOS
             LoadTotalIncome();
             LoadTodaysSalesRevenue();
             LoadLowStockItemCount();
+            LoadStockDoughnutChart();
         }
 
         private void LoadTotalSalesRevenue()
@@ -193,6 +195,58 @@ namespace AquaPOS
             // Optionally preselect it in the ComboBox and ListView
             cmbProductSearch.SelectedItem = defaultProduct;
             ProductListView.SelectedItem = defaultProduct;
+        }
+
+        private void LoadStockDoughnutChart()
+        {
+            var categoryData = DatabaseInitializer.GetStockDistributionByCategory();
+
+            var pieSeriesCollection = new LiveCharts.SeriesCollection();
+
+            var colors = new[]
+            {
+                Color.FromRgb(30, 182, 255),
+                Color.FromRgb(146,217,0),
+                Color.FromRgb(233, 150, 122),
+                Color.FromRgb(255, 182, 0),
+                Color.FromRgb(115, 155, 255),
+                Color.FromRgb(217,65,109),
+                Color.FromRgb(134, 217, 7),
+                Color.FromRgb(152,85,255),
+                Color.FromRgb(255,118,172)
+            };
+
+            int colorIndex = 0;
+
+            foreach (var item in categoryData)
+            {
+                pieSeriesCollection.Add(new PieSeries
+                {
+                    Title = item.Key,
+                    Values = new ChartValues<int> { item.Value },
+                    DataLabels = true,
+                    LabelPoint = chartPoint => chartPoint.Participation.ToString("P0"),
+                    Fill = new SolidColorBrush(colors[colorIndex % colors.Length]),
+
+                    Stroke = Brushes.White,
+                    StrokeThickness = 1,
+                    Foreground = Brushes.White,
+                    FontWeight = FontWeights.Normal
+                });
+
+                colorIndex++;
+            }
+
+            StockDoughnutChart.Series = pieSeriesCollection;
+
+            // Customize the default tooltip's foreground color to Black
+            var defaultTooltip = StockDoughnutChart.DataTooltip as LiveCharts.Wpf.DefaultTooltip;
+            if (defaultTooltip == null)
+            {
+                defaultTooltip = new LiveCharts.Wpf.DefaultTooltip();
+            }
+            defaultTooltip.Foreground = Brushes.Black;
+            StockDoughnutChart.DataTooltip = defaultTooltip;
         }
 
         private void DashboardButton_Click(object sender, RoutedEventArgs e)

@@ -543,6 +543,41 @@ namespace AquaPOS
             }
             return soldQuantity;
         }
+
+        public static Dictionary<string, int> GetStockDistributionByCategory()
+        {
+            var result = new Dictionary<string, int>();
+
+            try
+            {
+                using (var conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+
+                    string query = @"
+                        SELECT Category, SUM(Quantity) AS TotalQuantity
+                        FROM StockItems
+                        GROUP BY Category;";
+
+                    using (var cmd = new SQLiteCommand(query, conn))
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string category = reader.GetString(0);
+                            int quantity = reader.GetInt32(1);
+                            result[category] = quantity;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting stock distribution: {ex.Message}");
+            }
+
+            return result;
+        }
     }
 }
 

@@ -44,6 +44,12 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.6.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -227,6 +233,21 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="resources\Images\App_Logo\AquaPOS_Logo_Icon_New.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\Images\Dashboard_Summary_Icons\Income.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\Images\Dashboard_Summary_Icons\Low_Stock_Warning.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\Images\Dashboard_Summary_Icons\Sales_Revenue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\Images\Dashboard_Summary_Icons\Todays_Sales.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\Images\Button_Icons\Delete_User_Button_Icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

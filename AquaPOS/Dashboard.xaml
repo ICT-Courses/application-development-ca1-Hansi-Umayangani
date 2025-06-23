@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:local="clr-namespace:AquaPOS"
         mc:Ignorable="d"
         Icon="pack://application:,,,/resources/Images/App_Logo/AquaPOS_Logo_Icon_New.ico" 
@@ -107,6 +108,61 @@
 
             </StackPanel>
         </Border>
+
+        <Grid Grid.Column="1" Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Summary Cards Row -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,10,0,20" Height="100">
+
+                <!-- Total Income -->
+                <Border Background="#FF083F97" CornerRadius="12" Width="222" Margin="10" Padding="15">
+                    <StackPanel Margin="-5">
+                        <Image Source="pack://application:,,,/resources/Images/Dashboard_Summary_Icons/Income.png"
+                                Width="28" Height="32" Margin="150,0,-24,0"/>
+                        <TextBlock Text="Total Income" HorizontalAlignment="Left" Margin="0,-45,0,0"  
+                       Foreground="White" FontWeight="Normal" FontSize="11" Height="20" Width="90"/>
+                        <TextBlock x:Name="TotalIncomeText" HorizontalAlignment="Left" Margin="0,-5,0,0" Text="Rs. 0.00" Foreground="White" FontSize="20" FontWeight="SemiBold" Width="170"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Total Sales Revenue -->
+                <Border Background="#FF0877C0" CornerRadius="12" Width="222" Margin="10" Padding="15">
+                    <StackPanel Margin="-5">
+                        <Image Source="pack://application:,,,/resources/Images/Dashboard_Summary_Icons/Sales_Revenue.png"
+                                Width="28" Height="28" Margin="150,0,-24,0"/>
+                        <TextBlock Text="Total Sales Revenue" Foreground="White" FontWeight="Normal" FontSize="11" Margin="0,-30,0,0" Height="20" Width="120" HorizontalAlignment="Left"/>
+                        <TextBlock x:Name="TotalSalesRevenueText" Text="Rs. 0.00" Foreground="White" FontSize="20" FontWeight="SemiBold" Margin="0" Width="173" HorizontalAlignment="Left" Height="31" />
+
+                    </StackPanel>
+                </Border>
+
+                <!-- Today's Sales -->
+                <Border Background="#FF14869A" CornerRadius="12" Width="222" Margin="10" Padding="15">
+                    <StackPanel Margin="-5">
+                        <Image Source="pack://application:,,,/resources/Images/Dashboard_Summary_Icons/Todays_Sales.png"
+                                Width="28" Height="28" Margin="150,0,-24,0"/>
+                        <TextBlock Text="Today's Sales" Foreground="White" FontWeight="Normal" FontSize="11" Margin="0,-30,0,0" Height="20" Width="90" HorizontalAlignment="Left"/>
+                        <TextBlock x:Name="TodaysSalesText" Text="Rs. 0.00" Foreground="White" FontSize="20" FontWeight="SemiBold" Margin="0" Width="140" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Low Stock Items -->
+                <Border Background="#FF28BBB7" CornerRadius="12" Width="222" Margin="10" Padding="15" MouseLeftButtonDown="LowStockSummaryCard_Click">
+                    <StackPanel Margin="-5">
+                        <Image Source="pack://application:,,,/resources/Images/Dashboard_Summary_Icons/Low_Stock_Warning.png"
+                                Width="28" Height="28" Margin="150,0,-24,0"/>
+                        <TextBlock Text="Low Stock Items" Foreground="White" FontWeight="Normal" 
+                               FontSize="11" Height="20" Margin="0,-30,0,0" HorizontalAlignment="Left" Width="90"/>
+                        <TextBlock x:Name="LowStockCountText" Text="0 Items" Foreground="White" FontSize="20" FontWeight="SemiBold" Margin="0" Width="140" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+        </Grid>
     </Grid>
 
 </Window>

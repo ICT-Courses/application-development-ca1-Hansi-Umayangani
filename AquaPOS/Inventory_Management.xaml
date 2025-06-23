@@ -92,9 +92,9 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Control">
                         <Border CornerRadius="8" 
-        BorderBrush="#FF0807A0" 
-        BorderThickness="2.5" 
-        Background="White">
+                            BorderBrush="#FF0807A0" 
+                            BorderThickness="2.5" 
+                            Background="White">
                             <ScrollViewer Margin="5" x:Name="PART_ContentHost"/>
                         </Border>
                     </ControlTemplate>
@@ -108,9 +108,9 @@
                         <BeginStoryboard>
                             <Storyboard>
                                 <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                         To="1.03" Duration="0:0:0.08"/>
+                                        To="1.03" Duration="0:0:0.08"/>
                                 <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                         To="1.03" Duration="0:0:0.08"/>
+                                        To="1.03" Duration="0:0:0.08"/>
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.EnterActions>
@@ -118,9 +118,9 @@
                         <BeginStoryboard>
                             <Storyboard>
                                 <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
-                         To="1" Duration="0:0:0.08"/>
+                                        To="1" Duration="0:0:0.08"/>
                                 <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
-                         To="1" Duration="0:0:0.08"/>
+                                        To="1" Duration="0:0:0.08"/>
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.ExitActions>
@@ -323,7 +323,7 @@
                         </Style>
                     </DataGrid.Resources>
 
-                    <!-- ... Keep your existing DataGrid.Resources and Columns here ... -->
+                    <!-- DataGrid.Resources and Columns -->
                     
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Binding="{Binding ProductID}" Width="40" 
@@ -418,7 +418,7 @@
 
                 <TextBlock Text="UPDATE INVENTORY" Foreground="#FFC8BEBE" FontSize="16" Margin="0,30,0,0" Width="168" Height="25" FontWeight="Bold"/>
 
-                <WrapPanel Margin="0,5,0,0"  Height="520">
+                <WrapPanel Margin="0,5,0,0"  Height="560">
 
                     <!-- Category -->
                     <StackPanel Margin="10">
@@ -428,24 +428,70 @@
                     </StackPanel>
 
                     <!-- Product Name -->
-                    <StackPanel Margin="10">
+                    <StackPanel Margin="10,8,10,0">
                         <TextBlock Text="Product Name" FontSize="14" Foreground="#FFA2A2C8" Height="24"/>
                         <TextBox x:Name="txtProductName" Width="168" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
                      Style="{StaticResource RoundedTextBoxStyle}"/>
                     </StackPanel>
 
+                    <!-- Cost Price -->
+                    <StackPanel Margin="10,8,10,0">
+                        <TextBlock Text="Cost Price" FontSize="14" Foreground="#FFA2A2C8" Height="24" Width="158"/>
+                        <TextBox x:Name="txtCostPrice" Width="168" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
+                    Style="{StaticResource RoundedTextBoxStyle}"/>
+                    </StackPanel>
+
                     <!-- Unit Price -->
-                    <StackPanel Margin="10">
+                    <StackPanel Margin="10,8,10,0">
                         <TextBlock Text="Unit Price" FontSize="14" Foreground="#FFA2A2C8" Height="24"/>
                         <TextBox x:Name="txtUnitPrice" Width="168" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
                      Style="{StaticResource RoundedTextBoxStyle}"/>
                     </StackPanel>
 
                     <!-- Quantity -->
-                    <StackPanel Margin="10">
-                        <TextBlock Text="Quantity" FontSize="14" Foreground="#FFA2A2C8" Height="24"/>
-                        <TextBox x:Name="txtQuantity" Width="168" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
-                     Style="{StaticResource RoundedTextBoxStyle}"/>
+                    <StackPanel Margin="10,8,10,0">
+                        <!-- Label -->
+                        <TextBlock Text="Quantity" FontSize="14" Foreground="#FFA2A2C8" Height="24" Width="158"/>
+
+                        <!-- Quantity Input and Buttons -->
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                            <!-- Quantity TextBox -->
+                            <TextBox x:Name="txtQuantity"
+                                     Width="95"
+                                     Height="32"
+                                     BorderBrush="#FF0807A0"
+                                     BorderThickness="2.5"
+                                     Style="{StaticResource RoundedTextBoxStyle}"
+                                     VerticalContentAlignment="Center"
+                                     HorizontalContentAlignment="Left" TextChanged="TxtQuantity_TextChanged"/>
+
+                            <!-- + Button -->
+                            <Border CornerRadius="5" Width="32" Height="32" Margin="5,0,0,0" Background="Transparent">
+                                <Button Content="+" Style="{StaticResource RoundedButtonStyle}"
+                                    FontSize="18"
+                                    Width="32"
+                                    Height="32"
+                                    BorderBrush="#FF0807A0"
+                                    Background="Transparent"
+                                    BorderThickness="2.5"
+                                    Foreground="White"
+                                    FontWeight="Bold"
+                                    Click="ButtonIncreaseQuantity_Click"/>
+                            </Border>
+
+                            <!-- - Button -->
+                            <Button Content="−" Style="{StaticResource RoundedButtonStyle}"
+                                    FontSize="18"
+                                    Width="32"
+                                    Height="32"
+                                    Margin="5,0,0,0"
+                                    BorderBrush="#FF0807A0"
+                                    Background="Transparent"
+                                    BorderThickness="2.5"
+                                    Foreground="White"
+                                    FontWeight="Bold"
+                                    Click="ButtonDecreaseQuantity_Click"/>
+                        </StackPanel>
                     </StackPanel>
 
                     <!-- Date Updated -->

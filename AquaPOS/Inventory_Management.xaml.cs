@@ -210,25 +210,30 @@ namespace AquaPOS
             {
                 var existingItem = FindItemByProductName(txtProductName.Text);
 
+                double costPrice = double.TryParse(txtCostPrice.Text, out var cprice) ? cprice : 0;
+                double unitPrice = double.TryParse(txtUnitPrice.Text, out var uprice) ? uprice : 0;
+                int quantity = int.TryParse(txtQuantity.Text, out var qty) ? qty : 0;
+                string updatedDate = dpDateUpdated.SelectedDate?.ToString("yyyy-MM-dd") ?? DateTime.Now.ToString("yyyy-MM-dd");
+
                 if (existingItem != null)
                 {
-                    // Update existing item
+                    // ✅ Update existing item
                     existingItem.Category = txtCategory.Text;
-                    existingItem.UnitPrice = double.TryParse(txtUnitPrice.Text, out var price) ? price : 0;
-
-                    if (int.TryParse(txtQuantity.Text, out var qty))
-                    {
-                        existingItem.Quantity += qty;
-                    }
-
-                    existingItem.DateUpdated = dpDateUpdated.SelectedDate?.ToString("yyyy-MM-dd") ?? DateTime.Now.ToString("yyyy-MM-dd");
+                    existingItem.CostPrice = costPrice;
+                    existingItem.UnitPrice = unitPrice;
+                    existingItem.Quantity = quantity;
+                    existingItem.TotalCostPrice = costPrice * quantity;
+                    existingItem.DateUpdated = updatedDate;
 
                     DatabaseInitializer.UpdateStockItem(existingItem);
                     StockDataGrid.Items.Refresh();
+                    SortStockItemsByDate();
+                    ClearFields();
+                    MessageBox.Show("Stock item updated successfully.");
                 }
                 else
                 {
-                    // Add new item
+                    // ✅ Add new item
                     int nextProductID = StockItems.Count + 1;
 
                     var newItem = new StockItem
@@ -236,23 +241,89 @@ namespace AquaPOS
                         ProductID = nextProductID,
                         Category = txtCategory.Text,
                         ProductName = txtProductName.Text,
-                        UnitPrice = double.TryParse(txtUnitPrice.Text, out var price) ? price : 0,
-                        Quantity = int.TryParse(txtQuantity.Text, out var qty) ? qty : 0,
-                        DateUpdated = DateTime.Now.ToString("yyyy-MM-dd")
+                        CostPrice = costPrice,
+                        UnitPrice = unitPrice,
+                        Quantity = quantity,
+                        TotalCostPrice = costPrice * quantity,
+                        DateUpdated = updatedDate
                     };
 
                     DatabaseInitializer.AddStockItem(newItem);
                     StockItems.Add(newItem);
                     StockDataGrid.Items.Refresh();
+                    SortStockItemsByDate();
+                    ClearFields();
+                    MessageBox.Show("New stock item added successfully.");
                 }
-
-                SortStockItemsByDate();
-                ClearFields();
             }
             else
             {
                 MessageBox.Show("Product Name is required.");
             }
+        }
+
+
+        private void ButtonIncreaseQuantity_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtProductName.Text))
+            {
+                var existingItem = FindItemByProductName(txtProductName.Text);
+                int addedQuantity = int.TryParse(txtQuantity.Text, out var qty) ? qty : 0;
+
+                if (existingItem != null)
+                {
+                    existingItem.Quantity += addedQuantity;
+                    existingItem.TotalCostPrice = existingItem.CostPrice * existingItem.Quantity;
+                    existingItem.DateUpdated = dpDateUpdated.SelectedDate?.ToString("yyyy-MM-dd") ?? DateTime.Now.ToString("yyyy-MM-dd");
+
+                    DatabaseInitializer.UpdateStockItem(existingItem);
+                    StockDataGrid.Items.Refresh();
+
+                    SortStockItemsByDate();
+                    ClearFields();
+                }
+                else
+                {
+                    MessageBox.Show("Product not found. Please use the Add button to create it first.");
+                }
+            }
+        }
+
+        private void ButtonDecreaseQuantity_Click(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(txtProductName.Text))
+            {
+                var existingItem = FindItemByProductName(txtProductName.Text);
+                int reducedQuantity = int.TryParse(txtQuantity.Text, out var qty) ? qty : 0;
+
+                if (existingItem != null)
+                {
+                    if (existingItem.Quantity - reducedQuantity < 0)
+                    {
+                        MessageBox.Show("Cannot reduce quantity below 0.");
+                        return;
+                    }
+
+                    existingItem.Quantity -= reducedQuantity;
+                    existingItem.TotalCostPrice = existingItem.CostPrice * existingItem.Quantity;
+                    existingItem.DateUpdated = dpDateUpdated.SelectedDate?.ToString("yyyy-MM-dd") ?? DateTime.Now.ToString("yyyy-MM-dd");
+
+                    DatabaseInitializer.UpdateStockItem(existingItem);
+                    StockDataGrid.Items.Refresh();
+
+                    SortStockItemsByDate();
+                    ClearFields();
+                }
+                else
+                {
+                    MessageBox.Show("Product not found. Please use the Add button to create it first.");
+                }
+            }
+        }
+
+        private void TxtQuantity_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
 
         private void SortStockItemsByDate()
@@ -466,8 +537,10 @@ namespace AquaPOS
         public int ProductID { get; set; }
         public string Category { get; set; }
         public string ProductName { get; set; }
+        public double CostPrice { get; set; }
         public double UnitPrice { get; set; }
         public int Quantity { get; set; }
+        public double TotalCostPrice { get; set; }
         public string DateUpdated { get; set; }
     }
 }

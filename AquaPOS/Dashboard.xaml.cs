@@ -22,6 +22,41 @@ namespace AquaPOS
         public Dashboard()
         {
             InitializeComponent();
+
+            this.DataContext = this;
+
+            LoadTotalSalesRevenue();
+            LoadTotalIncome();
+            LoadTodaysSalesRevenue();
+            LoadLowStockItemCount();
+        }
+
+        private void LoadTotalSalesRevenue()
+        {
+            double totalRevenue = DatabaseInitializer.GetTotalSalesRevenue();
+            TotalSalesRevenueText.Text = $"Rs. {totalRevenue:N2}";
+        }
+
+        private void LoadTotalIncome()
+        {
+            double totalIncome = DatabaseInitializer.GetTotalIncome();
+            TotalIncomeText.Text = $"Rs. {totalIncome:N2}";
+        }
+
+        private void LoadTodaysSalesRevenue()
+        {
+            double todaysRevenue = DatabaseInitializer.GetTodaysSalesRevenue();
+            TodaysSalesText.Text = $"Rs. {todaysRevenue:N2}";
+        }
+
+        private void LoadLowStockItemCount()
+        {
+        
+        }
+
+        private void LowStockSummaryCard_Click(object sender, MouseButtonEventArgs e)
+        {
+         
         }
 
         private void DashboardButton_Click(object sender, RoutedEventArgs e)

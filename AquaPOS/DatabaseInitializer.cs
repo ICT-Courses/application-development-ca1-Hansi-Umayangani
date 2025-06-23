@@ -95,7 +95,6 @@ namespace AquaPOS
         }
 
         // STOCK METHODS --------------------------------------
-
         public static List<StockItem> GetStockItems()
         {
             List<StockItem> stockItems = new List<StockItem>();
@@ -203,34 +202,7 @@ namespace AquaPOS
             }
         }
 
-        public static double GetTotalCostPrice()
-        {
-            double totalCost = 0;
-
-            try
-            {
-                using (var conn = new SQLiteConnection(ConnectionString))
-                {
-                    conn.Open();
-                    string query = "SELECT SUM(TotalCostPrice) FROM StockItems;";
-
-                    using (var cmd = new SQLiteCommand(query, conn))
-                    {
-                        var result = cmd.ExecuteScalar();
-                        if (result != DBNull.Value && result != null)
-                        {
-                            totalCost = Convert.ToDouble(result);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error retrieving total cost price: {ex.Message}");
-            }
-
-            return totalCost;
-        }
+        // STOCK UPDATE METHOD ---------------------------------------
         public static void UpdateStockItem(StockItem item)
         {
             try
@@ -289,6 +261,7 @@ namespace AquaPOS
             }
         }
 
+        // SALES METHODS --------------------------------------
         public static void RecordSale(List<Sale> saleItems, double totalAmount, string saleDate)
         {
             try
@@ -345,6 +318,110 @@ namespace AquaPOS
                 Console.WriteLine($"Error recording sale: {ex.Message}");
             }
         }
+
+        // TOTAL SALES REVENUE CALCULATION METHOD ------------------------------
+        public static double GetTotalSalesRevenue()
+        {
+            double totalRevenue = 0;
+
+            try
+            {
+                using (var conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT SUM(TotalAmount) FROM SalesDetails;";
+
+                    using (var cmd = new SQLiteCommand(query, conn))
+                    {
+                        var result = cmd.ExecuteScalar();
+                        if (result != DBNull.Value && result != null)
+                        {
+                            totalRevenue = Convert.ToDouble(result);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving total revenue: {ex.Message}");
+            }
+
+            return totalRevenue;
+        }
+
+        // TOTAL COST CALCULATION METHOD ----------------------------
+        public static double GetTotalCostPrice()
+        {
+            double totalCost = 0;
+
+            try
+            {
+                using (var conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT SUM(TotalCostPrice) FROM StockItems;";
+
+                    using (var cmd = new SQLiteCommand(query, conn))
+                    {
+                        var result = cmd.ExecuteScalar();
+                        if (result != DBNull.Value && result != null)
+                        {
+                            totalCost = Convert.ToDouble(result);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving total cost price: {ex.Message}");
+            }
+
+            return totalCost;
+        }
+
+        // TOTAL INCOME CALCULATION METHOD ------------------------------
+        public static double GetTotalIncome()
+        {
+            double totalRevenue = GetTotalSalesRevenue();
+            double totalCost = GetTotalCostPrice();
+            return totalRevenue - totalCost;
+        }
+
+        // TODAY'S SALES REVENUE CALCULATION METHOD ---------------------
+        public static double GetTodaysSalesRevenue()
+        {
+            double todaysRevenue = 0;
+
+            try
+            {
+                using (var conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+
+                    string todayDate = DateTime.Now.ToString("yyyy-MM-dd");
+
+                    string query = "SELECT SUM(TotalAmount) FROM SalesDetails WHERE DATE(SaleDate) = @TodayDate;";
+
+                    using (var cmd = new SQLiteCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@TodayDate", todayDate);
+
+                        var result = cmd.ExecuteScalar();
+                        if (result != DBNull.Value && result != null)
+                        {
+                            todaysRevenue = Convert.ToDouble(result);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving today's revenue: {ex.Message}");
+            }
+
+            return todaysRevenue;
+        }
+
     }
 }
 

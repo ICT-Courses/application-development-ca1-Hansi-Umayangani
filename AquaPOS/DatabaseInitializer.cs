@@ -422,6 +422,7 @@ namespace AquaPOS
             return todaysRevenue;
         }
 
+        // LOW STOCK METHOD ------------------------------------
         public static List<StockItem> GetLowStockItems(int threshold = 5)
         {
             var lowStockItems = new List<StockItem>();
@@ -457,6 +458,90 @@ namespace AquaPOS
             }
 
             return lowStockItems;
+        }
+
+        // PRODUCT NAME LIST METHOD ------------------------------------
+        public static List<string> GetAllProductNames()
+        {
+            var productNames = new List<string>();
+
+            try
+            {
+                using (var conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT ProductName FROM StockItems ORDER BY ProductName ASC;";
+                    using (var cmd = new SQLiteCommand(query, conn))
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            productNames.Add(reader.GetString(0));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching product names: {ex.Message}");
+            }
+
+            return productNames;
+        }
+
+        // SOLD & AVAILABLE PRODUCT QUANTITY METHOD -----------------------------
+        public static int GetAvailableQuantity(string productName)
+        {
+            int quantity = 0;
+            try
+            {
+                using (var conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT Quantity FROM StockItems WHERE ProductName = @ProductName";
+                    using (var cmd = new SQLiteCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ProductName", productName);
+                        object result = cmd.ExecuteScalar();
+                        if (result != null)
+                        {
+                            quantity = Convert.ToInt32(result);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting available quantity: {ex.Message}");
+            }
+            return quantity;
+        }
+
+        public static int GetSoldQuantity(string productName)
+        {
+            int soldQuantity = 0;
+            try
+            {
+                using (var conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT SUM(Quantity) FROM Sales WHERE ProductName = @ProductName";
+                    using (var cmd = new SQLiteCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@ProductName", productName);
+                        object result = cmd.ExecuteScalar();
+                        if (result != DBNull.Value)
+                        {
+                            soldQuantity = Convert.ToInt32(result);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting sold quantity: {ex.Message}");
+            }
+            return soldQuantity;
         }
     }
 }

@@ -120,18 +120,18 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,10,0,20" Height="100">
 
                 <!-- Total Income -->
-                <Border Background="#FF083F97" CornerRadius="12" Width="222" Margin="10" Padding="15">
+                <Border Background="#FF001165" CornerRadius="12" Width="222" Margin="10" Padding="15">
                     <StackPanel Margin="-5">
                         <Image Source="pack://application:,,,/resources/Images/Dashboard_Summary_Icons/Income.png"
                                 Width="28" Height="32" Margin="150,0,-24,0"/>
-                        <TextBlock Text="Total Income" HorizontalAlignment="Left" Margin="0,-45,0,0"  
-                       Foreground="White" FontWeight="Normal" FontSize="11" Height="20" Width="90"/>
+                        <TextBlock Text="Total Gross Income" HorizontalAlignment="Left" Margin="0,-45,0,0"  
+                                Foreground="White" FontWeight="Normal" FontSize="11" Height="20" Width="120"/>
                         <TextBlock x:Name="TotalIncomeText" HorizontalAlignment="Left" Margin="0,-5,0,0" Text="Rs. 0.00" Foreground="White" FontSize="20" FontWeight="SemiBold" Width="170"/>
                     </StackPanel>
                 </Border>
 
                 <!-- Total Sales Revenue -->
-                <Border Background="#FF0877C0" CornerRadius="12" Width="222" Margin="10" Padding="15">
+                <Border Background="#FF002E8B" CornerRadius="12" Width="222" Margin="10" Padding="15">
                     <StackPanel Margin="-5">
                         <Image Source="pack://application:,,,/resources/Images/Dashboard_Summary_Icons/Sales_Revenue.png"
                                 Width="28" Height="28" Margin="150,0,-24,0"/>
@@ -142,7 +142,7 @@
                 </Border>
 
                 <!-- Today's Sales -->
-                <Border Background="#FF14869A" CornerRadius="12" Width="222" Margin="10" Padding="15">
+                <Border Background="#1B66B1" CornerRadius="12" Width="222" Margin="10" Padding="15">
                     <StackPanel Margin="-5">
                         <Image Source="pack://application:,,,/resources/Images/Dashboard_Summary_Icons/Todays_Sales.png"
                                 Width="28" Height="28" Margin="150,0,-24,0"/>
@@ -152,16 +152,18 @@
                 </Border>
 
                 <!-- Low Stock Items -->
-                <Border Background="#FF28BBB7" CornerRadius="12" Width="222" Margin="10" Padding="15" MouseLeftButtonDown="LowStockSummaryCard_Click">
+                <Border Background="#FF41A5D7" CornerRadius="12" Width="222" Margin="10" Padding="15" MouseLeftButtonDown="LowStockSummaryCard_Click">
                     <StackPanel Margin="-5">
                         <Image Source="pack://application:,,,/resources/Images/Dashboard_Summary_Icons/Low_Stock_Warning.png"
                                 Width="28" Height="28" Margin="150,0,-24,0"/>
                         <TextBlock Text="Low Stock Items" Foreground="White" FontWeight="Normal" 
-                               FontSize="11" Height="20" Margin="0,-30,0,0" HorizontalAlignment="Left" Width="90"/>
+                               FontSize="11" Height="20" Margin="0,-30,0,0" HorizontalAlignment="Left" Width="120"/>
                         <TextBlock x:Name="LowStockCountText" Text="0 Items" Foreground="White" FontSize="20" FontWeight="SemiBold" Margin="0" Width="140" HorizontalAlignment="Left"/>
                     </StackPanel>
                 </Border>
             </StackPanel>
+
+            <Grid Grid.Row="1" Margin="0,0,280,280" Grid.RowSpan="2">                <Grid.ColumnDefinitions>                    <ColumnDefinition Width="*"/>                    <ColumnDefinition Width="*"/>                </Grid.ColumnDefinitions>                <!-- Search Input with ComboBox and Button -->                <StackPanel Grid.Column="0" Margin="5,14,5,5">                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Left" Width="160">                        <ComboBox x:Name="cmbProductSearch"                        Width="125" Height="22"                        IsEditable="True"                        StaysOpenOnEdit="True"                        BorderBrush="#FF73AEFF" BorderThickness="1.5"                        Background="white"                        Foreground="#031C36"                        FontWeight="Normal"                        HorizontalContentAlignment="Center"                        VerticalContentAlignment="Center"                        Loaded="CmbProductSearch_Loaded"                        IsTextSearchEnabled="True"                        PreviewTextInput="CmbProductSearch_PreviewTextInput"                        SelectionChanged="CmbProductSearch_SelectionChanged"/>                        <Button Width="20" Height="21" Margin="5,0,5,0"                                BorderBrush="#FF2196F3" BorderThickness="1.5"                                Background="White"                                Click="SearchProduct_Click">                            <Image Source="/Resources/Images/Button_Icons/Search_Icon.png"                                     Stretch="Uniform" Height="17" Width="16" />                        </Button>                    </StackPanel>                    <!-- Product List -->                    <ListView x:Name="ProductListView"                                SelectionChanged="ProductListView_SelectionChanged"                                HorizontalAlignment="Left"                                Width="150" Height="182" Margin="0,2,2,4"                                Foreground="White"                                Background="#330E57AE"                                BorderBrush="Transparent"/>                </StackPanel>                <Border Background="#330E57AE" Margin="178,10,7,0" CornerRadius="10" Padding="10">                    <Grid>                        <Grid.RowDefinitions>                            <RowDefinition Height="Auto"/>                            <RowDefinition Height="*"/>                        </Grid.RowDefinitions>                        <!-- Header Text -->                        <TextBlock Text="Product Movement"                                   Grid.Row="0"                                   HorizontalAlignment="Center"                                   FontSize="12"                                   FontWeight="Normal"                                   TextDecorations="Underline"                                   Foreground="White"                                   Margin="0,0,0,5"/>                        <!-- Bar Chart -->                        <lvc:CartesianChart x:Name="ProductStockBarChart"                                Grid.Row="1"                                Margin="2"                                Background="Transparent"                                Foreground="White"                                Loaded="ProductStockBarChart_Loaded">                            <lvc:CartesianChart.AxisX>                                <lvc:Axis Title="Product"                                          LabelsRotation="15"                                          Foreground="White"                                          ShowLabels="True"/>                            </lvc:CartesianChart.AxisX>                            <lvc:CartesianChart.AxisY>                                <lvc:Axis Title="Stock Level"                                          LabelFormatter="{Binding YFormatter}"                                          Foreground="White"/>                            </lvc:CartesianChart.AxisY>                        </lvc:CartesianChart>                    </Grid>                </Border>            </Grid>
         </Grid>
     </Grid>
 

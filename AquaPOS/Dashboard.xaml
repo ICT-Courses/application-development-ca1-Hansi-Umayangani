@@ -164,7 +164,7 @@
             </StackPanel>
 
             <!-- Charts -->
-            <Grid Margin="0,0,285,320" Grid.Row="2">                <Grid.ColumnDefinitions>                    <ColumnDefinition Width="*"/>                    <ColumnDefinition Width="*"/>                </Grid.ColumnDefinitions>                <!-- Product Search with ComboBox and Button -->                <StackPanel Grid.Column="0" Margin="5,14,5,5">                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Left" Width="160">                        <ComboBox x:Name="cmbProductSearch"                        Width="125" Height="22"                        IsEditable="True"                        StaysOpenOnEdit="True"                        BorderBrush="#FF73AEFF" BorderThickness="1.5"                        Background="white"                        Foreground="#031C36"                        FontWeight="Normal"                        HorizontalContentAlignment="Center"                        VerticalContentAlignment="Center"                        Loaded="CmbProductSearch_Loaded"                        IsTextSearchEnabled="True"                        PreviewTextInput="CmbProductSearch_PreviewTextInput"                        SelectionChanged="CmbProductSearch_SelectionChanged"/>                        <Button Width="20" Height="21" Margin="5,0,5,0"                                BorderBrush="#FF2196F3" BorderThickness="1.5"                                Background="White"                                Click="SearchProduct_Click">                            <Image Source="/Resources/Images/Button_Icons/Search_Icon.png"                                     Stretch="Uniform" Height="17" Width="16" />                        </Button>                    </StackPanel>                    <!-- Product List -->                    <ListView x:Name="ProductListView"                                SelectionChanged="ProductListView_SelectionChanged"                                HorizontalAlignment="Left"                                Width="150" Height="182" Margin="0,-2,2,4"                                Foreground="White"                                Background="#330E57AE"                                BorderBrush="Transparent"/>                </StackPanel>                <!-- Product Movement Bar Chart-->                <Border Background="#330E57AE" Margin="175,10,10,0" CornerRadius="10" Padding="10">                    <Grid>                        <Grid.RowDefinitions>                            <RowDefinition Height="Auto"/>                            <RowDefinition Height="*"/>                        </Grid.RowDefinitions>                        <!-- Header Text -->                        <TextBlock Text="Product Movement"                                   Grid.Row="0"                                   HorizontalAlignment="Center"                                   FontSize="12"                                   FontWeight="Normal"                                   TextDecorations="Underline"                                   Foreground="White"                                   Margin="0,0,0,5"/>                        <!-- Bar Chart -->                        <lvc:CartesianChart x:Name="ProductStockBarChart"                                Grid.Row="1"                                Margin="2"                                Background="Transparent"                                Foreground="White"                                Loaded="ProductStockBarChart_Loaded">                            <lvc:CartesianChart.AxisX>                                <lvc:Axis Title="Product"                                          LabelsRotation="15"                                          Foreground="White"                                          ShowLabels="True"/>                            </lvc:CartesianChart.AxisX>                            <lvc:CartesianChart.AxisY>                                <lvc:Axis Title="Stock Level"                                          LabelFormatter="{Binding YFormatter}"                                          Foreground="White"/>                            </lvc:CartesianChart.AxisY>                        </lvc:CartesianChart>                    </Grid>                </Border>                <!-- Stock Distribution Doughnut Chart -->
+            <Grid Margin="0,0,285,320" Grid.Row="2">                <Grid.ColumnDefinitions>                    <ColumnDefinition Width="*"/>                    <ColumnDefinition Width="*"/>                </Grid.ColumnDefinitions>                <!-- Product Search with ComboBox and Button -->                <StackPanel Grid.Column="0" Margin="5,14,5,5">                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Left" Width="160">                        <ComboBox x:Name="cmbProductSearch"                        Width="125" Height="22"                        IsEditable="True"                        StaysOpenOnEdit="True"                        BorderBrush="#FF73AEFF" BorderThickness="1.5"                        Background="white"                        Foreground="#031C36"                        FontWeight="Normal"                        HorizontalContentAlignment="Center"                        VerticalContentAlignment="Center"                        Loaded="CmbProductSearch_Loaded"                        IsTextSearchEnabled="True"                        PreviewTextInput="CmbProductSearch_PreviewTextInput"                        SelectionChanged="CmbProductSearch_SelectionChanged"/>                        <Button Width="20" Height="21" Margin="5,0,5,0"                                BorderBrush="#FF2196F3" BorderThickness="1.5"                                Background="White"                                Click="SearchProduct_Click">                            <Image Source="/Resources/Images/Button_Icons/Search_Icon.png"                                     Stretch="Uniform" Height="17" Width="16" />                        </Button>                    </StackPanel>                    <!-- Product List -->                    <ListView x:Name="ProductListView"                                SelectionChanged="ProductListView_SelectionChanged"                                HorizontalAlignment="Left"                                Width="150" Height="182" Margin="0,-2,2,4"                                Foreground="White"                                Background="#330E57AE"                                BorderBrush="Transparent"/>                </StackPanel>                <!-- Product Movement Bar Chart-->                <Border Background="#330E57AE" Margin="175,10,10,0" CornerRadius="10" Padding="10">                    <Grid>                        <Grid.RowDefinitions>                            <RowDefinition Height="Auto"/>                            <RowDefinition Height="*"/>                        </Grid.RowDefinitions>                        <!-- Header Text -->                        <TextBlock Text="Product Movement"                                   Grid.Row="0"                                   HorizontalAlignment="Center"                                   FontSize="12"                                   FontWeight="Normal"                                   TextDecorations="Underline"                                   Foreground="White"                                   Margin="0,0,0,5"/>                        <!-- Bar Chart -->                        <lvc:CartesianChart x:Name="ProductStockBarChart"                                Grid.Row="1"                                Margin="2"                                Background="Transparent"                                Foreground="White"                                Loaded="ProductStockBarChart_Loaded">                            <lvc:CartesianChart.AxisX>                                <lvc:Axis Title="Product"                                          LabelsRotation="0"                                          Foreground="White"                                          ShowLabels="True"/>                            </lvc:CartesianChart.AxisX>                            <lvc:CartesianChart.AxisY>                                <lvc:Axis Title="Stock Level"                                          LabelFormatter="{Binding YFormatter}"                                          Foreground="White"/>                            </lvc:CartesianChart.AxisY>                        </lvc:CartesianChart>                    </Grid>                </Border>                <!-- Stock Distribution Doughnut Chart -->
                 <Border Grid.Column="1" Background="#330E57AE" Margin="10,10,10,0" CornerRadius="10" Padding="10">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -198,9 +198,14 @@
                 </Border>
 
                 <Grid Grid.Row="2" Margin="10,269,290,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="0*"/>
+                        <ColumnDefinition Width="7*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="30*"/>
-                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="0*"/>
+                        <RowDefinition Height="0*"/>
                         <!-- Main Content: Product List + Chart -->
                         <RowDefinition Height="Auto"/>
                         <!-- Movable User Details Panel -->
@@ -208,9 +213,9 @@
 
                     <!-- Bar Chart -->
                     <Border Background="#330E57AE"
-                                Margin="-5,-20,-622,-270"
+                                Margin="-5,-20,-604,-270"
                                 CornerRadius="10"
-                                Padding="10" Grid.RowSpan="3">
+                                Padding="10" Grid.RowSpan="3" Grid.ColumnSpan="3">
 
                         <Grid>
                             <Grid.RowDefinitions>
@@ -256,6 +261,61 @@
                         </Grid>
                     </Border>
                 </Grid>
+
+                <!-- User Details - Movable Panel -->
+                <StackPanel Margin="350,0,-265,-290" Grid.Column="1">
+
+                    <!-- Scrollable User Info Section -->
+                    <!-- Heading -->
+                    <TextBlock Text="User Details"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               Width="264" Height="539"/>
+
+                    <!-- Scrollable User Info Section -->
+                    <ScrollViewer Height="285" VerticalScrollBarVisibility="Auto" Background="#330E57AE" Margin="0,-740,0,0">
+                        <ItemsControl x:Name="UserInfoList" Height="290" Width="215" Margin="10,5,0,0" HorizontalAlignment="Left">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Border BorderBrush="White" BorderThickness="1" CornerRadius="8" Padding="8" Margin="0,0,0,10" Background="#FF102C4A">
+                                            <Grid>
+                                                <!-- Delete User Button -->
+                                                <Button Click="DeleteUser_Click"
+                                                    ToolTip="Delete User"
+                                                    Tag="{Binding ID}"
+                                                    Background="Transparent"
+                                                    BorderBrush="Transparent"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Top"
+                                                    Height="20" Width="20"
+                                                    Cursor="Hand">
+                                                    <Image Source="pack://application:,,,/resources/Images/Button_Icons/Delete_User_Button_Icon.png"
+                                                       Width="16" Height="16"
+                                                       Stretch="Uniform"
+                                                       IsHitTestVisible="False"/>
+                                                </Button>
+
+                                                <StackPanel Orientation="Vertical">
+                                                    <TextBlock Text="{Binding Username}" FontWeight="Bold" Foreground="White"/>
+                                                    <TextBlock Text="Role: " Foreground="LightGray" FontSize="12"><Run Text="{Binding UserRole}"/></TextBlock>
+                                                    <TextBlock Text="Last Login: " Foreground="LightGray" FontSize="12"><Run Text="{Binding LastLogin}"/></TextBlock>
+                                                </StackPanel>
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <!-- Calendar Section -->
+                    <Border Margin="0,-230,0,0" Background="#330E57AE" CornerRadius="8" Padding="5" Height="188" Width="214" >
+                        <Calendar Width="184" Background="White" BorderBrush="#FF0E47C3" BorderThickness="1" Margin="8,5,8,2"/>
+                    </Border>
+                </StackPanel>
+
             </Grid>
         </Grid>
     </Grid>

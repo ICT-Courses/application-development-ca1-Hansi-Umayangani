@@ -36,7 +36,42 @@ namespace AquaPOS
             LoadLowStockItemCount();
             LoadStockDoughnutChart();
             LoadSalesChart();
+
+            if (/* your condition to check if admin is logged in */ true)
+            {
+                LoadUserDetails();
+            }
         }
+
+        private void LoadUserDetails()
+        {
+            var userList = DatabaseInitializer.GetAllUsers();
+            UserInfoList.ItemsSource = userList;
+        }
+
+        private void DeleteUser_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is Button button && button.Tag is int userId)
+            {
+                var result = MessageBox.Show("Are you sure you want to delete this user?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    bool success = DatabaseInitializer.DeleteUser(userId); // assumes this method exists
+
+                    if (success)
+                    {
+                        MessageBox.Show("User deleted successfully.", "Deleted", MessageBoxButton.OK, MessageBoxImage.Information);
+                        LoadUserDetails(); // Refresh the user list
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to delete the user.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+
 
         private void LoadTotalSalesRevenue()
         {
@@ -287,10 +322,10 @@ namespace AquaPOS
             };
 
             SalesSeriesCollection = new LiveCharts.SeriesCollection
-    {
-        lastYearSeries,
-        currentYearSeries
-    };
+            {
+                lastYearSeries,
+                currentYearSeries
+            };
 
             MonthLabels = CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames
                           .Take(12).ToArray();

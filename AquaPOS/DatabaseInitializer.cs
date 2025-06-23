@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Data.SQLite;
 using System.IO;
 
@@ -29,7 +30,8 @@ namespace AquaPOS
                             ID INTEGER PRIMARY KEY AUTOINCREMENT,
                             Username TEXT NOT NULL UNIQUE,
                             Password TEXT NOT NULL,
-                            UserRole TEXT CHECK(UserRole IN ('Admin', 'Cashier')) NOT NULL
+                            UserRole TEXT CHECK(UserRole IN ('Admin', 'Cashier')) NOT NULL,
+                            LastLogin TEXT
                         );";
 
                     //Create StockItems Table
@@ -93,6 +95,57 @@ namespace AquaPOS
                 Console.WriteLine($"Error: {ex.Message}");
             }
         }
+
+        // USER DETAILS METHOD --------------------------------
+        public static List<UserDetail> GetAllUsers()
+        {
+            var users = new List<UserDetail>();
+
+            try
+            {
+                using (var conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+                    string query = "SELECT ID, Username, UserRole, LastLogin FROM Users;";
+                    using (var cmd = new SQLiteCommand(query, conn))
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            users.Add(new UserDetail
+                            {
+                                ID = reader.GetInt32(0),
+                                Username = reader.GetString(1),
+                                UserRole = reader.GetString(2),
+                                LastLogin = reader.IsDBNull(3) ? "Never" : reader.GetString(3)
+                            });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching users: {ex.Message}");
+            }
+
+            return users;
+        }
+
+        public static bool DeleteUser(int userId)
+        {
+            using (var conn = new SQLiteConnection(ConnectionString))
+            {
+                conn.Open();
+                string query = "DELETE FROM user WHERE ID = @UserID";
+                using (var cmd = new SQLiteCommand(query, conn))
+                {
+                    cmd.Parameters.AddWithValue("@UserID", userId);
+                    int affectedRows = cmd.ExecuteNonQuery();
+                    return affectedRows > 0;
+                }
+            }
+        }
+
 
         // STOCK METHODS --------------------------------------
         public static List<StockItem> GetStockItems()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,11 +18,12 @@ using LvcWpf = LiveCharts.Wpf;
 
 namespace AquaPOS
 {
-    /// <summary>
-    /// Interaction logic for Dashboard.xaml
-    /// </summary>
     public partial class Dashboard : Window
     {
+        public LiveCharts.SeriesCollection SalesSeriesCollection { get; set; }
+        public string[] MonthLabels { get; set; }
+        public Func<double, string> YFormatter { get; set; }
+
         public Dashboard()
         {
             InitializeComponent();
@@ -33,6 +35,7 @@ namespace AquaPOS
             LoadTodaysSalesRevenue();
             LoadLowStockItemCount();
             LoadStockDoughnutChart();
+            LoadSalesChart();
         }
 
         private void LoadTotalSalesRevenue()
@@ -247,6 +250,54 @@ namespace AquaPOS
             }
             defaultTooltip.Foreground = Brushes.Black;
             StockDoughnutChart.DataTooltip = defaultTooltip;
+        }
+
+        private void LoadSalesChart()
+        {
+            int currentYear = DateTime.Now.Year;
+            int lastYear = currentYear - 1;
+
+            double[] currentYearSales = DatabaseInitializer.GetMonthlySalesByYear(currentYear);
+            double[] lastYearSales = DatabaseInitializer.GetMonthlySalesByYear(lastYear);
+
+            // Define two shades of blue for the lines
+            var aquamarine = Color.FromRgb(75, 217, 169);     // Darker blue for current year
+            var dodgerBlue = Color.FromRgb(255, 178, 30); // Lighter blue for last year (CornflowerBlue)
+
+            var currentYearSeries = new LineSeries
+            {
+                Title = currentYear.ToString(),
+                Values = new ChartValues<double>(currentYearSales),
+                Stroke = new SolidColorBrush(aquamarine),
+                Fill = Brushes.Transparent,
+                PointGeometry = DefaultGeometries.Square,
+                PointGeometrySize = 6,
+                PointForeground = new SolidColorBrush(aquamarine)
+            };
+
+            var lastYearSeries = new LineSeries
+            {
+                Title = lastYear.ToString(),
+                Values = new ChartValues<double>(lastYearSales),
+                Stroke = new SolidColorBrush(dodgerBlue),
+                Fill = Brushes.Transparent,
+                PointGeometry = DefaultGeometries.Circle,
+                PointGeometrySize = 6,
+                PointForeground = new SolidColorBrush(dodgerBlue)
+            };
+
+            SalesSeriesCollection = new LiveCharts.SeriesCollection
+    {
+        lastYearSeries,
+        currentYearSeries
+    };
+
+            MonthLabels = CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames
+                          .Take(12).ToArray();
+
+            YFormatter = value => $"Rs. {value:N0}";
+
+            SalesLineChart.Series = SalesSeriesCollection;
         }
 
         private void DashboardButton_Click(object sender, RoutedEventArgs e)

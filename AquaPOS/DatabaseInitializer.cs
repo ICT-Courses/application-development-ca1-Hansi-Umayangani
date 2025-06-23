@@ -578,6 +578,45 @@ namespace AquaPOS
 
             return result;
         }
+
+        public static double[] GetMonthlySalesByYear(int year)
+        {
+            double[] monthlySales = new double[12];
+
+            try
+            {
+                using (var conn = new SQLiteConnection(ConnectionString))
+                {
+                    conn.Open();
+
+                    string query = @"
+                        SELECT strftime('%m', SaleDate) AS Month, SUM(TotalAmount) 
+                        FROM SalesDetails
+                        WHERE strftime('%Y', SaleDate) = @Year
+                        GROUP BY strftime('%m', SaleDate);";
+
+                    using (var cmd = new SQLiteCommand(query, conn))
+                    {
+                        cmd.Parameters.AddWithValue("@Year", year.ToString());
+                        using (var reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                int monthIndex = int.Parse(reader.GetString(0)) - 1;
+                                double total = reader.GetDouble(1);
+                                monthlySales[monthIndex] = total;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error loading monthly sales: {ex.Message}");
+            }
+
+            return monthlySales;
+        }
     }
 }
 

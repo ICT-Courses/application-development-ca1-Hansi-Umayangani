@@ -109,15 +109,15 @@
             </StackPanel>
         </Border>
 
-        <Grid Grid.Column="1" Margin="20">
+        <Grid Grid.Column="1" Margin="20,15">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
+
             <!-- Summary Cards Row -->
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,10,0,20" Height="100">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,0,0,5" Height="100">
 
                 <!-- Total Income -->
                 <Border Background="#FF001165" CornerRadius="12" Width="222" Margin="10" Padding="15">
@@ -164,7 +164,7 @@
             </StackPanel>
 
             <!-- Charts -->
-            <Grid Grid.Row="1" Margin="0,0,280,280" Grid.RowSpan="2">                <Grid.ColumnDefinitions>                    <ColumnDefinition Width="*"/>                    <ColumnDefinition Width="*"/>                </Grid.ColumnDefinitions>                <!-- Product Search with ComboBox and Button -->                <StackPanel Grid.Column="0" Margin="5,14,5,5">                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Left" Width="160">                        <ComboBox x:Name="cmbProductSearch"                        Width="125" Height="22"                        IsEditable="True"                        StaysOpenOnEdit="True"                        BorderBrush="#FF73AEFF" BorderThickness="1.5"                        Background="white"                        Foreground="#031C36"                        FontWeight="Normal"                        HorizontalContentAlignment="Center"                        VerticalContentAlignment="Center"                        Loaded="CmbProductSearch_Loaded"                        IsTextSearchEnabled="True"                        PreviewTextInput="CmbProductSearch_PreviewTextInput"                        SelectionChanged="CmbProductSearch_SelectionChanged"/>                        <Button Width="20" Height="21" Margin="5,0,5,0"                                BorderBrush="#FF2196F3" BorderThickness="1.5"                                Background="White"                                Click="SearchProduct_Click">                            <Image Source="/Resources/Images/Button_Icons/Search_Icon.png"                                     Stretch="Uniform" Height="17" Width="16" />                        </Button>                    </StackPanel>                    <!-- Product List -->                    <ListView x:Name="ProductListView"                                SelectionChanged="ProductListView_SelectionChanged"                                HorizontalAlignment="Left"                                Width="150" Height="182" Margin="0,2,2,4"                                Foreground="White"                                Background="#330E57AE"                                BorderBrush="Transparent"/>                </StackPanel>                                <!-- Product Movement Bar Chart-->                <Border Background="#330E57AE" Margin="178,10,7,0" CornerRadius="10" Padding="10">                    <Grid>                        <Grid.RowDefinitions>                            <RowDefinition Height="Auto"/>                            <RowDefinition Height="*"/>                        </Grid.RowDefinitions>                        <!-- Header Text -->                        <TextBlock Text="Product Movement"                                   Grid.Row="0"                                   HorizontalAlignment="Center"                                   FontSize="12"                                   FontWeight="Normal"                                   TextDecorations="Underline"                                   Foreground="White"                                   Margin="0,0,0,5"/>                        <!-- Bar Chart -->                        <lvc:CartesianChart x:Name="ProductStockBarChart"                                Grid.Row="1"                                Margin="2"                                Background="Transparent"                                Foreground="White"                                Loaded="ProductStockBarChart_Loaded">                            <lvc:CartesianChart.AxisX>                                <lvc:Axis Title="Product"                                          LabelsRotation="15"                                          Foreground="White"                                          ShowLabels="True"/>                            </lvc:CartesianChart.AxisX>                            <lvc:CartesianChart.AxisY>                                <lvc:Axis Title="Stock Level"                                          LabelFormatter="{Binding YFormatter}"                                          Foreground="White"/>                            </lvc:CartesianChart.AxisY>                        </lvc:CartesianChart>                    </Grid>                </Border>                <!-- Stock Distribution Doughnut Chart -->
+            <Grid Margin="0,0,285,320" Grid.Row="2">                <Grid.ColumnDefinitions>                    <ColumnDefinition Width="*"/>                    <ColumnDefinition Width="*"/>                </Grid.ColumnDefinitions>                <!-- Product Search with ComboBox and Button -->                <StackPanel Grid.Column="0" Margin="5,14,5,5">                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Left" Width="160">                        <ComboBox x:Name="cmbProductSearch"                        Width="125" Height="22"                        IsEditable="True"                        StaysOpenOnEdit="True"                        BorderBrush="#FF73AEFF" BorderThickness="1.5"                        Background="white"                        Foreground="#031C36"                        FontWeight="Normal"                        HorizontalContentAlignment="Center"                        VerticalContentAlignment="Center"                        Loaded="CmbProductSearch_Loaded"                        IsTextSearchEnabled="True"                        PreviewTextInput="CmbProductSearch_PreviewTextInput"                        SelectionChanged="CmbProductSearch_SelectionChanged"/>                        <Button Width="20" Height="21" Margin="5,0,5,0"                                BorderBrush="#FF2196F3" BorderThickness="1.5"                                Background="White"                                Click="SearchProduct_Click">                            <Image Source="/Resources/Images/Button_Icons/Search_Icon.png"                                     Stretch="Uniform" Height="17" Width="16" />                        </Button>                    </StackPanel>                    <!-- Product List -->                    <ListView x:Name="ProductListView"                                SelectionChanged="ProductListView_SelectionChanged"                                HorizontalAlignment="Left"                                Width="150" Height="182" Margin="0,-2,2,4"                                Foreground="White"                                Background="#330E57AE"                                BorderBrush="Transparent"/>                </StackPanel>                <!-- Product Movement Bar Chart-->                <Border Background="#330E57AE" Margin="175,10,10,0" CornerRadius="10" Padding="10">                    <Grid>                        <Grid.RowDefinitions>                            <RowDefinition Height="Auto"/>                            <RowDefinition Height="*"/>                        </Grid.RowDefinitions>                        <!-- Header Text -->                        <TextBlock Text="Product Movement"                                   Grid.Row="0"                                   HorizontalAlignment="Center"                                   FontSize="12"                                   FontWeight="Normal"                                   TextDecorations="Underline"                                   Foreground="White"                                   Margin="0,0,0,5"/>                        <!-- Bar Chart -->                        <lvc:CartesianChart x:Name="ProductStockBarChart"                                Grid.Row="1"                                Margin="2"                                Background="Transparent"                                Foreground="White"                                Loaded="ProductStockBarChart_Loaded">                            <lvc:CartesianChart.AxisX>                                <lvc:Axis Title="Product"                                          LabelsRotation="15"                                          Foreground="White"                                          ShowLabels="True"/>                            </lvc:CartesianChart.AxisX>                            <lvc:CartesianChart.AxisY>                                <lvc:Axis Title="Stock Level"                                          LabelFormatter="{Binding YFormatter}"                                          Foreground="White"/>                            </lvc:CartesianChart.AxisY>                        </lvc:CartesianChart>                    </Grid>                </Border>                <!-- Stock Distribution Doughnut Chart -->
                 <Border Grid.Column="1" Background="#330E57AE" Margin="10,10,10,0" CornerRadius="10" Padding="10">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -195,8 +195,68 @@
                                       Background="Transparent"
                                       Foreground="White"/>
                     </Grid>
-                </Border>            </Grid>
+                </Border>
+
+                <Grid Grid.Row="2" Margin="10,269,290,10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30*"/>
+                        <RowDefinition Height="30*"/>
+                        <!-- Main Content: Product List + Chart -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Movable User Details Panel -->
+                    </Grid.RowDefinitions>
+
+                    <!-- Bar Chart -->
+                    <Border Background="#330E57AE"
+                                Margin="-5,-20,-622,-270"
+                                CornerRadius="10"
+                                Padding="10" Grid.RowSpan="3">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <!-- Header -->
+                                <RowDefinition Height="*"/>
+                                <!-- Chart -->
+                            </Grid.RowDefinitions>
+
+                            <!-- Header Text -->
+                            <TextBlock Text="Monthly Sales Overview"
+                                           Grid.Row="0"
+                                           HorizontalAlignment="Right"
+                                           FontSize="12"
+                                           FontWeight="Normal"
+                                           TextDecorations="Underline"
+                                           Foreground="White"
+                                           Margin="0,0,10,5"/>
+
+                            <!-- Line Chart -->
+                            <lvc:CartesianChart x:Name="SalesLineChart"
+                                                    Grid.Row="1"
+                                                Margin="5,0,5,0"
+                                                    LegendLocation="Right"
+                                                    Background="Transparent"
+                                                    Zoom="None"
+                                                    DisableAnimations="False"
+                                                    Foreground="white"
+                                                    Hoverable="True"
+                                                    DataTooltip="{x:Null}">
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis Title="Month"
+                                                  Labels="{Binding MonthLabels}"
+                                                  Foreground="White"/>
+                                </lvc:CartesianChart.AxisX>
+
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis Title="Sales (Rs.)"
+                                                  LabelFormatter="{Binding YFormatter}"
+                                                  Foreground="White"/>
+                                </lvc:CartesianChart.AxisY>
+                            </lvc:CartesianChart>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
         </Grid>
     </Grid>
-
 </Window>

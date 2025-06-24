@@ -24,7 +24,7 @@ namespace AquaPOS
         public string[] MonthLabels { get; set; }
         public Func<double, string> YFormatter { get; set; }
 
-        public Dashboard()
+        public Dashboard(string activeSection = "Dashboard")
         {
             InitializeComponent();
 
@@ -41,6 +41,8 @@ namespace AquaPOS
             {
                 LoadUserDetails();
             }
+
+            SetActiveButton(activeSection);
         }
 
         private void LoadUserDetails()
@@ -50,27 +52,27 @@ namespace AquaPOS
         }
 
         private void DeleteUser_Click(object sender, RoutedEventArgs e)
+{
+    if (sender is Button button && button.Tag is int userId)
+    {
+        var result = MessageBox.Show("Are you sure you want to delete this user?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+        
+        if (result == MessageBoxResult.Yes)
         {
-            if (sender is Button button && button.Tag is int userId)
+            bool success = DatabaseInitializer.DeleteUser(userId); // assumes this method exists
+
+            if (success)
             {
-                var result = MessageBox.Show("Are you sure you want to delete this user?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-
-                if (result == MessageBoxResult.Yes)
-                {
-                    bool success = DatabaseInitializer.DeleteUser(userId); // assumes this method exists
-
-                    if (success)
-                    {
-                        MessageBox.Show("User deleted successfully.", "Deleted", MessageBoxButton.OK, MessageBoxImage.Information);
-                        LoadUserDetails(); // Refresh the user list
-                    }
-                    else
-                    {
-                        MessageBox.Show("Failed to delete the user.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
+                MessageBox.Show("User deleted successfully.", "Deleted", MessageBoxButton.OK, MessageBoxImage.Information);
+                LoadUserDetails(); // Refresh the user list
+            }
+            else
+            {
+                MessageBox.Show("Failed to delete the user.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+    }
+}
 
 
         private void LoadTotalSalesRevenue()
@@ -333,6 +335,26 @@ namespace AquaPOS
             YFormatter = value => $"Rs. {value:N0}";
 
             SalesLineChart.Series = SalesSeriesCollection;
+        }
+
+        private void SetActiveButton(string activeSection)
+        {
+            DashboardButton.Tag = null;
+            InventoryManagementButton.Tag = null;
+            SalesReportsButton.Tag = null;
+
+            switch (activeSection)
+            {
+                case "Dashboard":
+                    DashboardButton.Tag = "Active";
+                    break;
+                case "Inventory_Management":
+                    InventoryManagementButton.Tag = "Active";
+                    break;
+                case "Sales":
+                    SalesReportsButton.Tag = "Active";
+                    break;
+            }
         }
 
         private void DashboardButton_Click(object sender, RoutedEventArgs e)

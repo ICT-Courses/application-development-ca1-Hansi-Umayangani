@@ -136,7 +136,7 @@ namespace AquaPOS
             using (var conn = new SQLiteConnection(ConnectionString))
             {
                 conn.Open();
-                string query = "DELETE FROM user WHERE ID = @UserID";
+                string query = "DELETE FROM Users WHERE ID = @UserID";
                 using (var cmd = new SQLiteCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@UserID", userId);

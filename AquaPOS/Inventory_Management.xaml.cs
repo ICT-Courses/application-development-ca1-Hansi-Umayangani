@@ -19,9 +19,11 @@ namespace AquaPOS
     {
         public ObservableCollection<StockItem> StockItems { get; set; }
 
-        public Inventory_Management()
+        public Inventory_Management(string activeSection = "Inventory_Management")
         {
             InitializeComponent();
+
+            SetActiveButton(activeSection);
 
             StockItems = new ObservableCollection<StockItem>
             {
@@ -483,6 +485,26 @@ namespace AquaPOS
             catch (Exception ex)
             {
                 MessageBox.Show("Error generating PDF: " + ex.Message);
+            }
+        }
+
+        private void SetActiveButton(string activeSection)
+        {
+            DashboardButton.Tag = null;
+            InventoryManagementButton.Tag = null;
+            SalesReportsButton.Tag = null;
+
+            switch (activeSection)
+            {
+                case "Dashboard":
+                    DashboardButton.Tag = "Active";
+                    break;
+                case "Inventory_Management":
+                    InventoryManagementButton.Tag = "Active";
+                    break;
+                case "Sales":
+                    SalesReportsButton.Tag = "Active";
+                    break;
             }
         }
 

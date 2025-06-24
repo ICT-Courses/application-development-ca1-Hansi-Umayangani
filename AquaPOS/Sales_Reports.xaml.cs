@@ -14,9 +14,31 @@ namespace AquaPOS
     {
         private List<SalesReportItem> reportData = new List<SalesReportItem>();
 
-        public Sales_Reports()
+        public Sales_Reports(string activeSection = "Sales")
         {
             InitializeComponent();
+
+            SetActiveButton(activeSection);
+        }
+
+        private void SetActiveButton(string activeSection)
+        {
+            DashboardButton.Tag = null;
+            InventoryManagementButton.Tag = null;
+            SalesReportsButton.Tag = null;
+
+            switch (activeSection)
+            {
+                case "Dashboard":
+                    DashboardButton.Tag = "Active";
+                    break;
+                case "Inventory_Management":
+                    InventoryManagementButton.Tag = "Active";
+                    break;
+                case "Sales":
+                    SalesReportsButton.Tag = "Active";
+                    break;
+            }
         }
 
         private void DashboardButton_Click(object sender, RoutedEventArgs e)

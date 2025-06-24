@@ -50,6 +50,65 @@
             </Setter>
         </Style>
 
+        <!-- Global Cute ScrollBar Style -->
+        <Style TargetType="ScrollBar">
+            <Setter Property="Width" Value="4"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="{TemplateBinding Background}">
+                            <Track Name="PART_Track"
+                           IsDirectionReversed="True"
+                           IsEnabled="{TemplateBinding IsEnabled}"
+                           Value="{TemplateBinding Value}"
+                           Minimum="{TemplateBinding Minimum}"
+                           Maximum="{TemplateBinding Maximum}">
+                                <Track.Thumb>
+                                    <Thumb>
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Background="#FF1B66B1"
+                                                CornerRadius="4"
+                                                Height="50"
+                                                BorderBrush="#FF1B66B1"
+                                                BorderThickness="1"/>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style x:Key="NavigationButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#FF002266"/>
+                            </Trigger>
+                            <Trigger Property="Tag" Value="Active">
+                                <Setter TargetName="border" Property="Background" Value="#FF002266"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
     </Window.Resources>
 
     <Grid>
@@ -69,7 +128,8 @@
                        Margin="0,20,0,0"/>
 
                 <!-- Dashboard Button -->
-                <Button x:Name="DashboardButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
+                <Button x:Name="DashboardButton" Style="{StaticResource NavigationButtonStyle}"
+                        Foreground="White" Background="Transparent" BorderBrush="Transparent" 
                         FontSize="14" Width="240" Height="44" Margin="0,45,0,0" 
                         Click="DashboardButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="35" Width="126">
@@ -80,7 +140,8 @@
                 </Button>
 
                 <!-- Inventory Management Button -->
-                <Button x:Name="InventoryManagementButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
+                <Button x:Name="InventoryManagementButton" Style="{StaticResource NavigationButtonStyle}"
+                        Foreground="White" Background="Transparent" BorderBrush="Transparent" 
                         FontSize="14" Width="240" Height="44" Margin="0,45,0,0" 
                         Click="InventoryManagementButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="35" Width="211">
@@ -91,7 +152,8 @@
                 </Button>
 
                 <!-- Sales Reports Button -->
-                <Button x:Name="SalesReportsButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
+                <Button x:Name="SalesReportsButton" Style="{StaticResource NavigationButtonStyle}"
+                        Foreground="White" Background="Transparent" BorderBrush="Transparent" 
                         FontSize="14" Width="240" Height="44" Margin="0,45,0,0" 
                         Click="SalesReportsButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -164,7 +226,92 @@
             </StackPanel>
 
             <!-- Charts -->
-            <Grid Margin="0,0,285,320" Grid.Row="2">                <Grid.ColumnDefinitions>                    <ColumnDefinition Width="*"/>                    <ColumnDefinition Width="*"/>                </Grid.ColumnDefinitions>                <!-- Product Search with ComboBox and Button -->                <StackPanel Grid.Column="0" Margin="5,14,5,5">                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Left" Width="160">                        <ComboBox x:Name="cmbProductSearch"                        Width="125" Height="22"                        IsEditable="True"                        StaysOpenOnEdit="True"                        BorderBrush="#FF73AEFF" BorderThickness="1.5"                        Background="white"                        Foreground="#031C36"                        FontWeight="Normal"                        HorizontalContentAlignment="Center"                        VerticalContentAlignment="Center"                        Loaded="CmbProductSearch_Loaded"                        IsTextSearchEnabled="True"                        PreviewTextInput="CmbProductSearch_PreviewTextInput"                        SelectionChanged="CmbProductSearch_SelectionChanged"/>                        <Button Width="20" Height="21" Margin="5,0,5,0"                                BorderBrush="#FF2196F3" BorderThickness="1.5"                                Background="White"                                Click="SearchProduct_Click">                            <Image Source="/Resources/Images/Button_Icons/Search_Icon.png"                                     Stretch="Uniform" Height="17" Width="16" />                        </Button>                    </StackPanel>                    <!-- Product List -->                    <ListView x:Name="ProductListView"                                SelectionChanged="ProductListView_SelectionChanged"                                HorizontalAlignment="Left"                                Width="150" Height="182" Margin="0,-2,2,4"                                Foreground="White"                                Background="#330E57AE"                                BorderBrush="Transparent"/>                </StackPanel>                <!-- Product Movement Bar Chart-->                <Border Background="#330E57AE" Margin="175,10,10,0" CornerRadius="10" Padding="10">                    <Grid>                        <Grid.RowDefinitions>                            <RowDefinition Height="Auto"/>                            <RowDefinition Height="*"/>                        </Grid.RowDefinitions>                        <!-- Header Text -->                        <TextBlock Text="Product Movement"                                   Grid.Row="0"                                   HorizontalAlignment="Center"                                   FontSize="12"                                   FontWeight="Normal"                                   TextDecorations="Underline"                                   Foreground="White"                                   Margin="0,0,0,5"/>                        <!-- Bar Chart -->                        <lvc:CartesianChart x:Name="ProductStockBarChart"                                Grid.Row="1"                                Margin="2"                                Background="Transparent"                                Foreground="White"                                Loaded="ProductStockBarChart_Loaded">                            <lvc:CartesianChart.AxisX>                                <lvc:Axis Title="Product"                                          LabelsRotation="0"                                          Foreground="White"                                          ShowLabels="True"/>                            </lvc:CartesianChart.AxisX>                            <lvc:CartesianChart.AxisY>                                <lvc:Axis Title="Stock Level"                                          LabelFormatter="{Binding YFormatter}"                                          Foreground="White"/>                            </lvc:CartesianChart.AxisY>                        </lvc:CartesianChart>                    </Grid>                </Border>                <!-- Stock Distribution Doughnut Chart -->
+            <Grid Margin="0,0,285,320" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Product Search with ComboBox and Button -->
+                <StackPanel Grid.Column="0" Margin="5,14,5,5">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Left" Width="160">
+                        <ComboBox x:Name="cmbProductSearch"
+                        Width="125" Height="22"
+                        IsEditable="True"
+                        StaysOpenOnEdit="True"
+                        BorderBrush="#FF73AEFF" BorderThickness="1.5"
+                        Background="white"
+                        Foreground="#031C36"
+                        FontWeight="Normal"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Loaded="CmbProductSearch_Loaded"
+                        IsTextSearchEnabled="True"
+                        PreviewTextInput="CmbProductSearch_PreviewTextInput"
+                        SelectionChanged="CmbProductSearch_SelectionChanged"/>
+
+                        <Button Width="20" Height="21" Margin="5,0,5,0"
+                                BorderBrush="#FF2196F3" BorderThickness="1.5"
+                                Background="White"
+                                Click="SearchProduct_Click">
+                            <Image Source="/Resources/Images/Button_Icons/Search_Icon.png" 
+                                    Stretch="Uniform" Height="17" Width="16" />
+                        </Button>
+                    </StackPanel>
+
+                    <!-- Product List -->
+                    <ListView x:Name="ProductListView"
+                                SelectionChanged="ProductListView_SelectionChanged"
+                                HorizontalAlignment="Left"
+                                Width="150" Height="182" Margin="0,-2,2,4"
+                                Foreground="White"
+                                Background="#330E57AE"
+                                BorderBrush="Transparent"/>
+                </StackPanel>
+
+                <!-- Product Movement Bar Chart-->
+                <Border Background="#330E57AE" Margin="175,10,10,0" CornerRadius="10" Padding="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Header Text -->
+                        <TextBlock Text="Product Movement"
+                                   Grid.Row="0"
+                                   HorizontalAlignment="Center"
+                                   FontSize="12"
+                                   FontWeight="Normal"
+                                   TextDecorations="Underline"
+                                   Foreground="White"
+                                   Margin="0,0,0,5"/>
+
+                        <!-- Bar Chart -->
+                        <lvc:CartesianChart x:Name="ProductStockBarChart"
+                                Grid.Row="1"
+                                Margin="2"
+                                Background="Transparent"
+                                Foreground="White"
+                                Loaded="ProductStockBarChart_Loaded">
+
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis Title="Product"
+                                          LabelsRotation="0"
+                                          Foreground="White"
+                                          ShowLabels="True"/>
+                            </lvc:CartesianChart.AxisX>
+
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Title="Stock Level"
+                                          LabelFormatter="{Binding YFormatter}"
+                                          Foreground="White"/>
+                            </lvc:CartesianChart.AxisY>
+                        </lvc:CartesianChart>
+                    </Grid>
+                </Border>
+
+                <!-- Stock Distribution Doughnut Chart -->
                 <Border Grid.Column="1" Background="#330E57AE" Margin="10,10,10,0" CornerRadius="10" Padding="10">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -274,13 +421,21 @@
                                Width="264" Height="539"/>
 
                     <!-- Scrollable User Info Section -->
-                    <ScrollViewer Height="285" VerticalScrollBarVisibility="Auto" Background="#330E57AE" Margin="0,-740,0,0">
+                    <ScrollViewer Height="285" VerticalScrollBarVisibility="Auto" 
+                                  Background="#330E57AE" Margin="0,-740,0,0">
                         <ItemsControl x:Name="UserInfoList" Height="290" Width="215" Margin="10,5,0,0" HorizontalAlignment="Left">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>
                                         <Border BorderBrush="White" BorderThickness="1" CornerRadius="8" Padding="8" Margin="0,0,0,10" Background="#FF102C4A">
                                             <Grid>
+
+                                                <StackPanel Orientation="Vertical">
+                                                    <TextBlock Text="{Binding Username}" FontWeight="Bold" Foreground="White"/>
+                                                    <TextBlock Text="Role: " Foreground="LightGray" FontSize="12"><Run Text="{Binding UserRole}"/></TextBlock>
+                                                    <TextBlock Text="Last Login: " Foreground="LightGray" FontSize="12"><Run Text="{Binding LastLogin}"/></TextBlock>
+                                                </StackPanel>
+                                                
                                                 <!-- Delete User Button -->
                                                 <Button Click="DeleteUser_Click"
                                                     ToolTip="Delete User"
@@ -296,12 +451,7 @@
                                                        Stretch="Uniform"
                                                        IsHitTestVisible="False"/>
                                                 </Button>
-
-                                                <StackPanel Orientation="Vertical">
-                                                    <TextBlock Text="{Binding Username}" FontWeight="Bold" Foreground="White"/>
-                                                    <TextBlock Text="Role: " Foreground="LightGray" FontSize="12"><Run Text="{Binding UserRole}"/></TextBlock>
-                                                    <TextBlock Text="Last Login: " Foreground="LightGray" FontSize="12"><Run Text="{Binding LastLogin}"/></TextBlock>
-                                                </StackPanel>
+                                                
                                             </Grid>
                                         </Border>
                                     </Grid>

@@ -336,7 +336,8 @@ namespace AquaPOS
                 }
 
                 DatabaseInitializer.RecordSale(cartItems, Convert.ToDouble(TotalAmountTextBlock.Text), saleDateTime);
-
+                LoadProductsFromDatabase();
+                LoadProductNamesFromDatabase();
 
                 // Create new PDF document
                 PdfDocument document = new PdfDocument();

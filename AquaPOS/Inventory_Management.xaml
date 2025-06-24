@@ -32,7 +32,7 @@
                             BorderThickness="{TemplateBinding BorderThickness}" 
                             CornerRadius="20"
                             SnapsToDevicePixels="True">
-                                <ContentPresenter 
+                            <ContentPresenter 
                                 HorizontalAlignment="Center" 
                                 VerticalAlignment="Center" 
                                 RecognizesAccessKey="True"/>
@@ -128,7 +128,7 @@
             </Style.Triggers>
         </Style>
 
-        
+
 
         <local:LowStockToBrushConverter x:Key="LowStockBrush"/>
 
@@ -333,9 +333,9 @@
         <!-- Main Content Grid with Two Columns -->
         <Grid Grid.Column="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" MinWidth="814.8"/>
                 <!-- Left: Stock Table -->
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition/>
                 <!-- Right: Input Controls -->
             </Grid.ColumnDefinitions>
 
@@ -395,11 +395,11 @@
                     </DataGrid.Resources>
 
                     <!-- DataGrid.Resources and Columns -->
-                    
+
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Binding="{Binding ProductID}" Width="40" 
                                             ElementStyle="{StaticResource CenterTextStyle}"/>
-                        
+
                         <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="100" 
                                             ElementStyle="{StaticResource CenterTextStyle}"/>
 
@@ -452,7 +452,7 @@
                                                 BorderBrush="Transparent" 
                                                 Cursor="Hand" 
                                                 Padding="5,0,10,0">
-                                            
+
                                             <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Delete_Button_Icon.png" 
                                                    Width="15" Height="15" Stretch="Uniform"/>
                                         </Button>
@@ -465,13 +465,13 @@
             </Border>
 
             <!-- Input Fields and Buttons in Vertical Stack -->
-            <StackPanel Grid.Column="1" Margin="0,20,0,20" Orientation="Vertical" HorizontalAlignment="Left" Width="191">
+            <StackPanel Margin="805,20,0,20" Orientation="Vertical" HorizontalAlignment="Left" Width="195" Grid.ColumnSpan="2">
 
                 <!-- Search Product -->
                 <StackPanel Margin="10" Height="32">
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Width="165">
                         <ComboBox x:Name="cmbSearchProduct"
-                                  Width="138" Height="32"
+                                  Width="130" Height="32"
                                   IsEditable="True"
                                   StaysOpenOnEdit="True"
                                   BorderBrush="#FF73AEFF" BorderThickness="2.5"
@@ -578,12 +578,12 @@
                     <!-- Update and Print Buttons -->
                     <WrapPanel Orientation="Horizontal" Margin="25,20,25,20">
                         <!-- Update Stock Button -->
-                        <Button Content="UPDATE" Style="{StaticResource RoundedButtonStyle}" Width="120" Height="36" 
+                        <Button Content="UPDATE" Style="{StaticResource RoundedButtonStyle}" Width="115" Height="36" 
                                 FontSize="14" Foreground="Black" FontFamily="Segoe UI Semibold" Background="#FF47CCCC" BorderBrush="#FF3F43CE" BorderThickness="1.5" 
                                 Margin="10" Click="UpdateStock_Click"/>
 
                         <!-- Print Stock Button -->
-                        <Button Content="PRINT" Style="{StaticResource RoundedButtonStyle}" Width="120" Height="36" 
+                        <Button Content="PRINT" Style="{StaticResource RoundedButtonStyle}" Width="115" Height="36" 
                                 FontSize="14" FontFamily="Segoe UI Semibold" Foreground="Black" Background="#FF9DFF59" BorderBrush="#FF15A90E" BorderThickness="1.5" Margin="10" Click="PrintStock_Click"/>
                     </WrapPanel>
 

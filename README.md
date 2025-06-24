@@ -3,36 +3,96 @@
 <b>AF Number - AF/22/0232</b>
 
 
-<h2>UI Designs</h2>
+<h1>AquaPOS - Point of Sales System</h1>
+
+<h2>UI Designs Status</h2>
 <ul>
-    <li>User Login (Completed)</li>
-    <li>User Registration (Completed)</li>
-    <li>Sales Processing (Completed)</li>
-    <li>Inventory Management (Completed)</li>
-    <li>Dashboard (Partially Completed)</li>
-    <li>Sales Report (Partially Completed)</li>
+  <li>User Login (Completed)</li>
+  <li>User Registration (Completed)</li>
+  <li>Sales Processing (Completed)</li>
+  <li>Inventory Management (Completed)</li>
+  <li>Dashboard (Completed)</li>
+  <li>Sales Reports (Completed)</li>
 </ul>
 
+<hr>
+
 <h2>Features Implemented</h2>
+
+<h3>User Registration</h3>
 <ul>
-    <li>User Registration: Basic validation (unique username, password validation, required fields check).</li>
-    <li>User Login: Authentication with validation against the user database.</li>
-    <li>Role-Based Navigation: Admin users are directed to the Dashboard, Cashier users are directed to Sales Processing after successful login.</li>
-    <li>Basic Page Navigation: Implemented routing between different sections of the application.</li>
-    <li>Inventory Management:
-        <ul>
-            <li>CRUD operations of the inventory of the store</li>
-            <li>Search functionality for products in the inventory</li>
-            <li>Generate report (PDF) of the inventory</li>
-        </ul>
-    </li>
-    <li>Sales Processing:
-        <ul>
-            <li>Search functionality for available products from the inventory</li>
-            <li>Add and remove items from the current bill</li>
-            <li>Show total bill value</li>
-            <li>Generate bill (PDF)</li>
-            <li>Update available stock when finalizing the sale</li>
-        </ul>
-    </li>
+  <li>Basic validation including:
+    <ul>
+      <li>Unique username check</li>
+      <li>Password validation</li>
+      <li>Required fields check</li>
+    </ul>
+  </li>
 </ul>
+
+<h3>User Login</h3>
+<ul>
+  <li>Authentication using user database</li>
+  <li>Role-based navigation:
+    <ul>
+      <li>Admin users are directed to the Dashboard</li>
+      <li>Cashier users are directed to Sales Processing</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Navigation</h3>
+<ul>
+  <li>Basic page navigation implemented between all sections</li>
+</ul>
+
+<hr>
+
+<h2>Inventory Management</h2>
+<ul>
+  <li>Full CRUD operations for store inventory</li>
+  <li>Search functionality to locate products</li>
+  <li>Generate inventory report as a PDF</li>
+</ul>
+
+<h2>Sales Processing</h2>
+<ul>
+  <li>Search available inventory items</li>
+  <li>Add and remove items from the current bill</li>
+  <li>Calculate total bill amount</li>
+  <li>Generate printable bill (PDF)</li>
+  <li>Automatically update stock upon finalizing a sale</li>
+</ul>
+
+<h2>Dashboard</h2>
+<ul>
+  <li>Summary cards displaying:
+    <ul>
+      <li>Total Gross Income</li>
+      <li>Total Sales Revenue</li>
+      <li>Today’s Sale</li>
+      <li>Low Stock Items (clickable to view pop-up with item list)</li>
+    </ul>
+  </li>
+  <li>Bar Chart for product movement (selectable product view)</li>
+  <li>Doughnut Chart for category-wise stock distribution</li>
+  <li>Line Chart comparing total monthly sales for the past two years</li>
+  <li>User Detail Panel:
+    <ul>
+      <li>Display all user information</li>
+      <li>Admin can delete users from the system</li>
+    </ul>
+  </li>
+  <li>Calendar Widget for quick date reference</li>
+</ul>
+
+<h2>Sales Reports</h2>
+<ul>
+  <li>Filter sales data by selected date range</li>
+  <li>Display total sales amount for the selected range</li>
+  <li>Generate and print sales report (PDF) for the selected range</li>
+</ul>
+
+<hr>
+
+<h3>Watch the Demo: <a href="https://drive.google.com/file/d/1JsoiKKkyE8h94c5HAbFFELae_CsV1KfR/view?usp=drive_link">[here]</a></h3>

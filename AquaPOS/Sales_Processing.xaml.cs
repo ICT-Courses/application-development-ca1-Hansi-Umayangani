@@ -266,7 +266,7 @@ namespace AquaPOS
                 string selectedProductName = cmbSearchProduct.SelectedItem.ToString();
                 var selectedProduct = productList.Find(p => p.ProductName == selectedProductName);
 
-                if (selectedProduct != null)
+                if (selectedProduct.AvailableQty >= qty)
                 {
                     var billItem = new BillingItem
                     {
@@ -279,11 +279,15 @@ namespace AquaPOS
                     billItems.Add(billItem);
                     UpdateTotalAmount();
                 }
+                {
+                    MessageBox.Show($"Insufficient stock. Available Quantity: {selectedProduct.AvailableQty}");
+                }
             }
             else
             {
-                MessageBox.Show("Please enter a valid quantity.");
+                MessageBox.Show("Please enter a valid product.");
             }
+
         }
 
         private void UpdateTotalAmount()

@@ -459,7 +459,7 @@
                     <!-- Scrollable User Info Section -->
                     <ScrollViewer Height="285" VerticalScrollBarVisibility="Auto" 
                                   Background="#330E57AE" Margin="0,-740,0,0">
-                        <ItemsControl x:Name="UserInfoList" Height="290" Width="215" Margin="10,5,0,0" HorizontalAlignment="Left">
+                        <ItemsControl x:Name="UserInfoList" Width="215" Margin="10,5,0,0" HorizontalAlignment="Left">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Grid>

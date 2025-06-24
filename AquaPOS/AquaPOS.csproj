@@ -256,6 +256,9 @@
   <ItemGroup>
     <Resource Include="resources\Images\Button_Icons\Delete_User_Button_Icon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="resources\Images\Button_Icons\Back_Button.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

@@ -106,10 +106,10 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#FF002266"/>
+                                <Setter TargetName="border" Property="Background" Value="#142648"/>
                             </Trigger>
                             <Trigger Property="Tag" Value="Active">
-                                <Setter TargetName="border" Property="Background" Value="#FF002266"/>
+                                <Setter TargetName="border" Property="Background" Value="#142648"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -172,10 +172,47 @@
                 </Button>
 
                 <!-- Exit Button -->
-                <Button x:Name="ExitButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
-                    FontSize="14" Width="60" Height="35" Click="ExitButton_Click" Margin="0,45,0,0" HorizontalAlignment="Center">
-                    <TextBlock Foreground="White" TextDecorations="Underline" TextAlignment="Center"><Run Text="EXIT"/></TextBlock>
+                <Button x:Name="ExitButton" Width="60" Height="35" Margin="0,45,0,0" Click="ExitButton_Click" HorizontalAlignment="Center">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <!-- Normal state -->
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="0"
+                                                CornerRadius="4">
+                                            <ContentPresenter HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            RecognizesAccessKey="True"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+
+                            <!-- Interaction triggers -->
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#142648"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#142648"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <!-- Button Text -->
+                    <TextBlock Text="EXIT" TextDecorations="Underline" TextAlignment="Center"/>
                 </Button>
+
+
 
             </StackPanel>
         </Border>

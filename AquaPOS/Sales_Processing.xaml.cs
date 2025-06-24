@@ -14,7 +14,7 @@ namespace AquaPOS
 {
     public partial class Sales_Processing : Window
     {
-        private readonly string connectionString = "Data Source=C:\\Projects\\Appication Development\\application-development-ca1-Hansi-Umayangani\\AquaPOS\\Databases\\AquaPOS-Database.db";
+        private readonly string connectionString = DatabaseInitializer.ConnectionString;
         private readonly List<Product> productList = new List<Product>();
         private readonly ObservableCollection<BillingItem> billItems = new ObservableCollection<BillingItem>();
 

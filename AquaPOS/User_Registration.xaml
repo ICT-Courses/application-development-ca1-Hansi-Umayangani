@@ -142,20 +142,51 @@
             Style="{StaticResource RoundedButtonStyle}"
             HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,603,0,0" Click="CreateUserButton_Click" BorderBrush="#FF0F35C8"/>
 
-        <Button Content="←"
-        Width="57" Height="60"
-        Click="BackButton_Click"
-        FontSize="50" FontWeight="Bold"
-        FontFamily="Bernard MT Condensed"
-        Background="Transparent"
-        Foreground="White"
-        BorderBrush="Transparent"
-        Padding="0"
-        HorizontalAlignment="Right"
-        HorizontalContentAlignment="Center"
-        VerticalAlignment="Top"
-        VerticalContentAlignment="Center" Margin="0,24,20,0"/>
+        <!-- Back Button -->
+        <Button  
+            Width="30" Height="30"
+            Click="BackButton_Click"
+            Background="Transparent"
+            BorderBrush="Transparent"
+            Padding="0"
+            HorizontalAlignment="Right"
+            HorizontalContentAlignment="Center"
+            VerticalAlignment="Top"
+            VerticalContentAlignment="Center" Margin="0,24,20,0">
 
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="Cursor" Value="Hand"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="0"
+                                    CornerRadius="4">
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#142648"/>
+                            <!-- Hover -->
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Background" Value="#142648"/>
+                            <!-- Pressed -->
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+
+            <Image Source="pack://application:,,,/resources/Images/Button_Icons/Back_Button.png"/>
+        </Button>
     </Grid>
 
 

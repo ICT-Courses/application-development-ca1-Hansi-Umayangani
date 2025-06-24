@@ -128,7 +128,6 @@
             </Style.Triggers>
         </Style>
 
-        <!-- Merged Icon Alive Button Style -->
         <Style x:Key="MergedIconAliveButtonStyle" TargetType="Button">
             <!-- From IconButtonStyle -->
             <Setter Property="Background" Value="Transparent"/>
@@ -150,19 +149,25 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Grid>
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Grid>
+                        <Border x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                        </Border>
+
                         <ControlTemplate.Triggers>
-                            <!-- Hover: Scale up -->
+                            <!-- Hover: Background + Scale up -->
                             <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#1A0E57AE"/>
                                 <Trigger.EnterActions>
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
-                                             To="1.2" Duration="0:0:0.1"/>
+                                                     To="1.2" Duration="0:0:0.1"/>
                                             <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
-                                             To="1.2" Duration="0:0:0.1"/>
+                                                     To="1.2" Duration="0:0:0.1"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </Trigger.EnterActions>
@@ -170,22 +175,27 @@
                                     <BeginStoryboard>
                                         <Storyboard>
                                             <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
-                                             To="1" Duration="0:0:0.1"/>
+                                                     To="1" Duration="0:0:0.1"/>
                                             <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
-                                             To="1" Duration="0:0:0.1"/>
+                                                     To="1" Duration="0:0:0.1"/>
                                         </Storyboard>
                                     </BeginStoryboard>
                                 </Trigger.ExitActions>
                             </Trigger>
 
-                            <!-- Click: Quick bounce effect -->
+                            <!-- Pressed: Background + Bounce -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#330E57AE"/>
+                            </Trigger>
+
+                            <!-- Click: Bounce effect -->
                             <EventTrigger RoutedEvent="Button.Click">
                                 <BeginStoryboard>
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
-                                         To="0.9" Duration="0:0:0.05" AutoReverse="True"/>
+                                                 To="0.9" Duration="0:0:0.05" AutoReverse="True"/>
                                         <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
-                                         To="0.9" Duration="0:0:0.05" AutoReverse="True"/>
+                                                 To="0.9" Duration="0:0:0.05" AutoReverse="True"/>
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger>
@@ -194,6 +204,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
 
     </Window.Resources>
 

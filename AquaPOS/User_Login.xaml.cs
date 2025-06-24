@@ -60,6 +60,14 @@ namespace AquaPOS
                     {
                         string userRole = result.ToString();
 
+                        string updateLoginTime = "UPDATE Users SET LastLogin = @LastLogin WHERE Username = @Username";
+                        using (SQLiteCommand updateCommand = new SQLiteCommand(updateLoginTime, connection))
+                        {
+                            updateCommand.Parameters.AddWithValue("@LastLogin", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                            updateCommand.Parameters.AddWithValue("@Username", username);
+                            updateCommand.ExecuteNonQuery();
+                        }
+
                         Window nextWindow = null;
                         if (userRole == "Cashier")
                         {
@@ -110,5 +118,12 @@ namespace AquaPOS
 
         }
 
+    }
+    public class UserDetail
+    {
+        public int ID { get; set; }
+        public string Username { get; set; }
+        public string UserRole { get; set; }
+        public string LastLogin { get; set; }
     }
 }

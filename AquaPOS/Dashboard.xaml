@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:local="clr-namespace:AquaPOS"
         mc:Ignorable="d"
         Icon="pack://application:,,,/resources/Images/App_Logo/AquaPOS_Logo_Icon_New.ico" 
@@ -49,6 +50,65 @@
             </Setter>
         </Style>
 
+        <!-- Global Cute ScrollBar Style -->
+        <Style TargetType="ScrollBar">
+            <Setter Property="Width" Value="4"/>
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid Background="{TemplateBinding Background}">
+                            <Track Name="PART_Track"
+                           IsDirectionReversed="True"
+                           IsEnabled="{TemplateBinding IsEnabled}"
+                           Value="{TemplateBinding Value}"
+                           Minimum="{TemplateBinding Minimum}"
+                           Maximum="{TemplateBinding Maximum}">
+                                <Track.Thumb>
+                                    <Thumb>
+                                        <Thumb.Template>
+                                            <ControlTemplate TargetType="Thumb">
+                                                <Border Background="#FF1B66B1"
+                                                CornerRadius="4"
+                                                Height="50"
+                                                BorderBrush="#FF1B66B1"
+                                                BorderThickness="1"/>
+                                            </ControlTemplate>
+                                        </Thumb.Template>
+                                    </Thumb>
+                                </Track.Thumb>
+                            </Track>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
+        <Style x:Key="NavigationButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#142648"/>
+                            </Trigger>
+                            <Trigger Property="Tag" Value="Active">
+                                <Setter TargetName="border" Property="Background" Value="#142648"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+
     </Window.Resources>
 
     <Grid>
@@ -68,7 +128,8 @@
                        Margin="0,20,0,0"/>
 
                 <!-- Dashboard Button -->
-                <Button x:Name="DashboardButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
+                <Button x:Name="DashboardButton" Style="{StaticResource NavigationButtonStyle}"
+                        Foreground="White" Background="Transparent" BorderBrush="Transparent" 
                         FontSize="14" Width="240" Height="44" Margin="0,45,0,0" 
                         Click="DashboardButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="35" Width="126">
@@ -79,7 +140,8 @@
                 </Button>
 
                 <!-- Inventory Management Button -->
-                <Button x:Name="InventoryManagementButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
+                <Button x:Name="InventoryManagementButton" Style="{StaticResource NavigationButtonStyle}"
+                        Foreground="White" Background="Transparent" BorderBrush="Transparent" 
                         FontSize="14" Width="240" Height="44" Margin="0,45,0,0" 
                         Click="InventoryManagementButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="35" Width="211">
@@ -90,7 +152,8 @@
                 </Button>
 
                 <!-- Sales Reports Button -->
-                <Button x:Name="SalesReportsButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
+                <Button x:Name="SalesReportsButton" Style="{StaticResource NavigationButtonStyle}"
+                        Foreground="White" Background="Transparent" BorderBrush="Transparent" 
                         FontSize="14" Width="240" Height="44" Margin="0,45,0,0" 
                         Click="SalesReportsButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -100,13 +163,380 @@
                 </Button>
 
                 <!-- Exit Button -->
-                <Button x:Name="ExitButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
-                        FontSize="14" Width="60" Height="35" Click="ExitButton_Click" Margin="0,45,0,0" HorizontalAlignment="Center">
-                    <TextBlock Foreground="White" TextDecorations="Underline" TextAlignment="Center"><Run Text="EXIT"/></TextBlock>
+                <!-- Exit Button -->
+                <Button x:Name="ExitButton" Width="60" Height="35" Margin="0,45,0,0" Click="ExitButton_Click" HorizontalAlignment="Center">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <!-- Normal state -->
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="0"
+                                                CornerRadius="4">
+                                            <ContentPresenter HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                RecognizesAccessKey="True"/>
+                                            </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+
+                            <!-- Interaction triggers -->
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#142648"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#142648"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <!-- Button Text -->
+                    <TextBlock Text="EXIT" TextDecorations="Underline" TextAlignment="Center"/>
                 </Button>
 
             </StackPanel>
         </Border>
-    </Grid>
 
+        <Grid Grid.Column="1" Margin="20,15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Summary Cards Row -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,0,0,5" Height="100">
+
+                <!-- Total Income -->
+                <Border Background="#FF001165" CornerRadius="12" Width="222" Margin="10" Padding="15">
+                    <StackPanel Margin="-5">
+                        <Image Source="pack://application:,,,/resources/Images/Dashboard_Summary_Icons/Income.png"
+                                Width="28" Height="32" Margin="150,0,-24,0"/>
+                        <TextBlock Text="Total Gross Income" HorizontalAlignment="Left" Margin="0,-45,0,0"  
+                                Foreground="White" FontWeight="Normal" FontSize="11" Height="20" Width="120"/>
+                        <TextBlock x:Name="TotalIncomeText" HorizontalAlignment="Left" Margin="0,-5,0,0" Text="Rs. 0.00" Foreground="White" FontSize="20" FontWeight="SemiBold" Width="170"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Total Sales Revenue -->
+                <Border Background="#FF002E8B" CornerRadius="12" Width="222" Margin="10" Padding="15">
+                    <StackPanel Margin="-5">
+                        <Image Source="pack://application:,,,/resources/Images/Dashboard_Summary_Icons/Sales_Revenue.png"
+                                Width="28" Height="28" Margin="150,0,-24,0"/>
+                        <TextBlock Text="Total Sales Revenue" Foreground="White" FontWeight="Normal" FontSize="11" Margin="0,-30,0,0" Height="20" Width="120" HorizontalAlignment="Left"/>
+                        <TextBlock x:Name="TotalSalesRevenueText" Text="Rs. 0.00" Foreground="White" FontSize="20" FontWeight="SemiBold" Margin="0" Width="173" HorizontalAlignment="Left" Height="31" />
+
+                    </StackPanel>
+                </Border>
+
+                <!-- Today's Sales -->
+                <Border Background="#1B66B1" CornerRadius="12" Width="222" Margin="10" Padding="15">
+                    <StackPanel Margin="-5">
+                        <Image Source="pack://application:,,,/resources/Images/Dashboard_Summary_Icons/Todays_Sales.png"
+                                Width="28" Height="28" Margin="150,0,-24,0"/>
+                        <TextBlock Text="Today's Sales" Foreground="White" FontWeight="Normal" FontSize="11" Margin="0,-30,0,0" Height="20" Width="90" HorizontalAlignment="Left"/>
+                        <TextBlock x:Name="TodaysSalesText" Text="Rs. 0.00" Foreground="White" FontSize="20" FontWeight="SemiBold" Margin="0" Width="140" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Low Stock Items -->
+                <Border Background="#FF41A5D7" CornerRadius="12" Width="222" Margin="10" Padding="15" MouseLeftButtonDown="LowStockSummaryCard_Click">
+                    <StackPanel Margin="-5">
+                        <Image Source="pack://application:,,,/resources/Images/Dashboard_Summary_Icons/Low_Stock_Warning.png"
+                                Width="28" Height="28" Margin="150,0,-24,0"/>
+                        <TextBlock Text="Low Stock Items" Foreground="White" FontWeight="Normal" 
+                               FontSize="11" Height="20" Margin="0,-30,0,0" HorizontalAlignment="Left" Width="120"/>
+                        <TextBlock x:Name="LowStockCountText" Text="0 Items" Foreground="White" FontSize="20" FontWeight="SemiBold" Margin="0" Width="140" HorizontalAlignment="Left"/>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
+
+            <!-- Charts -->
+            <Grid Margin="0,0,285,320" Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Product Search with ComboBox and Button -->
+                <StackPanel Grid.Column="0" Margin="5,14,5,5">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10" HorizontalAlignment="Left" Width="160">
+                        <ComboBox x:Name="cmbProductSearch"
+                        Width="125" Height="22"
+                        IsEditable="True"
+                        StaysOpenOnEdit="True"
+                        BorderBrush="#FF73AEFF" BorderThickness="1.5"
+                        Background="white"
+                        Foreground="#031C36"
+                        FontWeight="Normal"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        Loaded="CmbProductSearch_Loaded"
+                        IsTextSearchEnabled="True"
+                        PreviewTextInput="CmbProductSearch_PreviewTextInput"
+                        SelectionChanged="CmbProductSearch_SelectionChanged"/>
+
+                        <Button Width="20" Height="21" Margin="5,0,5,0"
+                                BorderBrush="#FF2196F3" BorderThickness="1.5"
+                                Background="White"
+                                Click="SearchProduct_Click">
+                            <Image Source="/Resources/Images/Button_Icons/Search_Icon.png" 
+                                    Stretch="Uniform" Height="17" Width="16" />
+                        </Button>
+                    </StackPanel>
+
+                    <!-- Product List -->
+                    <ListView x:Name="ProductListView"
+                                SelectionChanged="ProductListView_SelectionChanged"
+                                HorizontalAlignment="Left"
+                                Width="150" Height="182" Margin="0,-2,2,4"
+                                Foreground="White"
+                                Background="#330E57AE"
+                                BorderBrush="Transparent"/>
+                </StackPanel>
+
+                <!-- Product Movement Bar Chart-->
+                <Border Background="#330E57AE" Margin="175,10,10,0" CornerRadius="10" Padding="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Header Text -->
+                        <TextBlock Text="Product Movement"
+                                   Grid.Row="0"
+                                   HorizontalAlignment="Center"
+                                   FontSize="12"
+                                   FontWeight="Normal"
+                                   TextDecorations="Underline"
+                                   Foreground="White"
+                                   Margin="0,0,0,5"/>
+
+                        <!-- Bar Chart -->
+                        <lvc:CartesianChart x:Name="ProductStockBarChart"
+                                Grid.Row="1"
+                                Margin="2"
+                                Background="Transparent"
+                                Foreground="White"
+                                Loaded="ProductStockBarChart_Loaded">
+
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis Title="Product"
+                                          LabelsRotation="0"
+                                          Foreground="White"
+                                          ShowLabels="True"/>
+                            </lvc:CartesianChart.AxisX>
+
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis Title="Stock Level"
+                                          LabelFormatter="{Binding YFormatter}"
+                                          Foreground="White"/>
+                            </lvc:CartesianChart.AxisY>
+                        </lvc:CartesianChart>
+                    </Grid>
+                </Border>
+
+                <!-- Stock Distribution Doughnut Chart -->
+                <Border Grid.Column="1" Background="#330E57AE" Margin="10,10,10,0" CornerRadius="10" Padding="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <!-- For header -->
+                            <RowDefinition Height="*"/>
+                            <!-- For chart -->
+                        </Grid.RowDefinitions>
+
+                        <!-- Header Text -->
+                        <TextBlock Text="Stock Distribution" 
+                                   Grid.Row="0"
+                                   HorizontalAlignment="Right" 
+                                   FontSize="12" 
+                                   FontWeight="Normal"
+                                   TextDecorations="Underline"
+                                   Foreground="White"
+                                   Margin="0,0,10,5"/>
+
+                        <!-- Doughnut Chart -->
+                        <lvc:PieChart x:Name="StockDoughnutChart"
+                                      Grid.Row="1"
+                                      InnerRadius="60"
+                                      LegendLocation="Right"
+                                      HoverPushOut="5"
+                                      FontSize="11"
+                                      FontWeight="Normal"
+                                      Background="Transparent"
+                                      Foreground="White"/>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Row="2" Margin="10,269,290,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="0*"/>
+                        <ColumnDefinition Width="7*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0*"/>
+                        <RowDefinition Height="0*"/>
+                        <!-- Main Content: Product List + Chart -->
+                        <RowDefinition Height="Auto"/>
+                        <!-- Movable User Details Panel -->
+                    </Grid.RowDefinitions>
+
+                    <!-- Bar Chart -->
+                    <Border Background="#330E57AE"
+                                Margin="-5,-20,-604,-270"
+                                CornerRadius="10"
+                                Padding="10" Grid.RowSpan="3" Grid.ColumnSpan="3">
+
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <!-- Header -->
+                                <RowDefinition Height="*"/>
+                                <!-- Chart -->
+                            </Grid.RowDefinitions>
+
+                            <!-- Header Text -->
+                            <TextBlock Text="Monthly Sales Overview"
+                                           Grid.Row="0"
+                                           HorizontalAlignment="Right"
+                                           FontSize="12"
+                                           FontWeight="Normal"
+                                           TextDecorations="Underline"
+                                           Foreground="White"
+                                           Margin="0,0,10,5"/>
+
+                            <!-- Line Chart -->
+                            <lvc:CartesianChart x:Name="SalesLineChart"
+                                                    Grid.Row="1"
+                                                Margin="5,0,5,0"
+                                                    LegendLocation="Right"
+                                                    Background="Transparent"
+                                                    Zoom="None"
+                                                    DisableAnimations="False"
+                                                    Foreground="white"
+                                                    Hoverable="True"
+                                                    DataTooltip="{x:Null}">
+                                <lvc:CartesianChart.AxisX>
+                                    <lvc:Axis Title="Month"
+                                                  Labels="{Binding MonthLabels}"
+                                                  Foreground="White"/>
+                                </lvc:CartesianChart.AxisX>
+
+                                <lvc:CartesianChart.AxisY>
+                                    <lvc:Axis Title="Sales (Rs.)"
+                                                  LabelFormatter="{Binding YFormatter}"
+                                                  Foreground="White"/>
+                                </lvc:CartesianChart.AxisY>
+                            </lvc:CartesianChart>
+                        </Grid>
+                    </Border>
+                </Grid>
+
+                <!-- User Details - Movable Panel -->
+                <StackPanel Margin="350,0,-265,-290" Grid.Column="1">
+
+                    <!-- Scrollable User Info Section -->
+                    <!-- Heading -->
+                    <TextBlock Text="User Details"
+                               FontSize="16"
+                               FontWeight="Bold"
+                               Foreground="White"
+                               Width="264" Height="539"/>
+
+                    <!-- Scrollable User Info Section -->
+                    <ScrollViewer Height="285" VerticalScrollBarVisibility="Auto" 
+                                  Background="#330E57AE" Margin="0,-740,0,0">
+                        <ItemsControl x:Name="UserInfoList" Width="215" Margin="10,5,0,0" HorizontalAlignment="Left">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Border BorderBrush="White" BorderThickness="1" CornerRadius="8" Padding="8" Margin="0,0,0,10" Background="#FF102C4A">
+                                            <Grid>
+
+                                                <StackPanel Orientation="Vertical">
+                                                    <TextBlock Text="{Binding Username}" FontWeight="Bold" Foreground="White"/>
+                                                    <TextBlock Text="Role: " Foreground="LightGray" FontSize="12"><Run Text="{Binding UserRole}"/></TextBlock>
+                                                    <TextBlock Text="Last Login: " Foreground="LightGray" FontSize="12"><Run Text="{Binding LastLogin}"/></TextBlock>
+                                                </StackPanel>
+                                                
+                                                <!-- Delete User Button -->
+                                                <Button Click="DeleteUser_Click"
+                                                    ToolTip="Delete User"
+                                                    Tag="{Binding ID}"
+                                                    Background="Transparent"
+                                                    BorderBrush="Transparent"
+                                                    HorizontalAlignment="Right"
+                                                    VerticalAlignment="Top"
+                                                    Height="20" Width="20"
+                                                    Cursor="Hand">
+
+                                                    <Button.Style>
+                                                        <Style TargetType="Button">
+                                                            <Setter Property="Background" Value="Transparent"/>
+                                                            <Setter Property="BorderBrush" Value="Transparent"/>
+                                                            <Setter Property="Cursor" Value="Hand"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="Button">
+                                                                        <Border x:Name="border"
+                                                                                Background="{TemplateBinding Background}"
+                                                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                                                BorderThickness="0"
+                                                                                CornerRadius="4">
+                                                                            <ContentPresenter HorizontalAlignment="Center"
+                                                                                              VerticalAlignment="Center"/>
+                                                                        </Border>
+                                                                        <ControlTemplate.Triggers>
+                                                                            <!-- Hover animation -->
+                                                                            <Trigger Property="IsMouseOver" Value="True">
+                                                                                <Setter TargetName="border" Property="Background" Value="#142648"/>
+                                                                            </Trigger>
+                                                                            <!-- Pressed animation -->
+                                                                            <Trigger Property="IsPressed" Value="True">
+                                                                                <Setter TargetName="border" Property="Background" Value="#142648"/>
+                                                                            </Trigger>
+                                                                        </ControlTemplate.Triggers>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </Button.Style>
+
+
+                                                    <Image Source="pack://application:,,,/resources/Images/Button_Icons/Delete_User_Button_Icon.png"
+                                                       Width="16" Height="16"
+                                                       Stretch="Uniform"
+                                                       IsHitTestVisible="False"/>
+                                                </Button>
+                                                
+                                            </Grid>
+                                        </Border>
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <!-- Calendar Section -->
+                    <Border Margin="0,-230,0,0" Background="#330E57AE" CornerRadius="8" Padding="5" Height="188" Width="214" >
+                        <Calendar Width="184" Background="White" BorderBrush="#FF0E47C3" BorderThickness="1" Margin="8,5,8,2"/>
+                    </Border>
+                </StackPanel>
+
+            </Grid>
+        </Grid>
+    </Grid>
 </Window>

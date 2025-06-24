@@ -16,37 +16,195 @@
     <Window.Resources>
         <!-- Rounded Button Style -->
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="border"
-                                Background="{TemplateBinding Background}" 
-                                BorderBrush="{TemplateBinding BorderBrush}" 
-                                BorderThickness="{TemplateBinding BorderThickness}" 
-                                CornerRadius="20"
-                                SnapsToDevicePixels="True">
+                        <Border 
+                            x:Name="border"
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="20"
+                            SnapsToDevicePixels="True">
                             <ContentPresenter 
                                 HorizontalAlignment="Center" 
                                 VerticalAlignment="Center" 
                                 RecognizesAccessKey="True"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover: Scale up -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                         To="1.05" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                         To="1.05" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                         To="1" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                         To="1" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+
+                            <!-- Click: Quick bounce effect -->
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                     To="0.95" Duration="0:0:0.05" AutoReverse="True"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                     To="0.95" Duration="0:0:0.05" AutoReverse="True"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <!-- Rounded TextBox Style -->
+        <!-- Rounded Text Box Style -->
         <Style x:Key="RoundedTextBoxStyle" TargetType="Control">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Control">
-                        <Border CornerRadius="8" BorderBrush="#FF0807A0" BorderThickness="2.5" Background="White">
+                        <Border CornerRadius="8" 
+                            BorderBrush="#FF0807A0" 
+                            BorderThickness="2.5" 
+                            Background="White">
                             <ScrollViewer Margin="5" x:Name="PART_ContentHost"/>
                         </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
+
+            <Style.Triggers>
+                <!-- Alive animation on focus -->
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                         To="1.03" Duration="0:0:0.08"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                         To="1.03" Duration="0:0:0.08"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                         To="1" Duration="0:0:0.08"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                         To="1" Duration="0:0:0.08"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
         </Style>
+
+        <Style x:Key="MergedIconAliveButtonStyle" TargetType="Button">
+            <!-- From IconButtonStyle -->
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Focusable" Value="False"/>
+
+            <!-- From AliveIconButtonStyle -->
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <!-- Hover: Background + Scale up -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#1A0E57AE"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                                     To="1.2" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                                     To="1.2" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                                     To="1" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                                     To="1" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+
+                            <!-- Pressed: Background + Bounce -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#330E57AE"/>
+                            </Trigger>
+
+                            <!-- Click: Bounce effect -->
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                                 To="0.9" Duration="0:0:0.05" AutoReverse="True"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                                 To="0.9" Duration="0:0:0.05" AutoReverse="True"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
 
     </Window.Resources>
 
@@ -66,27 +224,27 @@
                    Width="244" Height="176"/>
 
                 <!-- Search  Product Details Panel of Side Bar -->
-                <Border Background="#FFCAD8E5" BorderBrush="#FF0807A0" BorderThickness="2.5" Width="220" CornerRadius="10" HorizontalAlignment="Left" Margin="20,0,0,0" Height="440">
+                <Border Background="#FFCAD8E5" BorderBrush="#FF0807A0" BorderThickness="2.5" Width="220" CornerRadius="20" HorizontalAlignment="Left" Margin="20,0,0,0" Height="440">
                     <StackPanel>
                         <WrapPanel Margin="5,5,5,5">
 
                             <!-- Search Title -->
-                            <TextBlock Text="PRODUCT DETAILS" FontSize="16" FontWeight="Bold" Foreground="Black" Margin="20,20,20,20" TextAlignment="Left"/>
+                            <TextBlock Text="PRODUCT DETAILS" FontSize="16" FontWeight="Bold" Foreground="#FF1D1B1B" Margin="20,20,20,20" TextAlignment="Left"/>
 
                             <StackPanel Orientation="Horizontal" Margin="16,0,0,10">
-                                <Button Width="32" Height="32" Margin="2,0,0,0" BorderBrush="#FF0807A0" BorderThickness="2.5" Click="SearchProductDetails_Click">
-                                    <Image Source="/Resources/Images/Button_Icons/Search_Icon.png" Stretch="Uniform" Height="20" Width="20" />
-                                </Button>
                                 <ComboBox x:Name="cmbSearchProductDetails"
-                                          Width="146" Height="32"
+                                          Width="138" Height="32"
                                           IsEditable="True"
                                           StaysOpenOnEdit="True"
                                           BorderBrush="#FF0807A0" BorderThickness="2.5"
                                           HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                                          Loaded="cmbSearchProductDetails_Loaded"
-                                          IsTextSearchEnabled="False"
-                                          PreviewTextInput="cmbSearchProductDetails_PreviewTextInput"
-                                          SelectionChanged="cmbSearchProductDetails_SelectionChanged"/>
+                                          Loaded="CmbSearchProduct_Loaded"
+                                          IsTextSearchEnabled="True"
+                                          PreviewTextInput="CmbSearchProduct_PreviewTextInput"
+                                          SelectionChanged="CmbSearchProductDetails_SelectionChanged"/>
+                                <Button Width="32" Height="32" Margin="2,0,0,0" BorderBrush="#FF73AEFF" BorderThickness="1.5" Click="SearchProductDetails_Click">
+                                    <Image Source="/Resources/Images/Button_Icons/Search_Icon.png" Stretch="Uniform" Height="20" Width="20" />
+                                </Button>
                             </StackPanel>
 
 
@@ -95,30 +253,30 @@
 
                                 <!-- Product Name -->
                                 <StackPanel Margin="0,0,0,20">
-                                    <TextBlock Text="Product Name" FontSize="14" Foreground="Black" Height="24" Width="180"/>
-                                    <TextBox x:Name="txtProductNameResult" Width="180" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
-                                        Style="{StaticResource RoundedTextBoxStyle}" TextChanged="txtProductNameResult_TextChanged"/>
+                                    <TextBlock Text="Product Name" FontSize="14" Foreground="Black" Height="24" Width="168"/>
+                                    <TextBox x:Name="txtProductNameResult" Width="180" Height="32"
+                                        Style="{StaticResource RoundedTextBoxStyle}" TextChanged="TxtProductNameResult_TextChanged"/>
                                 </StackPanel>
 
                                 <!-- Category -->
                                 <StackPanel Margin="0,0,0,20">
-                                    <TextBlock Text="Category" FontSize="14" Foreground="Black" Height="24" Width="180"/>
-                                    <TextBox x:Name="txtCategoryResult" Width="180" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
-                                         Style="{StaticResource RoundedTextBoxStyle}" TextChanged="txtCategoryResult_TextChanged"/>
+                                    <TextBlock Text="Category" FontSize="14" Foreground="Black" Height="24" Width="168"/>
+                                    <TextBox x:Name="txtCategoryResult" Width="180" Height="32"
+                                         Style="{StaticResource RoundedTextBoxStyle}" TextChanged="TxtCategoryResult_TextChanged"/>
                                 </StackPanel>
 
                                 <!-- Unit Price -->
                                 <StackPanel Margin="0,0,0,20">
-                                    <TextBlock Text="Unit Price" FontSize="14" Foreground="Black" Height="22" Width="180"/>
-                                    <TextBox x:Name="txtUnitPriceResult" Width="180" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
-                                         Style="{StaticResource RoundedTextBoxStyle}" TextChanged="txtUnitPriceResult_TextChanged"/>
+                                    <TextBlock Text="Unit Price" FontSize="14" Foreground="Black" Height="22" Width="168"/>
+                                    <TextBox x:Name="txtUnitPriceResult" Width="180" Height="32"
+                                         Style="{StaticResource RoundedTextBoxStyle}" TextChanged="TxtUnitPriceResult_TextChanged"/>
                                 </StackPanel>
 
                                 <!-- Available Quantity -->
                                 <StackPanel Margin="0,0,0,20">
-                                    <TextBlock Text="Available Quantity" FontSize="14" Foreground="Black" Height="22" Width="180"/>
-                                    <TextBox x:Name="txtAvailableQtyResult" Width="180" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
-                                         Style="{StaticResource RoundedTextBoxStyle}" TextChanged="txtAvailableQtyResult_TextChanged"/>
+                                    <TextBlock Text="Available Quantity" FontSize="14" Foreground="Black" Height="22" Width="168"/>
+                                    <TextBox x:Name="txtAvailableQtyResult" Width="180" Height="32"
+                                         Style="{StaticResource RoundedTextBoxStyle}" TextChanged="TxtAvailableQtyResult_TextChanged"/>
                                 </StackPanel>
                             </StackPanel>
                         </WrapPanel>
@@ -126,17 +284,47 @@
                 </Border>
 
                 <!-- Exit Button with Underlined Text -->
-                <Button 
-                    Width="100"
-                    Height="40"
-                    FontSize="16"
-                    Background="Transparent"
-                    Foreground="White"
-                    BorderBrush="Transparent"
-                    BorderThickness="2"
+                <Button x:Name="Exit_Button"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Margin="0,0,0,0" Click="ExitButton_Click">
+                    Margin="0,10,0,0" 
+                    Width="60" Height="35" Click="ExitButton_Click">
+
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <!-- Normal state -->
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="0"
+                                                CornerRadius="4">
+                                            <ContentPresenter HorizontalAlignment="Center"
+                                                              VerticalAlignment="Center"
+                                                              RecognizesAccessKey="True"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+
+                            <!-- Interaction triggers -->
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#142648"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#142648"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
                     <TextBlock Text="EXIT" 
                        Foreground="White"
                        TextDecorations="Underline"
@@ -159,60 +347,59 @@
 
             <StackPanel Margin="0,3,0,0">
 
-                <TextBlock Text="BILLING" FontSize="16" FontWeight="Bold" Foreground="Black" Margin="2,10,0,0" TextAlignment="Left"/>
+                <TextBlock Text="BILLING" FontSize="16" FontWeight="Bold" Foreground="#FF1D1B1B" Margin="2,10,0,0" TextAlignment="Left"/>
 
                 <!-- Bill Date Label & DatePicker -->
-                <Label Content="Bill Date" Foreground="Black" FontSize="16" FontWeight="Bold" 
-                       HorizontalAlignment="Center" Margin="0,30,0,0"/>
-                <DatePicker x:Name="BillDatePicker" Width="170" Height="32" FontSize="14" 
-                            BorderBrush="#FF0807A0" HorizontalAlignment="Center"/>
+                <Label Content="Bill Date" Foreground="Black" FontSize="16" FontWeight="Normal" 
+                       HorizontalAlignment="Center" Margin="0,30,0,0" FontFamily="Segoe UI Variable Display Semibold"/>
+                <DatePicker x:Name="BillDatePicker" Width="170" Height="28" FontSize="14" 
+                            BorderBrush="#FF73AEFF" BorderThickness="1" HorizontalAlignment="Center"/>
 
-                <!-- Product Name Label & TextBox -->
-                <!-- Replace Product Name Label & TextBox with Search ComboBox -->
-                <Label Content="Product Name" Foreground="Black" FontSize="16" FontWeight="Bold"
-                        HorizontalAlignment="Center" Margin="0,20,0,0"/>
+                <!-- Product Name Label & Search ComboBox -->
+                <Label Content="Product Name" Foreground="Black" FontSize="16"
+                        HorizontalAlignment="Center" Margin="0,20,0,0" FontFamily="Segoe UI Variable Small Semibold" FontWeight="Normal"/>
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,10">
                     <ComboBox x:Name="cmbSearchProduct"
                               Width="138" Height="32"
                               IsEditable="True"
                               StaysOpenOnEdit="True"
-                              BorderBrush="#FF0807A0" BorderThickness="2.5"
+                              BorderBrush="#FF73AEFF" BorderThickness="2.5"
                               HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
-                              Loaded="cmbSearchProduct_Loaded"
-                              IsTextSearchEnabled="False"
-                              PreviewTextInput="cmbSearchProduct_PreviewTextInput"
-                              SelectionChanged="cmbSearchProduct_SelectionChanged"/>
-                    <Button Width="32" Height="32" Margin="2,0,0,0" BorderBrush="#FF0807A0" BorderThickness="2.5" Click="SearchProduct_Click">
+                              Loaded="CmbSearchProduct_Loaded"
+                              IsTextSearchEnabled="True"
+                              PreviewTextInput="CmbSearchProduct_PreviewTextInput"
+                              SelectionChanged="CmbSearchProductDetails_SelectionChanged" Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"/>
+                    <Button Width="32" Height="32" Margin="2,0,0,0" BorderBrush="#FF73AEFF" BorderThickness="1.5" Click="SearchProduct_Click">
                         <Image Source="/Resources/Images/Button_Icons/Search_Icon.png" Stretch="Uniform" Height="20" Width="20" />
                     </Button>
                 </StackPanel>
 
 
                 <!-- Quantity Label & TextBox -->
-                <Label Content="Quantity" Foreground="Black" FontSize="16" FontWeight="Bold" 
-                       HorizontalAlignment="Center" Margin="0,0,0,0"/>
-                <TextBox x:Name="QuantityTextBox" Width="170" Height="33" FontSize="14"
+                <Label Content="Quantity" Foreground="Black" FontSize="16" FontWeight="Normal" 
+                       HorizontalAlignment="Center" Margin="0,10,0,0" FontFamily="Segoe UI Variable Text Semibold"/>
+                <TextBox x:Name="QuantityTextBox" Width="170" Height="32" FontSize="14"
                          Style="{StaticResource RoundedTextBoxStyle}"
-                         HorizontalAlignment="Center" BorderBrush="#FF0807A0"/>
+                         HorizontalAlignment="Center" BorderBrush="#FF0807A0" BorderThickness="1"/>
 
                 <!-- Add to Bill Button -->
-                <Button x:Name="AddToBillButton" Content="Add to Bill" Width="130" Height="34" FontSize="14" FontWeight="Bold" 
-                        Foreground="Black" Background="#FF8BF1ED" BorderBrush="#FF3F43CE" BorderThickness="1"
+                <Button x:Name="AddToBillButton" Content="ADD TO BILL" Width="130" Height="34" FontSize="14" FontFamily="Segoe UI Semibold" 
+                        Foreground="Black" Background="#FF8BF1ED" BorderBrush="#FF377EDF" BorderThickness="1.5"
                         Style="{StaticResource RoundedButtonStyle}"
                         HorizontalAlignment="Center" Margin="0,30,0,0" Click="AddToBillButton_Click"/>
 
                 <!-- Total Amount Display -->
                 <StackPanel Margin="0,60,0,0" HorizontalAlignment="Center">
-                    <Label Content="Total Amount (Rs.) :" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <Label Content="Total Amount (Rs.) :" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" FontFamily="Segoe UI Variable Text"/>
                     <TextBlock x:Name="TotalAmountTextBlock" Text="0.00" FontSize="16" FontWeight="Bold" 
                Foreground="#FF0807A0" HorizontalAlignment="Center"/>
                 </StackPanel>
 
                 <!-- Print Bill Button -->
-                <Button x:Name="PrintBillButton" Content="Print Bill" Width="130" Height="34" FontSize="14" FontWeight="Bold" 
+                <Button x:Name="PrintBillButton" Content="PRINT BILL" Width="130" Height="34" FontSize="14" FontFamily="Segoe UI Semibold"
                         Foreground="Black" Background="#FF9DFF59" BorderBrush="#FF15A90E" BorderThickness="1"
                         Style="{StaticResource RoundedButtonStyle}"
-                        HorizontalAlignment="Center" Margin="0,20,0,0" Click="PrintBillButton_Click"/>
+                        HorizontalAlignment="Center" Margin="0,25,0,0" Click="PrintBillButton_Click"/>
             </StackPanel>
         </Border>
 
@@ -295,7 +482,7 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <!-- Delete Button -->
-                                        <Button Name="DeleteButton" 
+                                        <Button Style="{StaticResource MergedIconAliveButtonStyle}"
                                                 Click="DeleteButton_Click"
                                                 CommandParameter="{Binding}"
                                                 ToolTip="Delete"
@@ -303,7 +490,7 @@
                                                 BorderBrush="Transparent"
                                                 Cursor="Hand"
                                                 Padding="0,0,10,0">
-                                                <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Delete_Button_Icon.png"
+                                            <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Delete_Button_Icon.png"
                                                        Width="20" Height="20"
                                                        Stretch="Uniform"/>
                                         </Button>
@@ -312,7 +499,6 @@
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
-
                 </DataGrid>
             </Border>
         </Grid>

@@ -16,34 +16,217 @@
     <Window.Resources>
         <!-- Rounded Button Style -->
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border 
-                        x:Name="border"
-                        Background="{TemplateBinding Background}" 
-                        BorderBrush="{TemplateBinding BorderBrush}" 
-                        BorderThickness="{TemplateBinding BorderThickness}" 
-                        CornerRadius="20"
-                        SnapsToDevicePixels="True">
+                            x:Name="border"
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            CornerRadius="20"
+                            SnapsToDevicePixels="True">
                             <ContentPresenter 
-                            HorizontalAlignment="Center" 
-                            VerticalAlignment="Center" 
-                            RecognizesAccessKey="True"/>
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center" 
+                                RecognizesAccessKey="True"/>
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <!-- Hover: Scale up -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                                     To="1.05" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                                     To="1.05" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                                     To="1" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                                     To="1" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+
+                            <!-- Click: Quick bounce effect -->
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                                 To="0.95" Duration="0:0:0.05" AutoReverse="True"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                                 To="0.95" Duration="0:0:0.05" AutoReverse="True"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
-        <!-- Rounded TextBox Style -->
+        <!-- Rounded Text Box Style -->
         <Style x:Key="RoundedTextBoxStyle" TargetType="Control">
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Control">
-                        <Border CornerRadius="8" BorderBrush="#FF0807A0" BorderThickness="2.5" Background="White">
+                        <Border CornerRadius="8" 
+                            BorderBrush="#FF0807A0" 
+                            BorderThickness="2.5" 
+                            Background="White">
                             <ScrollViewer Margin="5" x:Name="PART_ContentHost"/>
                         </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+
+            <Style.Triggers>
+                <!-- Alive animation on focus -->
+                <Trigger Property="IsKeyboardFocused" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                        To="1.03" Duration="0:0:0.08"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                        To="1.03" Duration="0:0:0.08"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)"
+                                        To="1" Duration="0:0:0.08"/>
+                                <DoubleAnimation Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)"
+                                        To="1" Duration="0:0:0.08"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+
+
+        <local:LowStockToBrushConverter x:Key="LowStockBrush"/>
+
+        <Style x:Key="NavigationButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border" Background="{TemplateBinding Background}" CornerRadius="5">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#142648"/>
+                            </Trigger>
+                            <Trigger Property="Tag" Value="Active">
+                                <Setter TargetName="border" Property="Background" Value="#142648"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="MergedIconAliveButtonStyle" TargetType="Button">
+            <!-- From IconButtonStyle -->
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Focusable" Value="False"/>
+
+            <!-- From AliveIconButtonStyle -->
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+            <Setter Property="RenderTransform">
+                <Setter.Value>
+                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                </Setter.Value>
+            </Setter>
+
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="border"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        CornerRadius="4">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <!-- Hover: Background + Scale up -->
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#1A0E57AE"/>
+                                <Trigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                                     To="1.2" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                                     To="1.2" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.EnterActions>
+                                <Trigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                                     To="1" Duration="0:0:0.1"/>
+                                            <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                                     To="1" Duration="0:0:0.1"/>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </Trigger.ExitActions>
+                            </Trigger>
+
+                            <!-- Pressed: Background + Bounce -->
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="#330E57AE"/>
+                            </Trigger>
+
+                            <!-- Click: Bounce effect -->
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleX)"
+                                                 To="0.9" Duration="0:0:0.05" AutoReverse="True"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="(Button.RenderTransform).(ScaleTransform.ScaleY)"
+                                                 To="0.9" Duration="0:0:0.05" AutoReverse="True"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -68,7 +251,8 @@
                        Margin="0,20,0,0"/>
 
                 <!-- Dashboard Button -->
-                <Button x:Name="DashboardButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
+                <Button x:Name="DashboardButton" Style="{StaticResource NavigationButtonStyle}"
+                        Foreground="White" Background="Transparent" BorderBrush="Transparent" 
                         FontSize="14" Width="240" Height="44" Margin="0,45,0,0" 
                         Click="DashboardButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="35" Width="126">
@@ -79,9 +263,10 @@
                 </Button>
 
                 <!-- Inventory Management Button -->
-                <Button x:Name="InventoryManagementButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
+                <Button x:Name="InventoryManagementButton" Style="{StaticResource NavigationButtonStyle}"
+                        Foreground="White" Background="Transparent" BorderBrush="Transparent" 
                         FontSize="14" Width="240" Height="44" Margin="0,45,0,0" 
-                        Click="InventoryManagementButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center">   
+                        Click="InventoryManagementButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Height="35" Width="211">
                         <Image Source="pack://application:,,,/resources/Images/Button_Icons/Inventory_Management_Button_Icon.png" 
                                Width="35" Height="37" Margin="10,0,10,0" RenderTransformOrigin="-0.035,0.484"/>
@@ -90,7 +275,8 @@
                 </Button>
 
                 <!-- Sales Reports Button -->
-                <Button x:Name="SalesReportsButton" Foreground="White" Background="Transparent" BorderBrush="Transparent" 
+                <Button x:Name="SalesReportsButton" Style="{StaticResource NavigationButtonStyle}"
+                        Foreground="White" Background="Transparent" BorderBrush="Transparent" 
                         FontSize="14" Width="240" Height="44" Margin="0,45,0,0" 
                         Click="SalesReportsButton_Click" HorizontalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -100,11 +286,45 @@
                     </StackPanel>
                 </Button>
 
-
                 <!-- Exit Button -->
-                <Button x:Name="ExitButton" Foreground="White" Background="Transparent" BorderBrush="Transparent"
-                        FontSize="14" Width="60" Height="35" Click="ExitButton_Click" Margin="0,45,0,0" HorizontalAlignment="Center">
-                    <TextBlock Foreground="White" TextDecorations="Underline" TextAlignment="Center"><Run Text="EXIT"/></TextBlock>
+                <Button x:Name="ExitButton" Width="60" Height="35" Margin="0,45,0,0" Click="ExitButton_Click" HorizontalAlignment="Center">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <!-- Normal state -->
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="Background" Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                            <Setter Property="FontSize" Value="14"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="0"
+                                                CornerRadius="4">
+                                            <ContentPresenter HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                RecognizesAccessKey="True"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+
+                            <!-- Interaction triggers -->
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#142648"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#142648"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+
+                    <!-- Button Text -->
+                    <TextBlock Text="EXIT" TextDecorations="Underline" TextAlignment="Center"/>
                 </Button>
 
             </StackPanel>
@@ -113,9 +333,9 @@
         <!-- Main Content Grid with Two Columns -->
         <Grid Grid.Column="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto" MinWidth="814.8"/>
                 <!-- Left: Stock Table -->
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition/>
                 <!-- Right: Input Controls -->
             </Grid.ColumnDefinitions>
 
@@ -145,7 +365,7 @@
                           CanUserAddRows="False" 
                           IsReadOnly="True" 
                           ItemsSource="{Binding Stocks}" 
-                          VerticalScrollBarVisibility="Visible">
+                          VerticalScrollBarVisibility="Visible" Margin="5">
 
                     <DataGrid.Resources>
                         <Style TargetType="{x:Type DataGridCell}">
@@ -174,19 +394,36 @@
                         </Style>
                     </DataGrid.Resources>
 
-                    <!-- ... Keep your existing DataGrid.Resources and Columns here ... -->
-                    <!-- ✅ 2. Columns -->
+                    <!-- DataGrid.Resources and Columns -->
+
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="ID" Binding="{Binding ProductID}" Width="40" 
                                             ElementStyle="{StaticResource CenterTextStyle}"/>
+
                         <DataGridTextColumn Header="Category" Binding="{Binding Category}" Width="100" 
                                             ElementStyle="{StaticResource CenterTextStyle}"/>
-                        <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" Width="160" 
+
+                        <DataGridTextColumn Header="Product Name" Binding="{Binding ProductName}" Width="160">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource CenterTextStyle}">
+                                    <Setter Property="Foreground" 
+                                        Value="{Binding Quantity, Converter={StaticResource LowStockBrush}}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <DataGridTextColumn Header="Unit Price (Rs.)" Binding="{Binding UnitPrice}" Width="100" 
                                             ElementStyle="{StaticResource CenterTextStyle}"/>
-                        <DataGridTextColumn Header="Unit Price (Rs.)" Binding="{Binding UnitPrice}" Width="120" 
-                                            ElementStyle="{StaticResource CenterTextStyle}"/>
-                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="80" 
-                                            ElementStyle="{StaticResource CenterTextStyle}"/>
+
+                        <DataGridTextColumn Header="Quantity" Binding="{Binding Quantity}" Width="100">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource CenterTextStyle}">
+                                    <Setter Property="Foreground" 
+                                        Value="{Binding Quantity, Converter={StaticResource LowStockBrush}}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
                         <DataGridTextColumn Header="Last Updated On" Binding="{Binding DateUpdated}" Width="140"
                                             ElementStyle="{StaticResource CenterTextStyle}"/>
 
@@ -195,25 +432,29 @@
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                         <!-- Edit Button -->
-                                        <Button Click="EditButton_Click" 
+                                        <Button Style="{StaticResource MergedIconAliveButtonStyle}"
+                                                Click="EditButton_Click"
+                                                ToolTip="Edit"
                                                 Background="Transparent" 
                                                 BorderBrush="Transparent" 
                                                 Cursor="Hand" 
                                                 Padding="0" 
                                                 Margin="0,0,10,0">
                                             <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Edit_Button_Icon.png" 
-                                                   Width="20" Height="20" Stretch="Uniform"/>
+                                                   Width="20" Height="14" Stretch="Uniform"/>
                                         </Button>
 
                                         <!-- Delete Button -->
-                                        <Button Click="DeleteButton_Click" 
+                                        <Button Style="{StaticResource MergedIconAliveButtonStyle}"
+                                                Click="DeleteButton_Click" 
                                                 ToolTip="Delete" 
                                                 Background="Transparent" 
                                                 BorderBrush="Transparent" 
                                                 Cursor="Hand" 
-                                                Padding="0,0,10,0">
+                                                Padding="5,0,10,0">
+
                                             <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Delete_Button_Icon.png" 
-                                                   Width="20" Height="20" Stretch="Uniform"/>
+                                                   Width="15" Height="15" Stretch="Uniform"/>
                                         </Button>
                                     </StackPanel>
                                 </DataTemplate>
@@ -224,29 +465,33 @@
             </Border>
 
             <!-- Input Fields and Buttons in Vertical Stack -->
-            <StackPanel Grid.Column="1" Margin="0,20,0,20" Orientation="Vertical" HorizontalAlignment="Left" Width="191">
+            <StackPanel Margin="805,20,0,20" Orientation="Vertical" HorizontalAlignment="Left" Width="195" Grid.ColumnSpan="2">
 
                 <!-- Search Product -->
-                <StackPanel Margin="10">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBox x:Name="txtSearchProduct" 
-                                 Text="Search Product..." 
-                                 Width="124" Height="32" 
-                                 BorderBrush="#FF0807A0" BorderThickness="2.5" 
-                                 HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                                 Foreground="Gray" 
-                                 GotFocus="txtSearchProduct_GotFocus" 
-                                 LostFocus="txtSearchProduct_LostFocus" TextChanged="txtSearchProduct_TextChanged"/>
-                        <Button Width="40" Height="32" Margin="5,0,0,0" BorderBrush="#FF0807A0" BorderThickness="2.5" Click="SearchProduct_Click">
+                <StackPanel Margin="10" Height="32">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,10" Width="165">
+                        <ComboBox x:Name="cmbSearchProduct"
+                                  Width="130" Height="32"
+                                  IsEditable="True"
+                                  StaysOpenOnEdit="True"
+                                  BorderBrush="#FF73AEFF" BorderThickness="2.5"
+                                  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                  Loaded="CmbSearchProduct_Loaded"
+                                  IsTextSearchEnabled="True"
+                                  PreviewTextInput="CmbSearchProduct_PreviewTextInput"
+                                  SelectionChanged="CmbSearchProduct_SelectionChanged"
+                                  Background="{DynamicResource {x:Static SystemColors.ActiveCaptionBrushKey}}"/>
+                        <Button Width="35" Height="34" Margin="2,0,0,0" BorderBrush="#FF0807A0" BorderThickness="1.5" Click="SearchProduct_Click">
                             <Image Source="pack://application:,,,/Resources/Images/Button_Icons/Search_Icon.png" Stretch="Uniform" Height="20" Width="20" />
                         </Button>
                     </StackPanel>
+
                 </StackPanel>
 
                 <TextBlock Text="UPDATE INVENTORY" Foreground="#FFC8BEBE" FontSize="16" Margin="0,30,0,0" Width="168" Height="25" FontWeight="Bold"/>
 
-                <WrapPanel Margin="0,5,0,0"  Height="520">
-                    
+                <WrapPanel Margin="0,5,0,0"  Height="560">
+
                     <!-- Category -->
                     <StackPanel Margin="10">
                         <TextBlock Text="Category" FontSize="14" Foreground="#FFA2A2C8" Height="24"/>
@@ -255,48 +500,96 @@
                     </StackPanel>
 
                     <!-- Product Name -->
-                    <StackPanel Margin="10">
+                    <StackPanel Margin="10,8,10,0">
                         <TextBlock Text="Product Name" FontSize="14" Foreground="#FFA2A2C8" Height="24"/>
                         <TextBox x:Name="txtProductName" Width="168" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
                      Style="{StaticResource RoundedTextBoxStyle}"/>
                     </StackPanel>
 
+                    <!-- Cost Price -->
+                    <StackPanel Margin="10,8,10,0">
+                        <TextBlock Text="Cost Price" FontSize="14" Foreground="#FFA2A2C8" Height="24" Width="158"/>
+                        <TextBox x:Name="txtCostPrice" Width="168" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
+                    Style="{StaticResource RoundedTextBoxStyle}"/>
+                    </StackPanel>
+
                     <!-- Unit Price -->
-                    <StackPanel Margin="10">
+                    <StackPanel Margin="10,8,10,0">
                         <TextBlock Text="Unit Price" FontSize="14" Foreground="#FFA2A2C8" Height="24"/>
                         <TextBox x:Name="txtUnitPrice" Width="168" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
                      Style="{StaticResource RoundedTextBoxStyle}"/>
                     </StackPanel>
 
                     <!-- Quantity -->
-                    <StackPanel Margin="10">
-                        <TextBlock Text="Quantity" FontSize="14" Foreground="#FFA2A2C8" Height="24"/>
-                        <TextBox x:Name="txtQuantity" Width="168" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"
-                     Style="{StaticResource RoundedTextBoxStyle}"/>
+                    <StackPanel Margin="10,8,10,0">
+                        <!-- Label -->
+                        <TextBlock Text="Quantity" FontSize="14" Foreground="#FFA2A2C8" Height="24" Width="158"/>
+
+                        <!-- Quantity Input and Buttons -->
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center" >
+                            <!-- Quantity TextBox -->
+                            <TextBox x:Name="txtQuantity"
+                                     Width="95"
+                                     Height="32"
+                                     BorderBrush="#FF0807A0"
+                                     BorderThickness="2.5"
+                                     Style="{StaticResource RoundedTextBoxStyle}"
+                                     VerticalContentAlignment="Center"
+                                     HorizontalContentAlignment="Left" TextChanged="TxtQuantity_TextChanged"/>
+
+                            <!-- + Button -->
+                            <Border CornerRadius="5" Width="32" Height="32" Margin="5,0,0,0" Background="Transparent">
+                                <Button Content="+" Style="{StaticResource RoundedButtonStyle}"
+                                    FontSize="18"
+                                    Width="32"
+                                    Height="32"
+                                    BorderBrush="#FF0807A0"
+                                    Background="Transparent"
+                                    BorderThickness="2.5"
+                                    Foreground="White"
+                                    FontWeight="Bold"
+                                    Click="ButtonIncreaseQuantity_Click"/>
+                            </Border>
+
+                            <!-- - Button -->
+                            <Button Content="−" Style="{StaticResource RoundedButtonStyle}"
+                                    FontSize="18"
+                                    Width="32"
+                                    Height="32"
+                                    Margin="5,0,0,0"
+                                    BorderBrush="#FF0807A0"
+                                    Background="Transparent"
+                                    BorderThickness="2.5"
+                                    Foreground="White"
+                                    FontWeight="Bold"
+                                    Click="ButtonDecreaseQuantity_Click"/>
+                        </StackPanel>
                     </StackPanel>
 
                     <!-- Date Updated -->
                     <StackPanel Margin="10">
                         <TextBlock Text="Last Updated On" FontSize="14" Foreground="#FFA2A2C8" Height="24"/>
-                        <DatePicker x:Name="dpDateUpdated" Width="168" Height="32" BorderBrush="#FF0807A0" BorderThickness="2.5"/>
+                        <DatePicker x:Name="dpDateUpdated" SelectedDateFormat="Short"
+                            Text="{Binding DateUpdated, StringFormat='yyyy-MM-dd'}"
+                            Width="168" Height="26" BorderBrush="#FF0807A0" BorderThickness="1.5"/>
                     </StackPanel>
 
 
-                    <!--Row 4: Update and Print Buttons -->
+                    <!-- Update and Print Buttons -->
                     <WrapPanel Orientation="Horizontal" Margin="25,20,25,20">
                         <!-- Update Stock Button -->
-                        <Button Content="UPDATE" Style="{StaticResource RoundedButtonStyle}" Width="120" Height="36" 
-                                FontSize="14" Foreground="Black" Background="#FF47CCCC" BorderBrush="#FF3F43CE" BorderThickness="2.5" 
+                        <Button Content="UPDATE" Style="{StaticResource RoundedButtonStyle}" Width="115" Height="36" 
+                                FontSize="14" Foreground="Black" FontFamily="Segoe UI Semibold" Background="#FF47CCCC" BorderBrush="#FF3F43CE" BorderThickness="1.5" 
                                 Margin="10" Click="UpdateStock_Click"/>
 
                         <!-- Print Stock Button -->
-                        <Button Content="PRINT" Style="{StaticResource RoundedButtonStyle}" Width="120" Height="36" 
-                                FontSize="14" Foreground="Black" Background="#FF9DFF59" BorderBrush="#FF15A90E" BorderThickness="2.5" Margin="10" Click="PrintStock_Click"/>
+                        <Button Content="PRINT" Style="{StaticResource RoundedButtonStyle}" Width="115" Height="36" 
+                                FontSize="14" FontFamily="Segoe UI Semibold" Foreground="Black" Background="#FF9DFF59" BorderBrush="#FF15A90E" BorderThickness="1.5" Margin="10" Click="PrintStock_Click"/>
                     </WrapPanel>
-                    
+
                 </WrapPanel>
             </StackPanel>
-            
+
         </Grid>
     </Grid>
 </Window>

@@ -44,7 +44,7 @@ namespace AquaPOS
                             UnitPrice REAL NOT NULL,
                             Quantity INTEGER NOT NULL,
                             TotalCostPrice REAL NOT NULL,
-                            DateUpdated DATETIME NOT NULL
+                            DateUpdated DATE TEXT NOT NULL
                         );";
 
                     // Create Sales table: record each bill with overall info

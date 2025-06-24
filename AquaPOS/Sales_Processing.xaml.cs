@@ -279,6 +279,7 @@ namespace AquaPOS
                     billItems.Add(billItem);
                     UpdateTotalAmount();
                 }
+                else
                 {
                     MessageBox.Show($"Insufficient stock. Available Quantity: {selectedProduct.AvailableQty}");
                 }
